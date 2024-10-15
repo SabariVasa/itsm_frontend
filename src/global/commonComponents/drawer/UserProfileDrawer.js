@@ -4,9 +4,13 @@ import {
   List,
   Avatar,
   SwipeableDrawer,
+  ListItem, ListItemButton, ListItemIcon, ListItemText 
 } from '@mui/material';
 import AvailablThemeList from "../../../Pages/SettingsBarSlide/AvailablThemeList";
 import { useDrawer } from '../drawer/DrawerContext';
+// import { Box, Avatar, List,} from '@mui/material';
+import AppSettingsAltIcon from '@mui/icons-material/AppSettingsAlt';
+import PersonIcon from '@mui/icons-material/Person';
 
 function UserProfileDrawer() {
 
@@ -19,7 +23,7 @@ function UserProfileDrawer() {
     bio: "Full Stack Developer with 5 years of experience in web development.",
   };
 
-  const list = (anchor) => (
+  const list = (anchor, user) => (
     <>
       <Box
         sx={{
@@ -30,7 +34,7 @@ function UserProfileDrawer() {
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
-          gap: "1em"
+          gap: '1em'
         }}
         role="presentation"
         onClick={() => toggleDrawer(anchor, false)} // Use context function to close the drawer
@@ -41,31 +45,37 @@ function UserProfileDrawer() {
           src={user.avatarUrl}
           sx={{ width: 200, height: 200 }}
         />
-        <center>{localStorage.getItem("userEmail")}</center>
+        <center>{localStorage.getItem('userEmail')}</center>
       </Box>
       <div style={{ overflowY: 'scroll', marginTop: '2em', scrollBehavior: 'smooth' }}>
         <List>
-          {['AppSettingsAltIcon'].map((text, index) => (
-            text === 'AppSettingsAltIcon' ? (
-              <AvailablThemeList />
-            ) : (
-              <List>
-                <List.Item key={text} disablePadding>
-                  <List.ItemButton>
-                    <List.ItemIcon>
-                      {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
-                    </List.ItemIcon>
-                    <List.ItemText primary={text} />
-                  </List.ItemButton>
-                </List.Item>
-              </List>
-            )
-          ))}
+          {/* Profile Item */}
+          <ListItem key="Profile" disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <PersonIcon /> {/* Profile Icon */}
+              </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItemButton>
+          </ListItem>
+  
+          {/* Theme Settings */}
+          <ListItem key="AppSettingsAltIcon" disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <AppSettingsAltIcon /> {/* Theme Settings Icon */}
+              </ListItemIcon>
+              <ListItemText primary="Theme Settings" />
+            </ListItemButton>
+          </ListItem>
+  
+          {/* Available Theme List */}
+          <AvailablThemeList />
+  
         </List>
       </div>
     </>
   );
-
   const key = Object.keys(state);
   return (
     <>

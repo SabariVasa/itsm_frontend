@@ -8,11 +8,14 @@ import { useTheme } from "../../global/commonComponents/ThemeContext";
 import UserOverview from "../../Dashboards/UserOverview";
 import KnowledgeContainer from "../../Components/KnowledgeArticle/KnowledgeContainer";
 import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
+import { useDrawer } from "../../global/commonComponents/drawer/DrawerContext";
 import RequestCategory from "../../Components/Request Management/Main Component/RequestCategory";
+import UserProfileDetails from "../UserProfileDetails";
 
 export const RequestContext = createContext(null);
 
 function EndUserLandingPage() {
+  const { toggleDrawer, state } = useDrawer();
   const navbarOptions = [
     { label: "Dashboards", icon: "Dashboards" },
     { label: "Report an issue", icon: "Report an issue" },
@@ -21,7 +24,7 @@ function EndUserLandingPage() {
   ];
 
   const [drawer, setDrawer] = useState(false);
-  const [activeTab, setActiveTab] = useState(navbarOptions[0].label); // default to first tab
+  const [activeTab, setActiveTab] = useState(navbarOptions[0].label);
   const { theme } = useTheme();
 
   const [requestDetails, setRequestDetails] = useState([]);
@@ -66,7 +69,8 @@ function EndUserLandingPage() {
 
   return (
     <div style={{ background: theme.outerBodyColor, height: "110vh" }}>
-      <DefaultHeader drawer={drawer} />
+      <DefaultHeader drawer={drawer} toggleDrawer={toggleDrawer} state={state} />
+      <UserProfileDetails toggleDrawer={toggleDrawer} state={state} />
       <RequestContext.Provider
         value={{
           requestDetails,
@@ -82,13 +86,15 @@ function EndUserLandingPage() {
         }}
       >
         <Grid container>
-          <Grid item xs={drawer ? 3 : 1}>
-            <UserPortalLeftPanel
-              activeTab={activeTab}
-              navbarOptions={navbarOptions}
-              tabClickHandler={tabClickHandler}
-              drawer={drawer}
-            />
+          <Grid item xs={drawer ? 3 : 1} style={{ margin: '0 0 0 1m' }}>
+            <div style={{ overflowY: 'scroll', height: 520, }}>
+              <UserPortalLeftPanel
+                activeTab={activeTab}
+                navbarOptions={navbarOptions}
+                tabClickHandler={tabClickHandler}
+                drawer={drawer}
+              />
+            </div>
             <div>
               {drawer ? (
                 <ArrowBackIosNewIcon

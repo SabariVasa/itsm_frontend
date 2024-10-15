@@ -1,10 +1,10 @@
 import { restbaseurl } from './constants';
 
 export const resturls = {
-  obtainFavIconAndTitle: 'auth_services/obtainFavIconAndTitle',
+  obtainFavIconAndTitle: 'auth/obtainFavIconAndTitle',
   obtainManualPublishDetails: 'corporateTrainingBatch/obtainManualPublishDetails',
-  login: 'auth_services/login_user',
-  getUserDetails: 'auth_services/get_all_users',
+  login: 'auth/login_user',
+  getUserDetails: 'auth/get_all_users',
   allIncident: '/incident_service/all_incident',
   getOpenIncident: '/incident_service/get_open_incident',
   getIncidentByAssignedTo: '/incident_service/get_incident_by_assignedto/',
@@ -15,11 +15,15 @@ export const resturls = {
   CreateClass: '/cmdb_service/create_class',
   obtainItemRequirementList: 'cmdb_service/fetch_class_names_and_ids_by_item_requirement',
   classCatecoryItems: '/cmdb_service/fetch_class_categories',
-  obtainFormFieldData: '/cmdb_service/fetch_class_category',
-  createNewIncident: '/incident_service/create_end_user_incident',
+  obtainFormFieldData: '/cmdb_service/fetch_class_category_attributes',
+  createNewIncident: '/incident_service/post_incident',
   CreateClassInstance: '/cmdb_service/create_class_instance',
-  addUser: '/auth_services/add_user',
-  obtainCategoryInstance:'/cmdb_service/fetch_class_instances_by_category_id'
+  addUser: '/auth/add_user',
+  obtainCategoryInstance: '/cmdb_service/fetch_class_items',
+  obtainCategoryAttributes: '/cmdb_service/fetch_class_instance',
+  updateClassInstance: '/cmdb_service/update_class_instance',
+  allIncidentCount: '/incident_service/all_incident_count',
+  deleteClassCategory: '/cmdb_service/delete_class_category'
 };
 
 export const successurl = `${restbaseurl}student/success`;

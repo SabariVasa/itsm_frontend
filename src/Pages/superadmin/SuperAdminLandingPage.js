@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { useDrawer } from "../../global/commonComponents/drawer/DrawerContext";
 import ClassManagementMain from "../../Components/cmdb/classmanagement/ClassManagementMain";
 import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
+import UserManagmentMainPanel from "../userManagement/UserManagementMainPanel";
 // import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
 
 export const RequestContext = createContext(null);
@@ -38,11 +39,11 @@ function SuperAdminLandingPage() {
   const navbarOptions = [
     { label: "Dashboards", icon: "Dashboards" },
     { label: "Incident Management", icon: "Incident Management" },
-    { label: "CMDB", icon: "CMDB" },
+    // { label: "CMDB", icon: "CMDB" },
     { label: "Request Management", icon: "Request Management" },
     { label: "Change Management", icon: "Change Management" },
     { label: "Knowledge Article", icon: "Knowledge Article" },
-    { label: "Generate Token", icon: "Generate Token" },
+    // { label: "Generate Token", icon: "Generate Token" },
     { label: "User Management", icon: "User Management" },
     { label: "Form Generator", icon: "Form Generator" },
     { label: "CMDB Management", icon: "CMDB Management" },
@@ -135,7 +136,7 @@ function SuperAdminLandingPage() {
       case "Form Generator":
         return <div><FormMenu /></div>;
       case "User Management":
-        return <div><UserDetailsAndEdit /></div>;
+        return <div><UserManagmentMainPanel/></div>;
       case "create_config":
         return <div><CI /></div>;
       case "class_manage":

@@ -20,16 +20,27 @@ import { useTheme } from '../global/commonComponents/ThemeContext';
 import { Image } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import ContentDevider from '../Components/HelperComponents/ContentDevider';
-import { Button } from '@mui/material';
+import { Button, Modal } from '@mui/material'; // Imported Modal
+import UserDetailsAndEdit from '../Components/User Management/UserDetailsAndEdit';
 
 export default function UserProfileDetails() {
   const { toggleDrawer, state } = useDrawer();
   const { theme, updateTheme } = useTheme();
   const navigate = useNavigate();
 
+  const [openProfileModal, setOpenProfileModal] = React.useState(false); // State for the profile modal
+
   const handleToggle = React.useCallback((anchor, open) => () => {
     toggleDrawer(anchor, open);
   }, [toggleDrawer]);
+
+  const handleProfileClick = () => {
+    setOpenProfileModal(true); // Open the modal
+  };
+
+  const handleCloseProfileModal = () => {
+    setOpenProfileModal(false); // Close the modal
+  };
 
   const themes = [
     { name: 'Light', mainBodyColor: '#ffffff', outerBodyColor: 'black' },
@@ -104,14 +115,23 @@ export default function UserProfileDetails() {
           </AccordionDetails>
         </Accordion>
       </div>
+      <List>
+        {/* Add Profile ListItem */}
+        <ListItem button onClick={handleProfileClick}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItem>
+      </List>
       <Button
         variant="text"
-        startIcon={<LogoutIcon />} // Add logout icon
+        startIcon={<LogoutIcon />}
         onClick={handleLogout}
         sx={{
-          color: 'red', // Red text for the logout button
-          marginBottom: '20px', // Add some margin at the bottom
-          alignSelf: 'center', // Center the button horizontally
+          color: 'red',
+          marginBottom: '20px',
+          alignSelf: 'center',
         }}
       >
         Logout
@@ -131,7 +151,9 @@ export default function UserProfileDetails() {
             PaperProps={{
               sx: {
                 background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Same gradient for the Drawer
-                borderRadius: '2em',
+                borderRadius: '1em',
+                margin: '8.2em 0.7em 0 0',
+                height: '79%'
               },
             }}
           >
@@ -139,7 +161,32 @@ export default function UserProfileDetails() {
           </SwipeableDrawer>
         </React.Fragment>
       ))}
+
+      {/* Profile Modal */}
+      <Modal
+        open={openProfileModal}
+        onClose={handleCloseProfileModal}
+        aria-labelledby="profile-modal-title"
+        aria-describedby="profile-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 800,
+            height: 450,
+            overflowY: 'scroll',
+            bgcolor: 'background.paper',
+            border: '2px solid #000',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <UserDetailsAndEdit />
+        </Box>
+      </Modal>
     </div>
   );
 }
-

@@ -21,6 +21,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { TextareaAutosize } from '@mui/material';
 import { Box } from "@mui/material";
+import GlobalService from '../../services/GlobalService';
+import { resturls } from '../../global/utils/apiurls';
 
 export default function UserIncidentForm(props) {
   // const dispatch = useDispatch();
@@ -221,11 +223,26 @@ export default function UserIncidentForm(props) {
       createdBy: localStorage.getItem("userEmail"),
       shortDescription: Description
     };
-    await axios.post(`${serverAPI}/createIncident`, data).then((res) => {
-      spinnerLoading(res.data.statusCode);
-      console.log(res.data)
-    }).catch((err) => { console.log(err) });
-    console.log(data);
+    // await axios.post(`${serverAPI}/createIncident`, data).then((res) => {
+    //   spinnerLoading(res.data.statusCode);
+    //   console.log(res.data)
+    // }).catch((err) => { console.log(err) });
+    // console.log(data);
+    GlobalService.generalSelect(
+      (response) => {
+        const { estatus, data, statusCode } = response;
+        console.log(response, 'responseData');
+        if (statusCode === 200) {
+          console.log(response, 'response');
+          spinnerLoading(response.statusCode);
+        } else {
+          console.log('Create Incident Fail');
+        }
+      },
+      resturls.createNewIncident,
+      { data },
+      'POST'
+    );
   }
 
   const [incidentData, setIncidentData] = useState({});

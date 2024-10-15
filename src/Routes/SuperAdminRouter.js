@@ -175,67 +175,68 @@ export default function SuperAdminRouter() {
             </div>
           </div>
           <div className='MainContainer' style={{ marginLeft: drawer ? "23%" : "5%", marginRight: 10 }} md={2}>
+            <BrowserRouter>
+              <Routes>
+                {/* <Route path="*" element={<Home/>}/> */}
+                <Route path="/Create-Incident" element={<CreateNewIncident />} />
+                <Route path="/All" element={<IncidentTable IncidentData={IncidentData} IncidentHeaderData={IncidentHeaderData} />} />
+                <Route path="/Assigned-To-Me/:state" element={<IncidentTable IncidentData={AssignedToMeIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
+                <Route path="/Open-Incidents/:state" element={<IncidentTable IncidentData={OpenIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
+                <Route path="/Resolved-Incidents" element={<IncidentTable IncidentData={ResolvedIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
+                <Route path="/Open-unassigned" element={<IncidentTable IncidentData={OpenUnAssignedIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
+                <Route path="/" element={<IncidentDashboard IncidentData={IncidentData} IncidentHeaderData={IncidentHeaderData} />} />
+                <Route path="/IncidentEditPage/:IncidentId" element={<IncidentEditPage />} />
+                <Route path="/AuthTokenGeneration" element={<TokenGenerationPage />} />
+                <Route path="/Configuration-Database" element={<CMDB />} />
+                <Route path="/create-server" element={<CmdbFormPage />} />
+                <Route path="/CMDBEditPage/:Category/:name" element={<UpdateServer />} />
+                <Route path="/Hardware/Item/:category" element={<CMDBTable IncidentData={IncidentData} CMDBHeaderData={CMDBheaderData} />} />
+                <Route path="/Software/Item/:category" element={<SoftwareTable CMDBHeaderData={CMDBheaderData} />} />
+                <Route path="/Configuration-Item/:drawerStatus" element={<CI />} />
+                <Route path="/TechincalInfo/Hardware/:serviceType" element={<TechnicalInfo />} />
+                <Route path="/TechincalInfo/Software/:serviceType/:Id" element={<SoftwareInfo />} />
+                <Route path="/TechincalInfo/Services/:serviceType" element={<CMDBService />} />
+                <Route path="/request_service" element={<RequestCategory />} />
 
-            <Routes>
-              {/* <Route path="*" element={<Home/>}/> */}
-              <Route path="/Create-Incident" element={<CreateNewIncident />} />
-              <Route path="/All" element={<IncidentTable IncidentData={IncidentData} IncidentHeaderData={IncidentHeaderData} />} />
-              <Route path="/Assigned-To-Me/:state" element={<IncidentTable IncidentData={AssignedToMeIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
-              <Route path="/Open-Incidents/:state" element={<IncidentTable IncidentData={OpenIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
-              <Route path="/Resolved-Incidents" element={<IncidentTable IncidentData={ResolvedIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
-              <Route path="/Open-unassigned" element={<IncidentTable IncidentData={OpenUnAssignedIncidentData} IncidentHeaderData={IncidentHeaderData} />} />
-              <Route path="/" element={<IncidentDashboard IncidentData={IncidentData} IncidentHeaderData={IncidentHeaderData} />} />
-              <Route path="/IncidentEditPage/:IncidentId" element={<IncidentEditPage />} />
-              <Route path="/AuthTokenGeneration" element={<TokenGenerationPage />} />
-              <Route path="/Configuration-Database" element={<CMDB />} />
-              <Route path="/create-server" element={<CmdbFormPage />} />
-              <Route path="/CMDBEditPage/:Category/:name" element={<UpdateServer />} />
-              <Route path="/Hardware/Item/:category" element={<CMDBTable IncidentData={IncidentData} CMDBHeaderData={CMDBheaderData} />} />
-              <Route path="/Software/Item/:category" element={<SoftwareTable CMDBHeaderData={CMDBheaderData} />} />
-              <Route path="/Configuration-Item/:drawerStatus" element={<CI />} />
-              <Route path="/TechincalInfo/Hardware/:serviceType" element={<TechnicalInfo />} />
-              <Route path="/TechincalInfo/Software/:serviceType/:Id" element={<SoftwareInfo />} />
-              <Route path="/TechincalInfo/Services/:serviceType" element={<CMDBService />} />
-              <Route path="/request_service" element={<RequestCategory />} />
+                <Route path="/request_service/hardware" element={<RequestForm />} />
+                <Route path="/request_service/general-service" element={<GeneralService />} />
+                <Route path="/request-service/general-service/:category" element={<ServiceCategoryForm />} />
 
-              <Route path="/request_service/hardware" element={<RequestForm />} />
-              <Route path="/request_service/general-service" element={<GeneralService />} />
-              <Route path="/request-service/general-service/:category" element={<ServiceCategoryForm />} />
+                {/* <Route path="/request_service/:request_item_id" element={<CreateRequestItem/>}/> */}
+                <Route path="/request_item_details/:request_item_id" element={<RequestItemDetails />} />
+                <Route path="/request_item/:item_id" element={<RequestItem />} />
+                <Route path='/request_service/my_requests' element={
+                  <div>
+                    <CmdbSelectField label="Select requests to fetch" MenuItems={[{ value: "Hardware requests" }, { value: "General requests" }]} style={{ width: "30%", marginTop: 5, marginLeft: 5 }} selectedValue={selectedRequest} setSelectValue={setSelectedRequest} />
+                    <ContentDevider title={selectedRequest} />
+                    {selectedRequest ? <MyRequestTable selectedRequest={selectedRequest} /> : null}
+                    {/* <Component2/> */}
+                  </div>
+                } />
+                <Route path="/knowledge-article" element={
+                  <>
+                    <KnowledgeContainer />
+                  </>
+                } />
+                {/* <Route path="/create-knowledge-article" element={<CreateKnowledge />} /> */}
+                <Route path="/knowledge-preview-page" element={<PreviewPage />} />
+                <Route path="/article-details/:articleID" element={<ArticleDetailsPage />} />
 
-              {/* <Route path="/request_service/:request_item_id" element={<CreateRequestItem/>}/> */}
-              <Route path="/request_item_details/:request_item_id" element={<RequestItemDetails />} />
-              <Route path="/request_item/:item_id" element={<RequestItem />} />
-              <Route path='/request_service/my_requests' element={
-                <div>
-                  <CmdbSelectField label="Select requests to fetch" MenuItems={[{ value: "Hardware requests" }, { value: "General requests" }]} style={{ width: "30%", marginTop: 5, marginLeft: 5 }} selectedValue={selectedRequest} setSelectValue={setSelectedRequest} />
-                  <ContentDevider title={selectedRequest} />
-                  {selectedRequest ? <MyRequestTable selectedRequest={selectedRequest} /> : null}
-                  {/* <Component2/> */}
-                </div>
-              } />
-              <Route path="/knowledge-article" element={
-                <>
-                  <KnowledgeContainer />
-                </>
-              } />
-              {/* <Route path="/create-knowledge-article" element={<CreateKnowledge />} /> */}
-              <Route path="/knowledge-preview-page" element={<PreviewPage />} />
-              <Route path="/article-details/:articleID" element={<ArticleDetailsPage />} />
+                <Route path="/change_service/New" element={
+                  <CreateChange />
+                } />
+                <Route path="change_service/All" element={
+                  <ChangeContext.Provider value={{ changeRequest, setChangeRequest }}>
+                    <AllChanges />
+                  </ChangeContext.Provider>
+                } />
+                <Route path="/user-list" element={<UserManagmentMainPanel />} />
+                <Route path="/form-menu" element={<FormMenu />} />
+                <Route path="/generate-form" element={<ReactFormGenerate />} />
 
-              <Route path="/change_service/New" element={
-                <CreateChange />
-              } />
-              <Route path="change_service/All" element={
-                <ChangeContext.Provider value={{ changeRequest, setChangeRequest }}>
-                  <AllChanges />
-                </ChangeContext.Provider>
-              } />
-              <Route path="/user-list" element={<UserManagmentTable />} />
-              <Route path="/form-menu" element={<FormMenu />} />
-              <Route path="/generate-form" element={<ReactFormGenerate />} />
-
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </BrowserRouter>
           </div>
         </div>
         {/* </BrowserRouter> */}

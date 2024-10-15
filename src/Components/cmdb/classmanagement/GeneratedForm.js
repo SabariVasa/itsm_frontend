@@ -287,8 +287,9 @@ function GeneratedForm(props) {
     setCallMethod,
     logo,
     selectedClass,
-    initialValues, // Add a prop for initial values
-    isEditMode // Flag to indicate if the form is in edit mode
+    initialValues,
+    isEditMode,
+    selectedItemId,
   } = props;
 
   const createValidationSchema = (fields) => {
@@ -331,12 +332,12 @@ function GeneratedForm(props) {
   };
 
   const getGeneretedFormList = () => {
-    console.log(formFields, 'formFields');
     GlobalService.generalSelect(
       (respdata) => {
         const { estatus, data: responseData } = respdata;
-        if ((!estatus || estatus === null) && responseData.success) {
-
+        if (estatus && responseData.success) {
+          setFormFields([]);
+          // resetForm();
         }
       },
       resturls.CreateClass,
@@ -350,52 +351,49 @@ function GeneratedForm(props) {
     );
   };
 
-  const addItemRequirement = (values) => {
-    console.log(values, selectedClass, 'formvalues');
+  const addItemRequirement = (values, resetForm) => {
+    const url = isEditMode ? resturls.updateClassInstance : resturls.CreateClassInstance;
+    const requestBody = isEditMode
+      ? { id: selectedItemId, values, classCategoryId: selectedClass }
+      : { values, classCategoryId: selectedClass };
+
     GlobalService.generalSelect(
       (respdata) => {
         const { estatus, data: responseData } = respdata;
-        if ((!estatus || estatus === null) && responseData.success) {
-
+        if (estatus && estatus ) {
+          resetForm();
         }
       },
-      resturls.CreateClassInstance,
-      {
-        values,
-        classCategoryId: selectedClass,
-      },
+      url,
+      requestBody,
       'POST'
     );
   };
 
   const initialFormValues = formFields.reduce((acc, curr) => {
-    // If in edit mode, populate the initial value from initialValues prop
     acc[curr.fieldName] = isEditMode && initialValues && initialValues[curr.fieldName] !== undefined
       ? initialValues[curr.fieldName]
-      : ''; // Otherwise set to empty string
+      : '';
     return acc;
   }, {});
 
   return (
     <div>
-      {createBtn &&
-        (
-          <>
-            <span><ArrowBackIcon onClick={() => setCallMethod(false)} /></span>
-            <span><h3>Add Config Items</h3></span>
-          </>
-        )
-      }
+      {createBtn && (
+        <>
+          <span><ArrowBackIcon onClick={() => setCallMethod(false)} /></span>
+          <span><h3>Add Config Items</h3></span>
+        </>
+      )}
       <Box mt={4}>
         <Formik
           initialValues={initialFormValues}
           validationSchema={createValidationSchema(formFields)}
-          onSubmit={(values) => {
-            console.log('Generated Form Submission:', values);
-            addItemRequirement(values);
+          onSubmit={(values, { resetForm }) => {
+            addItemRequirement(values, resetForm);
           }}
         >
-          {({ handleSubmit, handleChange, setFieldValue, values, errors, touched }) => (
+          {({ handleSubmit, handleChange, setFieldValue, values, errors, touched, resetForm }) => (
             <Form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 {formFields.map((field, index) => (
@@ -403,12 +401,10 @@ function GeneratedForm(props) {
                     <Grid item xs={6}>
                       <h4 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         {field.fieldName}
-                        {selectedClass === '' ? (
+                        {selectedClass === '' && (
                           <IconButton onClick={() => handleRemoveField(index)} color="warning">
                             <RemoveCircleIcon />
                           </IconButton>
-                        ) : (
-                          <></>
                         )}
                       </h4>
                       {field.fieldType === 'Text' && (
@@ -501,8 +497,8 @@ function GeneratedForm(props) {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={values[field.fieldName]}
-                              onChange={handleChange}
+                              checked={values[field.fieldName] || false}
+                              onChange={(event) => setFieldValue(field.fieldName, event.target.checked)}
                               name={field.fieldName}
                             />
                           }
@@ -513,10 +509,10 @@ function GeneratedForm(props) {
                   </React.Fragment>
                 ))}
               </Grid>
-              {createBtn && (
+              {(createBtn || isEditMode) && (
                 <Box mt={2}>
                   <Button type="submit" variant="contained" disabled={formFields.length === 0} color="primary">
-                    {t('create')}
+                    {t(isEditMode ? 'Update' : 'create')}
                   </Button>
                 </Box>
               )}
@@ -526,7 +522,7 @@ function GeneratedForm(props) {
         <Box mt={2}>
           {generatedForm && (
             <Box mt={2}>
-              <Button type="submit" variant="contained" disabled={formFields.length === 0} onClick={getGeneretedFormList} color="primary">
+              <Button type="submit" variant="contained" disabled={formFields.length === 0} onClick={() => getGeneretedFormList(resetForm)} color="primary">
                 {t('submit_generated_form')}
               </Button>
             </Box>

@@ -20,7 +20,7 @@ function DefaultHeader(props) {
           <Grid item xs={8} >
             <div className="userProfile">
               <div style={{ cursor: "pointer" }}>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTadSAgMa0Si3aeLKU9sPJ24i1IZX3nKOVLnA&s" height="30px" width="45px" alt="profile-pic" style={{ borderRadius: 22, marginTop: 10, marginLeft: 5 }} />
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTadSAgMa0Si3aeLKU9sPJ24i1IZX3nKOVLnA&s" height="40px" width="45px" alt="profile-pic" style={{ borderRadius: 22, marginTop: 10, marginLeft: 5 }} />
               </div>
               <div className={authAdmin === 'SuperAdmin' ? "profile-container-admin" : "profile-container"} onClick={() => toggleDrawer('right', true)} >
                 <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", margin: '0 1em' }}>

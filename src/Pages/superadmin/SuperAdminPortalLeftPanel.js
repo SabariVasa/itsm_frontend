@@ -45,7 +45,7 @@ function SuperAdminPortalLeftPanel(props) {
     "Request Management": RepeatIcon,
     "Change Management": ChangeCircleIcon,
     "Knowledge Article": MenuBookIcon,
-    'CMDB Management': ArrowForwardIosIcon,
+    'CMDB Management': StorageIcon,
     'Generate Token': TokenIcon,
     'User Management': GroupIcon,
     'Form Generator': FormatAlignJustifyIcon,
