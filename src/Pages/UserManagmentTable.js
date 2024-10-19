@@ -151,6 +151,95 @@
 //     </div>
 //   )
 // }
+// import React, { useEffect, useState } from "react";
+// import { resturls } from "../global/utils/apiurls";
+// import GlobalService from "../services/GlobalService";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHead,
+//   TableRow,
+//   Paper,
+//   Button,
+//   Box
+// } from '@mui/material';
+// import UserDetailsAndEdit from "../Components/User Management/UserDetailsAndEdit";
+
+// export default function UserManagmentTable(props) {
+//   const [users, setUsers] = useState([]);
+//   const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+
+//   const getAllUserDetails = () => {
+//     GlobalService.generalSelect(
+//       (respdata) => {
+//         setUsers(respdata);
+//         console.log(respdata, 'reqObj');
+//       }, resturls.getUserDetails, {}, 'GET',
+//     );
+//   }
+
+//   useEffect(() => {
+//     getAllUserDetails();
+//   }, []);
+
+//   const handleCreateUser = () => {
+//     setIsCreateUserOpen(!isCreateUserOpen);
+//     console.log('Create User button clicked', isCreateUserOpen);
+//   }
+
+//   return (
+//     <>
+//       {isCreateUserOpen ? (
+//         <UserDetailsAndEdit />
+//       ) : (
+//         <>
+//           <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+//             <Button variant="contained" color="primary" onClick={handleCreateUser}>
+//               Create User
+//             </Button>
+//           </Box >
+
+//           <TableContainer component={Paper}>
+//             <Table sx={{ minWidth: 650 }} aria-label="user table">
+//               <TableHead>
+//                 <TableRow sx={{ backgroundColor: 'black' }}>
+//                   <TableCell sx={{ color: 'white' }}>ID</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>First Name</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Last Name</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Email</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Company</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Department</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Manager</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Location</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Role</TableCell>
+//                   <TableCell sx={{ color: 'white' }}>Status</TableCell>
+//                 </TableRow>
+//               </TableHead>
+//               <TableBody>
+//                 {users.map((user) => (
+//                   <TableRow key={user.id}>
+//                     <TableCell>{user.id}</TableCell>
+//                     <TableCell>{user.firstName}</TableCell>
+//                     <TableCell>{user.lastName}</TableCell>
+//                     <TableCell>{user.emailAddress}</TableCell>
+//                     <TableCell>{user.company}</TableCell>
+//                     <TableCell>{user.department}</TableCell>
+//                     <TableCell>{user.manager}</TableCell>
+//                     <TableCell>{user.userLocation}</TableCell>
+//                     <TableCell>{user.userRole}</TableCell>
+//                     <TableCell>{user.loggedInStatus || "offline"}</TableCell>
+//                   </TableRow>
+//                 ))}
+//               </TableBody>
+//             </Table>
+//           </TableContainer>
+//         </>)
+//       }
+//     </>
+//   )
+// }
 import React, { useEffect, useState } from "react";
 import { resturls } from "../global/utils/apiurls";
 import GlobalService from "../services/GlobalService";
@@ -163,22 +252,29 @@ import {
   TableRow,
   Paper,
   Button,
-  Box
+  Box,
+  Skeleton,
 } from '@mui/material';
 import UserDetailsAndEdit from "../Components/User Management/UserDetailsAndEdit";
 
 export default function UserManagmentTable(props) {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state for showing placeholder
   const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
 
   const getAllUserDetails = () => {
     GlobalService.generalSelect(
       (respdata) => {
         setUsers(respdata);
-        console.log(respdata, 'reqObj');
-      }, resturls.getUserDetails, {}, 'GET',
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000)
+      },
+      resturls.getUserDetails,
+      {},
+      'GET'
     );
-  }
+  };
 
   useEffect(() => {
     getAllUserDetails();
@@ -186,26 +282,27 @@ export default function UserManagmentTable(props) {
 
   const handleCreateUser = () => {
     setIsCreateUserOpen(!isCreateUserOpen);
-    console.log('Create User button clicked', isCreateUserOpen);
-  }
+  };
+
+  const skeletonRows = 5; // Number of rows for skeleton placeholder
 
   return (
     <>
       {isCreateUserOpen ? (
-        <UserDetailsAndEdit />
+        <UserDetailsAndEdit isCreateUserOpen={setIsCreateUserOpen} />
       ) : (
         <>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
             <Button variant="contained" color="primary" onClick={handleCreateUser}>
               Create User
             </Button>
-          </Box >
+          </Box>
 
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="user table">
               <TableHead>
                 <TableRow sx={{ backgroundColor: 'black' }}>
-                  <TableCell sx={{ color: 'white' }}>ID</TableCell>
+                  {/* <TableCell sx={{ color: 'white' }}>ID</TableCell> */}
                   <TableCell sx={{ color: 'white' }}>First Name</TableCell>
                   <TableCell sx={{ color: 'white' }}>Last Name</TableCell>
                   <TableCell sx={{ color: 'white' }}>Email</TableCell>
@@ -218,25 +315,60 @@ export default function UserManagmentTable(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>{user.firstName}</TableCell>
-                    <TableCell>{user.lastName}</TableCell>
-                    <TableCell>{user.emailAddress}</TableCell>
-                    <TableCell>{user.company}</TableCell>
-                    <TableCell>{user.department}</TableCell>
-                    <TableCell>{user.manager}</TableCell>
-                    <TableCell>{user.userLocation}</TableCell>
-                    <TableCell>{user.userRole}</TableCell>
-                    <TableCell>{user.loggedInStatus || "offline"}</TableCell>
-                  </TableRow>
-                ))}
+                {loading
+                  ? Array.from(new Array(skeletonRows)).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                  : users.map((user) => (
+                    <TableRow key={user.id}>
+                      {/* <TableCell>{user.id}</TableCell> */}
+                      <TableCell>{user.firstName}</TableCell>
+                      <TableCell>{user.lastName}</TableCell>
+                      <TableCell>{user.emailAddress}</TableCell>
+                      <TableCell>{user.company}</TableCell>
+                      <TableCell>{user.department}</TableCell>
+                      <TableCell>{user.manager}</TableCell>
+                      <TableCell>{user.userLocation}</TableCell>
+                      <TableCell>{user.userRole}</TableCell>
+                      <TableCell>{user.loggedInStatus || "offline"}</TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
-        </>)
-      }
+        </>
+      )}
     </>
-  )
+  );
 }
