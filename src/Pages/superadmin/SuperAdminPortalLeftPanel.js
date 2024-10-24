@@ -25,6 +25,7 @@ import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 // import UserInfo from "../../models/UserInfo";
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import styles from "../../Pages/endUser/scss/UserPortalLeftPanel.module.scss";
+import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import GroupIcon from '@mui/icons-material/Group';
 import { AiOutlineForm } from "react-icons/ai";
@@ -32,6 +33,7 @@ import styless from './scss/SuperAdmin.module.scss';
 
 function SuperAdminPortalLeftPanel(props) {
   const { navbarOptions, tabClickHandler, drawer, t } = props;
+  const history = useHistory
   const [expanded, setExpanded] = useState(false);
   // const userName = UserInfo.getUsername();
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -140,19 +142,7 @@ function SuperAdminPortalLeftPanel(props) {
                   {drawer ? <ListItemText
                     primary={ele.label}
                     sx={{ color: 'white' }}
-                  /> : ele.label === 'Form Generator' && (
-                    <>
-                      <div className="sidebar-item-decor" style={{ marginTop: -15, width: "86%" }}>
-                        <AiOutlineForm className="fontStyle" style={{ fontSize: 25 }} />
-                        <p style={styless.FontSize} className="fontStyle">Form Generator</p>
-                      </div>:<div className="sidebar-item-decor" style={{ marginTop: 10, width: "45%" }}>
-                        <Tooltip title="Form Mangament">
-                          <AiOutlineForm className="fontStyle" style={{ marginTop: -20 }} href="/generate-form" />
-                        </Tooltip>
-                        {/* <p style={{fontSize:20}}>CMDB</p> */}
-                      </div>
-                    </>
-                  )}
+                  /> : null}
                 </ListItem>
               </>
             ) : (

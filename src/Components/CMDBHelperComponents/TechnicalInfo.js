@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ContentDevider from '../HelperComponents/ContentDevider';
-import { useParams, useNavigate } from 'react-router-dom';
+// import { useParams, useNavigate } from 'react-router-dom';
 import CmdbGridContainer from '../HelperComponents/GridContainer';
 import axios from 'axios';
 // import IncrementContainer from '../HelperComponents/IncrementContainer';
@@ -24,10 +24,11 @@ import StepperComponent from '../HelperComponents/StepperComponent';
 import { setActiveStep } from '../../Redux state management/Redux Slices/GlobalStepperSlice';
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function TechnicalInfo(props) {
   const { serviceType } = props;
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
 
   const Field1 = [`${serviceType} Name`, `${serviceType} Type`];

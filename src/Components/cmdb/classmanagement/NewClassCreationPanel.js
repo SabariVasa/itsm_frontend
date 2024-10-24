@@ -5,9 +5,11 @@ import ContentDevider from "../../HelperComponents/ContentDevider";
 import CreateNewClassFormCreation from "./CreateNewClassFormCreation";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styles from './ClassManagement.module.scss';
+import { useHistory } from "react-router-dom";
 
 function NewClassCreationPanel(props) {
   const { t, setActiveTab } = props;
+  const history = useHistory();
   const [selectCategoryType, setSelectCategoryType] = useState('');
   const [fileName, setFileName] = useState('');
   const [createMainClassForm, setCreateMainClassForm] = useState(false);
@@ -39,7 +41,7 @@ function NewClassCreationPanel(props) {
 
   return (
     <div>
-      {!createMainClassForm && <ArrowBackIcon onClick={() => setActiveTab('')} />}
+      {!createMainClassForm && <ArrowBackIcon onClick={() => history.goBack()} />}
       {!createMainClassForm ? (
         <>
           <h3>{t('create_class')}</h3>

@@ -4,8 +4,9 @@ import UserInfo from '../../models/UserInfo';
 import GlobalService from '../../services/GlobalService';
 import { resturls } from './apiurls';
 import { cookiedomain, restbaseurl } from './constants';
-import { Route, Navigate } from 'react-router-dom';
+// import { Route, Navigate } from 'react-router-dom';
 import React from 'react';
+import { Redirect, Route } from 'react-router-dom/cjs/react-router-dom.min';
 
 function parseJwt(token) {
   console.log('token', token);
@@ -119,7 +120,6 @@ function processLogout(redirectToLogin = true) {
           }
           UserInfo.clear();
           window.localStorage.setItem('isEventClosed', '');
-          window.localStorage.setItem('authAmphiSessionId', undefined);
           if (window.ReactNativeWebView) {
             window.ReactNativeWebView.postMessage('loggedOut');
             window.ReactNativeWebView.postMessage('loggedOut');
@@ -156,7 +156,7 @@ function PrivateRoute({ component: Component, cprops, ...rest }) {
       render={(props) => ((valid === true)
         ? <Component {...cprops} {...props} />
         : (
-          <Navigate
+          <Redirect
             to={{
               pathname: '/login',
               state: { from: props.location },

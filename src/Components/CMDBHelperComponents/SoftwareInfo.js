@@ -250,7 +250,7 @@
 // }
 import React, { useState, useEffect } from 'react';
 import BasicInfoSoftware from './BasicInfoSoftware';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { networkDevices, networkDeviceManufacturers } from '../../Utils/CMDB-Data/NetworkCIData';
 import { ServerType, ServerManufacturerData, storageDevices, storageDeviceManufacturers, BussinessCriticalOptions } from '../../Utils/CMDB-Data/CIData';
 import { desktops, desktopManufacturers } from '../../Utils/CMDB-Data/DesktopData';
@@ -263,10 +263,11 @@ import ReactLoading from 'react-loading';
 import NotifyBar from '../Notification Components/NotifyBar';
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function SoftwareInfo(props) {
   const { serviceType, Id } = props;
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const Field0 = ["Item ID", "Item Type"];
   const Field1 = [`${serviceType}`, `${serviceType} Version`];
   const Field2 = ["Edition", "Architecture"];

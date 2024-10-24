@@ -1,0 +1,35 @@
+.accordionContainer {
+  background-color: #1f2937; /* Adjust this for your dark mode */
+  border: none;
+  box-shadow: none;
+}
+
+.activeAccordion {
+  background-color: #4b5563; /* Highlight the active accordion */
+}
+
+.menuItem {
+  color: #ffffff; /* Default color */
+}
+
+.menuItemActive {
+  color: #fbbf24; /* Highlight color for active item */
+}
+
+.listItemIcon {
+  color: white;
+}
+
+.listItemIconActive {
+  color: #fbbf24; /* Icon color for active state */
+}
+
+.accordionSummary {
+  background-color: #1f2937;
+  color: white;
+}
+
+.accordionSummaryActive {
+  background-color: #4b5563;
+  color: #fbbf24;
+}

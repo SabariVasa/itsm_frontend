@@ -7,6 +7,7 @@ import { Grid } from "@mui/material";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
 import UserOverview from "../../Dashboards/UserOverview";
 import KnowledgeContainer from "../../Components/KnowledgeArticle/KnowledgeContainer";
+import { Route, Router, Switch, useHistory } from "react-router-dom";
 import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
 import RequestCategory from "../../Components/Request Management/Main Component/RequestCategory";
 import SuperAdminPortalLeftPanel from "./SuperAdminPortalLeftPanel";
@@ -20,11 +21,15 @@ import AllChanges from "../../Components/Change Management/AllChanges";
 import FormMenu from "../../React-Forms/FormMenu";
 import CI from "../../Components/CMDBHelperComponents/CI";
 import UserProfileDetails from "../UserProfileDetails";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useDrawer } from "../../global/commonComponents/drawer/DrawerContext";
 import ClassManagementMain from "../../Components/cmdb/classmanagement/ClassManagementMain";
-import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
+import UserDetailsAndEdit from "../userManagement/UserDetailsAndEdit";
 import UserManagmentMainPanel from "../userManagement/UserManagementMainPanel";
+import GroupManagmentMainPanel from "../../Components/groupCreation/GroupManagmentMainPanel";
+import CreateGroupForm from "../../Components/groupCreation/CreateGroupForm";
+import UserManagmentTable from "../userManagement/UserManagmentTable";
+import CMDBManagementMainPanel from "../../Components/cmdb/CMDBManagementMainPanel";
 // import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
 
 export const RequestContext = createContext(null);
@@ -34,7 +39,7 @@ function SuperAdminLandingPage() {
   const { toggleDrawer, state } = useDrawer();
   const userName = UserInfo.getUsername();
   const role = UserInfo.getRole();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   console.log(userName, role, 'userNamespr');
   const navbarOptions = [
     { label: "Dashboards", icon: "Dashboards" },
@@ -45,12 +50,13 @@ function SuperAdminLandingPage() {
     { label: "Knowledge Article", icon: "Knowledge Article" },
     // { label: "Generate Token", icon: "Generate Token" },
     { label: "User Management", icon: "User Management" },
+    { label: "Group Management", icon: "Group Management" },
     { label: "Form Generator", icon: "Form Generator" },
     { label: "CMDB Management", icon: "CMDB Management" },
   ];
 
   const [drawer, setDrawer] = useState(false);
-  const [activeTab, setActiveTab] = useState(navbarOptions[0].label);
+  const [activeTab, setActiveTab] = useState('');
   const { theme } = useTheme();
 
   const [requestDetails, setRequestDetails] = useState([]);
@@ -81,17 +87,15 @@ function SuperAdminLandingPage() {
     actualEnddate: ""
   })
 
-  // useEffect(() => {
-  //   const savedTabIndex = localStorage.getItem("assessmentHomeActiveTabIndex");
-  //   if (savedTabIndex) {
-  //     setActiveTab(navbarOptions[parseInt(savedTabIndex)].label);
-  //   }
-  // }, []);
+  useEffect(() => {
+    setActiveTab(localStorage.getItem('activeTab') || activeTab);
+  }, []);
 
   const tabClickHandler = (tabIndex, secondaryOption) => {
     if (secondaryOption) {
       setActiveTab(secondaryOption);
     } else {
+      localStorage.setItem('activeTab', navbarOptions[tabIndex].label)
       setActiveTab(navbarOptions[tabIndex].label);
     }
   };
@@ -101,10 +105,6 @@ function SuperAdminLandingPage() {
     switch (activeTab) {
       case "Dashboards":
         return <IncidentDashboard />;
-      // case "Incident Management":
-      //   return <KnowledgeContainer />;
-      case "CMDB":
-        return <CMDB />;
       case "create_incident":
         return <CreateNewIncident />;
       case "open_incident":
@@ -136,11 +136,13 @@ function SuperAdminLandingPage() {
       case "Form Generator":
         return <div><FormMenu /></div>;
       case "User Management":
-        return <div><UserManagmentMainPanel/></div>;
+        return <div><UserManagmentMainPanel /></div>;
+      case "Group Management":
+        return <div><GroupManagmentMainPanel /></div>;
       case "create_config":
         return <div><CI /></div>;
       case "class_manage":
-        return <div><ClassManagementMain /></div>;
+        return <div><CMDBManagementMainPanel /></div>;
 
       default:
         return <IncidentDashboard />;
@@ -217,7 +219,9 @@ function SuperAdminLandingPage() {
             xs={drawer ? 9 : 11}
             style={{ padding: '0.5em', }}
           >
-            <div style={{ borderRadius: '1em', overflowY: 'scroll', backgroundColor: theme.mainBodyColor, height: 520 }}>{getRightPanelContent()}</div>
+            <div style={{ borderRadius: '1em', overflowY: 'scroll', backgroundColor: theme.mainBodyColor, height: 520 }}>
+              {getRightPanelContent()}
+            </div>
           </Grid>
         </Grid>
       </RequestContext.Provider>

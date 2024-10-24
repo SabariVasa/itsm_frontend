@@ -10,12 +10,12 @@ import { resturls } from '../global/utils/apiurls';
 // import { useMsal } from '@azure/msal-react'
 // import { msalConfig,loginRequest } from "../MicrosoftAzureSSO/authConfig";
 // import { GoogleLogin, useGoogleLogin, useGoogleLogout } from '@react-oauth/google';
-import axios from 'axios';
-import {
-  Navigate,
-} from 'react-router-dom';
+// import axios from 'axios';
+// import {
+//   Navigate,
+// } from 'react-router-dom';
 // import Google from "@mui/icons-material/Google";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // import { jwtDecode } from 'jwt-decode';
 import { serverAPI } from "../Utils/Server";
 // import { CheckToken } from "../Utils/CheckToken";
@@ -30,6 +30,7 @@ import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import md5 from "md5";
+import { Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 // import { loginRequest } from "../Features/SSOFeatures/MicrosoftAzureSSO/authConfig";
 // import { PublicClientApplication } from "@azure/msal-browser";
 
@@ -48,7 +49,7 @@ function Signin(props) {
   // const [alreadyLogin, setAlreadyLogin] = useState(false);
   const [error, setError] = useState(null);
   // const { instance } = useMsal()
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const [state, setState] = useState({
     open: false,
     vertical: 'bottom',
@@ -208,22 +209,22 @@ function Signin(props) {
   useEffect(
     () => {
       getUserDetails();
-      if (User) {
-        axios
-          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${User.access_token}`, {
-            headers: {
-              Authorization: `Bearer ${User.access_token}`,
-              Accept: 'application/json'
-            }
-          })
-          .then((res) => {
-            setProfile(res.data);
-            localStorage.setItem("Auth", "Verfied")
-          })
-          .catch(
-            (err) => console.log(err)
-          );
-      }
+      // if (User) {
+      //   axios
+      //     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${User.access_token}`, {
+      //       headers: {
+      //         Authorization: `Bearer ${User.access_token}`,
+      //         Accept: 'application/json'
+      //       }
+      //     })
+      //     .then((res) => {
+      //       setProfile(res.data);
+      //       localStorage.setItem("Auth", "Verfied")
+      //     })
+      //     .catch(
+      //       (err) => console.log(err)
+      //     );
+      // }
     },
     [User]
   );
@@ -254,7 +255,7 @@ function Signin(props) {
   console.log(alreadyLogin, 'alreadyLogin');
   return (
     alreadyLogin ? (
-      <Navigate to={'/'} />
+      <Redirect to={'/'} />
     ) : (
       <>
         < Container component="main" maxWidth="xs" >

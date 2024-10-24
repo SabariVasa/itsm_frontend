@@ -3,15 +3,15 @@ import SearchBar from './HelperComponents/SearchBar';
 import CmdbSelectField from '../HelperComponents/SelectField';
 // import ContentDevider from '../HelperComponents/ContentDevider';
 import { Button } from '@mui/material';
-import { useNavigate, useMatch, useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { setCategory } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
 
 export default function KnowledgeNavbar(props) {
   const { setCreateKnowledge } = props;
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  console.log(pathname, 'pathName');
+  // const navigate = useNavigate();
+  // const { pathname } = useLocation();
+  // console.log(pathname, 'pathName');
   const [localCategory, setLocalCategory] = useState();
   // const dispatch = useDispatch();
   // const category = useSelector((state) => state.knowledgeReducers.category);

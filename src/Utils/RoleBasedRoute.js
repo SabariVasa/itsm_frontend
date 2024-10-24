@@ -1,6 +1,7 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 import UserInfo from '../models/UserInfo';
+import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 
 const RoleBasedRoute = () => {
   const role = localStorage.getItem('role');
@@ -21,9 +22,9 @@ const RoleBasedRoute = () => {
     <>
       {(redirectUrl !== undefined && redirectUrl !== null && redirectUrl !== '')
         ? (
-          <Navigate to={redirectUrl} />
+          <Redirect to={redirectUrl} />
         ) : (
-          <Navigate to="/sign" />
+          <Redirect to="/sign" />
         )}
     </>
   );

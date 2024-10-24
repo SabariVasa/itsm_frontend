@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate, Link } from 'react-router-dom';
+// import { useNavigate, Link } from 'react-router-dom';
 import axios from "axios";
 import { serverAPI } from '../../Utils/Server';
 import { useDispatch } from 'react-redux';
 import { setKnowledgeContent } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
 import AlertComponent from '../HelperComponents/AlertComponent';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // import { Alert } from 'flowbite-react';
 
 
 export default function KnowledgeCard(props) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   async function editArticle() {
     navigate(`/create-knowledge-article?articleID=${props.articleNumber}`)
   }

@@ -5,7 +5,7 @@ import { Select, MenuItem, Grid, Box, TextField, Button, Container, InputLabel }
 import axios from 'axios';
 import { serverAPI } from '../../Utils/Server';
 import Snackbar from '@mui/material/Snackbar';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import SearchTextField from '../HelperComponents/SearchTextField';
 import DraggableModal from '../User Management/DraggableModal';
 import { resturls } from '../../global/utils/apiurls';
@@ -13,6 +13,7 @@ import GlobalService from '../../services/GlobalService';
 import { Description } from '@mui/icons-material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // import { useSearch } from 'rsuite/esm/internals/Picker';
 // import { useSelector } from 'react-redux';
 
@@ -99,7 +100,7 @@ function CreateNewIncident() {
   useEffect(() => {
     fetchDocumentCount();
   }, [])
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   const Submit = (values) => {
     console.log(values, 'GlobalService');

@@ -9,12 +9,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import GeneratedForm from '../../Components/cmdb/classmanagement/GeneratedForm';
 import { Skeleton } from '@mui/material';
 
 export default function CmdbShowDetails(props) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { category } = props;
   const [headerData, setHeaderData] = useState([]);
   const [serverData, setServerData] = useState([]);
@@ -136,13 +136,6 @@ export default function CmdbShowDetails(props) {
       ) : (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            {/* <TableHead>
-              <TableRow>
-                {headerData.map((header, index) => (
-                  <StyledTableCell key={index} align="left">{header}</StyledTableCell>
-                ))}
-              </TableRow>
-            </TableHead> */}
             <TableHead>
               <TableRow>
                 {/* {serverData.map((row, rowIndex) => (

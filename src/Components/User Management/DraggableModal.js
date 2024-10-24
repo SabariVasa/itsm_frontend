@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 // import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
-import UserManagmentTable from '../../Pages/UserManagmentTable';
+import UserManagmentTable from '../../Pages/userManagement/UserManagmentTable';
 import SearchTextField from '../HelperComponents/SearchTextField';
 
 function PaperComponent(props) {

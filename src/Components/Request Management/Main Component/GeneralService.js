@@ -6,7 +6,7 @@ import { OrgOptions } from '../../../Utils/CMDB-Data/CIData';
 import { serviceRequestType } from '../../../Utils/Request Data/RequestItemData';
 import { Stack, Button } from '@mui/material';
 // import { RequestContext } from '../../../Routes/HomeRouter';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { serverAPI } from '../../../Utils/Server';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import { setActiveStep } from '../../../Redux state management/Redux Slices/Glob
 import SearchTextField from '../../HelperComponents/SearchTextField';
 // import { setEndUserIncident } from '../../../Redux state management/Redux Slices/IncidentRequestSlice';
 import DraggableModal from '../../User Management/DraggableModal';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function GeneralService() {
 
@@ -26,7 +27,7 @@ export default function GeneralService() {
 
   // const activeStep = useSelector((state) => state.globalReducers.activeStep);
 
-  const Navigate = useNavigate();
+  const Navigate = useHistory();
 
   const [requestNumber, setRequestNumber] = React.useState("");
   const [approvalStatus, setApprovalStatus] = React.useState("");

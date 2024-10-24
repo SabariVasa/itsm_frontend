@@ -4,6 +4,7 @@ import RequestTable from './RequestTable';
 import { Stack, Button } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // import Modal from '@mui/material/Modal';
 // import {Autocomplete} from '@mui/material';
 // import { userBase } from '../../../Utils/CMDB-Data/serviceData';
@@ -11,13 +12,13 @@ import Checkbox from '@mui/material/Checkbox';
 // import CancelIcon from '@mui/icons-material/Cancel';
 // import IncrementContainer from '../../HelperComponents/IncrementContainer';
 // import CmdbDate from '../../HelperComponents/DateComponent';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 
 function RequestItemTable(props) {
 
   // const requestService = useSelector((state) => state.requestReducers.requestService);
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const [enableSelect, setEnableSelect] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [counter, setCounter] = useState(1)

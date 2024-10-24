@@ -20,7 +20,7 @@ import { serverAPI } from '../../Utils/Server';
 // import { ChangeContext } from '../../Routes/HomeRouter';
 
 import ReactLoading from 'react-loading';
-import { useSearchParams } from 'react-router-dom';
+// import { useSearchParams } from 'react-router-dom';
 
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -50,7 +50,7 @@ export default function CreateChange() {
 
   const [changeNumber, setChangeNumber] = useState("");
   const [model, setModel] = useState("");
-  const [searchParam, setSearchParam] = useSearchParams();
+  // const [searchParam, setSearchParam] = useState();
   const [update, setUpdate] = useState(false);
   const [RequestedBy, setRequestedBy] = useState("");
   const [State, setState] = useState("");
@@ -154,18 +154,18 @@ export default function CreateChange() {
     // setPlanningEndDate(changeRequest.planningEndDate)
     // setActualStartDate(changeRequest.actualStartdate)
     // setActualEndDate(changeRequest.actualEnddate)
-    if (searchParam.get("CHID")) {
-      getChangeDetails(searchParam.get("CHID"));
-      setUpdate(true)
-    }
+    // if (searchParam.get("CHID")) {
+    //   getChangeDetails(searchParam.get("CHID"));
+    //   setUpdate(true)
+    // }
 
 
   }, [])
 
   useEffect(() => {
-    if (!searchParam.get("CHID")) {
-      countChanges();
-    }
+    // if (!searchParam.get("CHID")) {
+    //   countChanges();
+    // }
   }, [])
   useEffect(() => {
     setModel(model)
@@ -191,24 +191,24 @@ export default function CreateChange() {
   }, [changeNumber, model, RequestedBy, State, selectedItem, conflictStatus, assignmentTo, assignmentGroup, Priority, risk, Impact, shortDescription, Description, Implementation, backoutPlan, TestPlan, planningStartDate, planningEndDate, actualStartDate, actualEndDate])
 
   useEffect(() => {
-    if (searchParam.get("model") == "Emergency") {
-      setRequestedBy("System Administrator");
-      setModel("Emergency");
-      setState("New");
-      setPriority("Low");
-      setRisk("Moderate");
-      setImpact("Low");
-      setConflictStatus("Not Run")
-    }
-    if (searchParam.get("model") == "Normal") {
-      setRequestedBy("System Administrator");
-      setModel("Normal");
-      setState("New");
-      setPriority("Low");
-      setRisk("Moderate");
-      setImpact("Low");
-      setConflictStatus("Not Run")
-    }
+    // if (searchParam.get("model") == "Emergency") {
+    //   setRequestedBy("System Administrator");
+    //   setModel("Emergency");
+    //   setState("New");
+    //   setPriority("Low");
+    //   setRisk("Moderate");
+    //   setImpact("Low");
+    //   setConflictStatus("Not Run")
+    // }
+    // if (searchParam.get("model") == "Normal") {
+    //   setRequestedBy("System Administrator");
+    //   setModel("Normal");
+    //   setState("New");
+    //   setPriority("Low");
+    //   setRisk("Moderate");
+    //   setImpact("Low");
+    //   setConflictStatus("Not Run")
+    // }
   }, [model])
 
   async function getChangeDetails(id) {
@@ -289,7 +289,7 @@ export default function CreateChange() {
       if (!update) {
         createChange();
       } else {
-        updateChangeRequest(searchParam.get("CHID"))
+        // updateChangeRequest(searchParam.get("CHID"))
       }
 
     }, 2000)
@@ -318,6 +318,7 @@ export default function CreateChange() {
       actualStartDate,
       actualEndDate
     }
+    console.log(changeData, 'changeData');
     await axios.post(`${serverAPI}/create-change-request`, changeData).then((res) => {
       setNotifyStatus(true);
       if (res.data) {

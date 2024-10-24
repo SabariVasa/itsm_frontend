@@ -11,8 +11,8 @@ import DraggableModal from '../User Management/DraggableModal';
 // import { setEndUserIncident } from '../../Redux state management/Redux Slices/IncidentRequestSlice';
 import SearchTextField from '../HelperComponents/SearchTextField';
 import ReactLoading from 'react-loading';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 // import CmdbGridContainer from "../../Components/HelperComponents/GridContainer";
 import CustomTextField from '../HelperComponents/TextField';
 import Tab from '@mui/material/Tab';
@@ -23,6 +23,7 @@ import { TextareaAutosize } from '@mui/material';
 import { Box } from "@mui/material";
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function UserIncidentForm(props) {
   // const dispatch = useDispatch();
@@ -165,7 +166,7 @@ export default function UserIncidentForm(props) {
     }
   }
 
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   const fetchDocumentCount = async () => {
     await axios.get(`${serverAPI}/allIncidentsCount`).then((res) => {

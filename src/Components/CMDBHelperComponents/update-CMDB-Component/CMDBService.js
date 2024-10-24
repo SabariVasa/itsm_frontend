@@ -12,6 +12,7 @@ import NotifyBar from '../../Notification Components/NotifyBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveStep } from '../../../Redux state management/Redux Slices/GlobalStepperSlice';
 import StepperComponent from '../../HelperComponents/StepperComponent';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function CMDBService(props) {
   let { serviceType } = useParams();
@@ -35,13 +36,13 @@ export default function CMDBService(props) {
 
   const [error, setError] = useState(false);
 
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   const dispatch = useDispatch();
   const activeStep = useSelector((state) => state.globalReducers.activeStep);
 
   useEffect(() => {
-    if (serviceType == "Bussiness Application") {
+    if (serviceType === "Bussiness Application") {
       setAppService(true);
     }
   })

@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+// import { useNavigate, useParams } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 import GlobalService from '../../services/GlobalService';
 import { useTheme } from "../../global/commonComponents/ThemeContext";
 import { resturls } from '../../global/utils/apiurls';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 export default function IncidentTable(props) {
   const { state } = props
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const { theme } = useTheme();
 
   const handleCellClick = (params) => {
@@ -20,12 +21,6 @@ export default function IncidentTable(props) {
 
 
   const fetchAllDocuments = async () => {
-    // await axios.get(`${serverAPI}/allIncident`).then((res) => {
-    //   console.log(res.data)
-    //   setIncidentData(res.data);
-    // }).then((err) => {
-    //   console.log(err);
-    // })
     GlobalService.generalSelect(
       (respdata) => {
         console.log(respdata, 'allIncident');

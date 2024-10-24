@@ -18,28 +18,29 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useDrawer } from '../global/commonComponents/drawer/DrawerContext';
 import { useTheme } from '../global/commonComponents/ThemeContext';
 import { Image } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import ContentDevider from '../Components/HelperComponents/ContentDevider';
-import { Button, Modal } from '@mui/material'; // Imported Modal
-import UserDetailsAndEdit from '../Components/User Management/UserDetailsAndEdit';
+import { Button, Modal } from '@mui/material';
+import UserDetailsAndEdit from './userManagement/UserDetailsAndEdit';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function UserProfileDetails() {
   const { toggleDrawer, state } = useDrawer();
   const { theme, updateTheme } = useTheme();
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
-  const [openProfileModal, setOpenProfileModal] = React.useState(false); // State for the profile modal
+  const [openProfileModal, setOpenProfileModal] = React.useState(false);
 
   const handleToggle = React.useCallback((anchor, open) => () => {
     toggleDrawer(anchor, open);
   }, [toggleDrawer]);
 
   const handleProfileClick = () => {
-    setOpenProfileModal(true); // Open the modal
+    setOpenProfileModal(true);
   };
 
   const handleCloseProfileModal = () => {
-    setOpenProfileModal(false); // Close the modal
+    setOpenProfileModal(false);
   };
 
   const themes = [
@@ -79,7 +80,7 @@ export default function UserProfileDetails() {
         <Accordion
           sx={{
             background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Apply same gradient for Accordion
-            borderRadius: '1em', // Adjust border radius for accordion
+            borderRadius: '1em',
             marginBottom: '10px',
           }}
         >
@@ -88,8 +89,8 @@ export default function UserProfileDetails() {
             aria-controls="theme-content"
             id="theme-header"
             sx={{
-              backgroundColor: 'transparent', // Transparent background so gradient shows
-              color: '#fff', // Adjust text color for visibility
+              backgroundColor: 'transparent',
+              color: '#fff',
             }}
           >
             <Typography>Theme Options</Typography>
@@ -116,7 +117,6 @@ export default function UserProfileDetails() {
         </Accordion>
       </div>
       <List>
-        {/* Add Profile ListItem */}
         <ListItem button onClick={handleProfileClick}>
           <ListItemIcon>
             <InboxIcon />
@@ -161,8 +161,6 @@ export default function UserProfileDetails() {
           </SwipeableDrawer>
         </React.Fragment>
       ))}
-
-      {/* Profile Modal */}
       <Modal
         open={openProfileModal}
         onClose={handleCloseProfileModal}

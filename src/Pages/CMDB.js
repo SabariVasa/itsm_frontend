@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardContainer from '../Components/HelperComponents/CardContainer';
 import ContentDevider from '../Components/HelperComponents/ContentDevider';
-import { CmdbData, CMDBheaderData, SoftwareData } from '../Utils/CMDB-Data/CmdbData';
-import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { serverAPI } from '../Utils/Server';
-import Table from '../Components/HelperComponents/Table';
-import { IncidentData } from '../Utils/Incident-Data/IncidentsData';
 import GlobalService from '../services/GlobalService';
 import { resturls } from '../global/utils/apiurls';
 import CmdbShowDetails from './CMDB/CmdbShowDetails';

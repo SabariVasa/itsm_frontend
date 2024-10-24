@@ -10,7 +10,7 @@ import CmdbTextField from '../HelperComponents/TextField';
 // import MUIRichTextEditor from 'mui-rte'
 // import {convertToRaw} from 'draft-js';
 import JoditEditor from 'jodit-react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+// import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { serverAPI } from '../../Utils/Server';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -20,11 +20,12 @@ import NotifyBar from '../Notification Components/NotifyBar';
 // import KnowledgeList from './KnowledgeList';
 import { useSelector, useDispatch } from "react-redux";
 import { setKnowledgeContent } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function CreateKnowledge({ placeholder }) {
 
   // const{articleID} = useParams();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   // const{knowledgeContent,setknowledgeContent}=useContext(RequestContext);
   const [articleNumber, setArticleNumber] = useState("");
   const [articleType, setArticleType] = useState("");
@@ -40,7 +41,7 @@ export default function CreateKnowledge({ placeholder }) {
   const [notifyStatus, setNotifyStatus] = useState(false);
   const [notifyMessage, setNotifyMessage] = useState("");
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useState();
   // const knowledgeContent = useSelector((state) => state.knowledgeReducers.knowledgeContent);
   // const dispatch = useDispatch();
 
@@ -168,14 +169,14 @@ export default function CreateKnowledge({ placeholder }) {
 
 
   useEffect(() => {
-    console.log(searchParams.get("articleID"));
-    if (searchParams.get("articleID")) {
-      fetchArticle(searchParams.get("articleID"));
-      setArticleID(searchParams.get("articleID"))
-      setUpdate(true)
-    } else {
-      setUpdate(false);
-    }
+    // console.log(searchParams.get("articleID"));
+    // if (searchParams.get("articleID")) {
+    //   fetchArticle(searchParams.get("articleID"));
+    //   setArticleID(searchParams.get("articleID"))
+    //   setUpdate(true)
+    // } else {
+    //   setUpdate(false);
+    // }
   }, [])
 
   const VisuallyHiddenInput = styled('input')({

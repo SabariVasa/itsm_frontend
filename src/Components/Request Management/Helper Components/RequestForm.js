@@ -11,7 +11,7 @@ import { userBase } from '../../../Utils/CMDB-Data/serviceData'
 import { serverAPI } from '../../../Utils/Server';
 import NotifyBar from '../../Notification Components/NotifyBar';
 import axios from 'axios';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+// import { useNavigate, useSearchParams } from 'react-router-dom';
 // import { useDispatch } from 'react-redux';
 import { setRequestDetails, setRequestServiceData, setUpdateRequestDetails } from '../../../Redux state management/Redux Slices/RequestSlice';
 // import { useSelector } from 'react-redux';
@@ -22,12 +22,13 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { TextareaAutosize } from '@mui/material';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 function RequestForm(props) {
   // const[quantity,setQuantity]=useState();
   const [update, setUpdate] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useState();
   // const{setRequestDetails,requestService,setRequestService}=useContext(RequestContext);
   // const [itemData, setItemData] = useState();
   const [requestNumber, setRequestNumber] = useState("");
@@ -45,7 +46,7 @@ function RequestForm(props) {
 
   const [requestCount, setRequestCount] = useState();
 
-  const navigate = useNavigate();
+  const navigate = useHistory();
 
   // const dispatch = useDispatch();
   // const requestService = useSelector((state) => state.requestReducers.requestService);
