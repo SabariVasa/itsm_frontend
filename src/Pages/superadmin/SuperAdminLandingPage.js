@@ -30,6 +30,10 @@ import GroupManagmentMainPanel from "../../Components/groupCreation/GroupManagme
 import CreateGroupForm from "../../Components/groupCreation/CreateGroupForm";
 import UserManagmentTable from "../userManagement/UserManagmentTable";
 import CMDBManagementMainPanel from "../../Components/cmdb/CMDBManagementMainPanel";
+import RequestManagementMainPanel from "../../Components/Request Management/RequestManagementMainPanel";
+import MyRequestTable from "../../Components/Request Management/Main Component/MyRequestTable";
+import BasicSelect from "../../Components/HelperComponents/SelectField";
+import ContentDevider from "../../Components/HelperComponents/ContentDevider";
 // import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
 
 export const RequestContext = createContext(null);
@@ -58,7 +62,7 @@ function SuperAdminLandingPage() {
   const [drawer, setDrawer] = useState(false);
   const [activeTab, setActiveTab] = useState('');
   const { theme } = useTheme();
-
+  const [selectedRequest, setSelectedRequest] = useState("Hardware requests");
   const [requestDetails, setRequestDetails] = useState([]);
   const [requestService, setRequestService] = useState({});
   const [requestGeneralService, setRequestGeneralService] = useState({});
@@ -122,9 +126,14 @@ function SuperAdminLandingPage() {
           </ChangeContext.Provider>
         </>;
       case "my_request":
-        return <UserIncidentForm />;
+        return <div>
+          <BasicSelect label="Select requests to fetch" MenuItems={[{ value: "Hardware requests" }, { value: "General requests" }]} style={{ width: "30%", marginTop: 5, marginLeft: 5 }} selectedValue={selectedRequest} setSelectValue={setSelectedRequest} />
+          <ContentDevider title={selectedRequest} />
+          {selectedRequest ? <MyRequestTable selectedRequest={selectedRequest} /> : null}
+          {/* <Component2/> */}
+        </div>;
       case "request_service":
-        return <RequestCategory />;
+        return <RequestManagementMainPanel />;
       case "assign_to_me":
         return <IncidentTable state="assignedToMe" />;
       case "all_incidents":

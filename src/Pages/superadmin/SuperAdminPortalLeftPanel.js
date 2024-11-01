@@ -28,6 +28,7 @@ import styles from "../../Pages/endUser/scss/UserPortalLeftPanel.module.scss";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import GroupIcon from '@mui/icons-material/Group';
+import PersonIcon from '@mui/icons-material/Person';
 import { AiOutlineForm } from "react-icons/ai";
 import styless from './scss/SuperAdmin.module.scss';
 
@@ -49,8 +50,9 @@ function SuperAdminPortalLeftPanel(props) {
     "Knowledge Article": MenuBookIcon,
     'CMDB Management': StorageIcon,
     'Generate Token': TokenIcon,
-    'User Management': GroupIcon,
+    'User Management': PersonIcon,
     'Form Generator': FormatAlignJustifyIcon,
+    'Group Management': GroupIcon
   };
 
   return (
@@ -180,7 +182,7 @@ function SuperAdminPortalLeftPanel(props) {
                         </>
                       ) : ele.label === "Request Management" ? (
                         <>
-                          <Typography sx={{ p: 2 }} onClick={() => tabClickHandler(i, "request_status")}>{t(`request_status`)}</Typography>
+                          <Typography sx={{ p: 2 }} onClick={() => tabClickHandler(i, "my_request")}>{t(`request_status`)}</Typography>
                           <Typography sx={{ p: 2 }} onClick={() => tabClickHandler(i, "request_service")}>{t(`request_service`)}</Typography>
                         </>
                       ) : ele.label === "Change Management" ? (

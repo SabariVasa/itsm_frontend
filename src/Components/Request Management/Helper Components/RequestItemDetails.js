@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ContentDevider from '../../HelperComponents/ContentDevider';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { Grid, Box, FormControl } from '@mui/material';
 import { generationData, itemDetails } from '../../../Utils/Request Data/RequestItemData';
 // import CmdbGridContainer from '../../HelperComponents/GridContainer';
@@ -10,7 +10,7 @@ import CmdbSelectField from '../../HelperComponents/SelectField';
 import { Button } from '@mui/material';
 
 function RequestItemDetails(props) {
-  const { request_item_id } = useParams();
+  const { match: { params: { request_item_id } } } = props;
   const [OS, setOS] = useState();
   const [processor, setprocessor] = useState();
   const [selectStorageType, setSelectStorageType] = useState();

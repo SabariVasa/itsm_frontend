@@ -86,7 +86,7 @@ export default function GroupManagementDetailsTable(props) {
               ))
               : group.map((group) => (
                 <TableRow key={group.id}>
-                  <TableCell>{group.groupName}</TableCell>
+                  <TableCell onClick={() => history.push(`superAdmin/${group.id}`)}>{group.groupName}</TableCell>
                   <TableCell>{group.groupDescription}</TableCell>
                   <TableCell>{group.groupType}</TableCell>
                   <TableCell>{group.groupManager}</TableCell>

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ContentDevider from '../../HelperComponents/ContentDevider';
 import CmdbGridContainer from '../../HelperComponents/GridContainer';
 import { VirtualizationPlatform, OperatingSystem } from '../../../Utils/CMDB-Data/CIData';
-import { useSearchParams, useParams } from 'react-router-dom';
+// import { useSearchParams, useParams } from 'react-router-dom';
 import { Requestusers, requestState } from '../../../Utils/Request Data/RequestItemData';
 // import { userBase } from '../../../Utils/CMDB-Data/serviceData';
 import { Grid, Stack, Button, Modal } from '@mui/material';
 import IncrementContainer from '../../HelperComponents/IncrementContainer';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SearchModalButton from '../Helper Components/SearchModalButton';
 // import CmdbSelectField from '../../HelperComponents/SelectField';
 // import { NetworkDeviceType } from '../../../Utils/CMDB-Data/CIData';
@@ -15,8 +16,8 @@ import { Box } from '@mui/material';
 import SearchTable from '../Helper Components/SearchTable';
 import NotifyBar from '../../Notification Components/NotifyBar';
 // import { RequestContext } from '../../../Routes/HomeRouter';
-import { useDispatch, useSelector } from 'react-redux';
-import { setRequestDetails } from '../../../Redux state management/Redux Slices/RequestSlice';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { setRequestDetails } from '../../../Redux state management/Redux Slices/RequestSlice';
 
 const style = {
   position: 'absolute',
@@ -30,13 +31,13 @@ const style = {
   p: 4,
 };
 
-function RequestItem() {
+function RequestItem(props) {
   const [open, setHandleOpen] = React.useState(false);
   const handleOpen = () => setHandleOpen(true);
   const handleClose = () => setHandleOpen(false);
-  const { item_id } = useParams();
-  const Navigate = useNavigate();
-  const [itemName, setItemName] = useSearchParams();
+  const { match: { params: { item_id } } } = props;
+  const Navigate = useHistory();
+  const [itemName, setItemName] = useState("");
   const itemData = JSON.parse(itemName.get('itemData'));
   const requestData = JSON.parse(itemName.get('requestData'));
   // const requestData = JSON.parse(localStorage.getItem('request_details'))
@@ -60,10 +61,10 @@ function RequestItem() {
   const [itemDetails, setItemDetails] = useState({ cost: 0 });
 
   // const {requestDetails,setRequestDetails} = useContext(RequestContext)
-  const dispatch = useDispatch();
-  const requestService = useSelector((state) => state.requestReducers.requestService);
-  const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
-  const [count, setCount] = useState(requestDetails ? requestDetails.length + 1 : 1);
+  // const dispatch = useDispatch();
+  // const requestService = useSelector((state) => state.requestReducers.requestService);
+  // const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
+  const [count, setCount] = useState(1);
 
   function storeTableData() {
     // setRequestDetails()
@@ -75,17 +76,17 @@ function RequestItem() {
       location: itemDetails.location,
       cost: cost
     });
-    dispatch(setRequestDetails({
-      requestNumber: requestNumber, Quantity: Quantity,
-      itemName: selectedItem,
-      itemDetails: itemDetails,
-      location: itemDetails.location,
-      cost: cost
-    }));
+    // dispatch(setRequestDetails({
+    //   requestNumber: requestNumber, Quantity: Quantity,
+    //   itemName: selectedItem,
+    //   itemDetails: itemDetails,
+    //   location: itemDetails.location,
+    //   cost: cost
+    // }));
     setNotifyStatus(true);
-    console.log(requestDetails);
+    // console.log(requestDetails);
     setNotifyMessage("Successfully requested item added to the card");
-    Navigate(-1);
+    Navigate.goBack();
   }
 
   useEffect(() => {
@@ -95,10 +96,10 @@ function RequestItem() {
 
   const [requestID, setRequestID] = useState();
   useEffect(() => {
-    console.log(requestDetails);
+    // console.log(requestDetails);
     setRequestNumber(`RITM00${count}`)
     setRequestID(`REQ2400${count}`)
-  }, [requestDetails])
+  }, [])
 
   return (
     <>

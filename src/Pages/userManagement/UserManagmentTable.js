@@ -71,6 +71,7 @@ export default function UserManagmentTable(props) {
                   <TableCell sx={{ color: 'white' }}>Manager</TableCell>
                   <TableCell sx={{ color: 'white' }}>Location</TableCell>
                   <TableCell sx={{ color: 'white' }}>Role</TableCell>
+                  <TableCell sx={{ color: 'white' }}>Mobile Number</TableCell>
                   <TableCell sx={{ color: 'white' }}>Status</TableCell>
                 </TableRow>
               </TableHead>
@@ -78,6 +79,9 @@ export default function UserManagmentTable(props) {
                 {loading
                   ? Array.from(new Array(skeletonRows)).map((_, index) => (
                     <TableRow key={index}>
+                      <TableCell>
+                        <Skeleton variant="text" />
+                      </TableCell>
                       <TableCell>
                         <Skeleton variant="text" />
                       </TableCell>
@@ -116,8 +120,9 @@ export default function UserManagmentTable(props) {
                       <TableCell>{user.company}</TableCell>
                       <TableCell>{user.department}</TableCell>
                       <TableCell>{user.manager}</TableCell>
-                      <TableCell>{user.userLocation}</TableCell>
+                      <TableCell>{user.userBranch}</TableCell>
                       <TableCell>{user.userRole}</TableCell>
+                      <TableCell>{user.mobileNumber}</TableCell>
                       <TableCell>{user.loggedInStatus || "offline"}</TableCell>
                     </TableRow>
                   ))}

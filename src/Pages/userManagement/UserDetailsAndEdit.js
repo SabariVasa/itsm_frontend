@@ -934,7 +934,7 @@ const UserDetailsAndEdit = (props) => {
   const roleOptions = ["Super Admin", "Admin", "End User"];
 
   const validationSchema = Yup.object({
-    userId: Yup.string().required("User ID is required"),
+    // userId: Yup.string().required("User ID is required"),  
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     company: Yup.string().required("Company is required"),
@@ -1025,7 +1025,8 @@ const UserDetailsAndEdit = (props) => {
   };
 
   const addNewUser = (values) => {
-    const url = user_id ? '' : resturls.addUser;
+    console.log(values, 'values');
+    const url = user_id ? `${resturls.updateUser}/${user_id}` : resturls.addUser;
     GlobalService.generalSelect(
       (respdata) => {
         const { estatus, emessage } = respdata;
@@ -1035,7 +1036,7 @@ const UserDetailsAndEdit = (props) => {
       },
       url,
       { ...values },
-      'POST'
+      !user_id ? 'POST' : 'PUT'
     );
   };
 
@@ -1083,7 +1084,7 @@ const UserDetailsAndEdit = (props) => {
       </Grid>
       <Formik
         initialValues={{
-          userId: getUserDetailObject?.id || '',
+          // userId: getUserDetailObject?.id || '',
           firstName: getUserDetailObject?.firstName || '',
           lastName: getUserDetailObject?.lastName || '',
           company: getUserDetailObject?.company || '',
@@ -1120,6 +1121,7 @@ const UserDetailsAndEdit = (props) => {
                     error={touched.firstName && Boolean(errors.firstName)}
                     helperText={touched.firstName && errors.firstName}
                   />
+                  {console.log(values, 'values')}
                   <Field
                     name="lastName"
                     as={TextField}

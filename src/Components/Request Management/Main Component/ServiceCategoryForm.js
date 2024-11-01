@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ContentDevider from '../../HelperComponents/ContentDevider'
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+// import { useParams, useSearchParams, useNavigate } from 'react-router-dom'
 // import { OrgOptions, StatusOptions } from '../../../Utils/CMDB-Data/CIData';
 import { accessApplication, affectedServices, requestApprovers, requestState, userRoles } from '../../../Utils/Request Data/RequestItemData';
 import { Grid, Box, TextField, Button, Stack } from "@mui/material";
@@ -11,7 +12,7 @@ import CmdbGridContainer from '../../HelperComponents/GridContainer';
 import axios from 'axios';
 import NotifyBar from '../../Notification Components/NotifyBar';
 import { serverAPI } from '../../../Utils/Server';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { setRequestGeneralService } from '../../../Redux state management/Redux Slices/RequestSlice';
 import { setActiveStep } from '../../../Redux state management/Redux Slices/GlobalStepperSlice';
 import StepperComponent from '../../HelperComponents/StepperComponent';
@@ -26,15 +27,15 @@ import DraggableModal from '../../User Management/DraggableModal';
 
 
 
-export default function ServiceCategoryForm() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const requestGeneralService = useSelector((state) => state.requestReducers.requestGeneralService);
-  const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
+export default function ServiceCategoryForm(props) {
+  const navigate = useHistory();
+  // const dispatch = useDispatch();
+  // const requestGeneralService = useSelector((state) => state.requestReducers.requestGeneralService);
+  // const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
 
-  const activeStep = useSelector((state) => state.globalReducers.activeStep);
+  // const activeStep = useSelector((state) => state.globalReducers.activeStep);
 
-  const { category } = useParams();
+  const { match: { params: { category } } } = props;
   const [affectedUser, setAffecteduser] = React.useState("");
 
   const [comment, setComment] = useState("");
@@ -67,7 +68,7 @@ export default function ServiceCategoryForm() {
   const [update, setUpdate] = useState(false);
 
   const [reasonDescription, setReasonDescription] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useState("");
 
   const [createdBy, setCreatedBy] = useState("");
   const [UpdatedDate, setUpdatedDate] = useState('');
@@ -93,39 +94,39 @@ export default function ServiceCategoryForm() {
 
 
   useEffect(() => {
-    dispatch(setRequestGeneralService({
-      ...requestGeneralService,
-      affectedService,
-      requestAccess,
-      approvalFrom,
-      userRole,
-      changeDate,
-      backoutPlan,
-      changeApproval,
-      reasonDescription,
-      affectedUser,
-      preferedContact,
-      reasonDescription,
-      requestType: serviceType,
-      requesterName
-    }))
+    // dispatch(setRequestGeneralService({
+    //   ...requestGeneralService,
+    //   affectedService,
+    //   requestAccess,
+    //   approvalFrom,
+    //   userRole,
+    //   changeDate,
+    //   backoutPlan,
+    //   changeApproval,
+    //   reasonDescription,
+    //   affectedUser,
+    //   preferedContact,
+    //   reasonDescription,
+    //   requestType: serviceType,
+    //   requesterName
+    // }))
   }, [affectedUser, requestAccess, approvalFrom, userRole, changeDate, backoutPlan, changeApproval, reasonDescription, affectedUser, preferedContact, serviceType, requesterName])
 
 
   async function createRequest() {
-    console.log(requestGeneralService)
-    await axios.post(`${serverAPI}/create-general-request`, requestGeneralService).then((res) => {
-      if (res.data) {
-        setNotifyMessage("Successfully request created")
-        setNotifyStatus(true)
-      } else {
-        setError(true)
-        setNotifyMessage("Something went wrong, please try again")
-      }
-    }).catch((err) => {
-      setError(true)
-      setNotifyMessage("Something went wrong, please try again")
-    });
+    // console.log(requestGeneralService)
+    // await axios.post(`${serverAPI}/create-general-request`, requestGeneralService).then((res) => {
+    //   if (res.data) {
+    //     setNotifyMessage("Successfully request created")
+    //     setNotifyStatus(true)
+    //   } else {
+    //     setError(true)
+    //     setNotifyMessage("Something went wrong, please try again")
+    //   }
+    // }).catch((err) => {
+    //   setError(true)
+    //   setNotifyMessage("Something went wrong, please try again")
+    // });
   }
 
 
@@ -134,78 +135,78 @@ export default function ServiceCategoryForm() {
   async function updateRequest() {
     const requestID = searchParams.get('update');
 
-    try {
-      await axios.post(`${serverAPI}/update-general-request/${requestID}`, requestGeneralService).then((response) => {
-        if (response.data) {
-          setNotifyMessage("Successfully request updated")
-          setNotifyStatus(true);
-        } else {
-          setError(true)
-          setNotifyMessage("Something went wrong, please try again")
-        }
-      }).catch((err) => {
-        setError(true)
-        setNotifyMessage("Something went wrong, please try again")
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   await axios.post(`${serverAPI}/update-general-request/${requestID}`, requestGeneralService).then((response) => {
+    //     if (response.data) {
+    //       setNotifyMessage("Successfully request updated")
+    //       setNotifyStatus(true);
+    //     } else {
+    //       setError(true)
+    //       setNotifyMessage("Something went wrong, please try again")
+    //     }
+    //   }).catch((err) => {
+    //     setError(true)
+    //     setNotifyMessage("Something went wrong, please try again")
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   const [openedDate, setOpenedDate] = useState("");
   async function fetchReqeustItem(requestID) {
-    try {
-      await axios.get(`${serverAPI}/get-general-request-RID/${requestID}`).then((response) => {
-        const {
-          affectedUser,
-          priority,
-          approvalStatus,
-          preferedContact,
-          requesterName,
-          requestType,
-          reasonDescription,
-          requestedAccess,
-          approvalFrom,
-          userRole,
-          affectedService,
-          changeDate,
-          backoutPlan,
-          openedDate
-        } = response.data[0];
-        dispatch(setRequestGeneralService({
-          affectedUser,
-          priority,
-          approvalStatus,
-          preferedContact,
-          requesterName,
-          requestType,
-          reasonDescription,
-          requestedAccess,
-          approvalFrom,
-          userRole,
-          affectedService,
-          changeDate,
-          backoutPlan,
-          openedDate
-        }))
-        setAffecteduser(affectedUser);
-        setPriorityLevel(priority);
-        setApprovalStatus(approvalStatus);
-        setPreferedContact(preferedContact);
-        setRequesterName(requesterName);
-        setServcieType(requestType);
-        setReasonDescription(reasonDescription);
-        setRequestAccess(requestedAccess);
-        setApprovalFrom(approvalFrom);
-        setUserRole(userRole);
-        setAffectedService(affectedService);
-        setChangeDate(changeDate);
-        setBackoutPlan(backoutPlan);
-        setOpenedDate(openedDate);
-      }).catch((err) => { console.log(err) })
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   await axios.get(`${serverAPI}/get-general-request-RID/${requestID}`).then((response) => {
+    //     const {
+    //       affectedUser,
+    //       priority,
+    //       approvalStatus,
+    //       preferedContact,
+    //       requesterName,
+    //       requestType,
+    //       reasonDescription,
+    //       requestedAccess,
+    //       approvalFrom,
+    //       userRole,
+    //       affectedService,
+    //       changeDate,
+    //       backoutPlan,
+    //       openedDate
+    //     } = response.data[0];
+    //     dispatch(setRequestGeneralService({
+    //       affectedUser,
+    //       priority,
+    //       approvalStatus,
+    //       preferedContact,
+    //       requesterName,
+    //       requestType,
+    //       reasonDescription,
+    //       requestedAccess,
+    //       approvalFrom,
+    //       userRole,
+    //       affectedService,
+    //       changeDate,
+    //       backoutPlan,
+    //       openedDate
+    //     }))
+    //     setAffecteduser(affectedUser);
+    //     setPriorityLevel(priority);
+    //     setApprovalStatus(approvalStatus);
+    //     setPreferedContact(preferedContact);
+    //     setRequesterName(requesterName);
+    //     setServcieType(requestType);
+    //     setReasonDescription(reasonDescription);
+    //     setRequestAccess(requestedAccess);
+    //     setApprovalFrom(approvalFrom);
+    //     setUserRole(userRole);
+    //     setAffectedService(affectedService);
+    //     setChangeDate(changeDate);
+    //     setBackoutPlan(backoutPlan);
+    //     setOpenedDate(openedDate);
+    //   }).catch((err) => { console.log(err) })
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   useEffect(() => {
@@ -220,22 +221,22 @@ export default function ServiceCategoryForm() {
 
 
   useEffect(() => {
-    dispatch(setRequestGeneralService(({
-      ...requestGeneralService,
-      affectedUser,
-      priority: priorityLevel,
-      approvalStatus: approvalStatus,
-      preferedContact,
-      reasonDescription,
-      requestedAccess: requestAccess,
-      approvalFrom,
-      userRole,
-      affectedService,
-      changeDate,
-      backoutPlan,
-      requesterName
-    })))
-    console.log(requestGeneralService);
+    // dispatch(setRequestGeneralService(({
+    //   ...requestGeneralService,
+    //   affectedUser,
+    //   priority: priorityLevel,
+    //   approvalStatus: approvalStatus,
+    //   preferedContact,
+    //   reasonDescription,
+    //   requestedAccess: requestAccess,
+    //   approvalFrom,
+    //   userRole,
+    //   affectedService,
+    //   changeDate,
+    //   backoutPlan,
+    //   requesterName
+    // })))
+    // console.log(requestGeneralService);
   }, [affectedUser, preferedContact, priorityLevel, approvalStatus, reasonDescription, requestAccess, approvalFrom, userRole, priorityLevel, approvalStatus, reasonDescription])
 
   const [itemOpen, setItemOpen] = React.useState(false);
@@ -243,10 +244,10 @@ export default function ServiceCategoryForm() {
     setItemOpen(true);
   };
 
-  const endUserIncident = useSelector((state) => state.incidentReducers.endUserIncident)
+  // const endUserIncident = useSelector((state) => state.incidentReducers.endUserIncident)
   useEffect(() => {
-    setAffecteduser(endUserIncident.Email);
-  }, [endUserIncident]);
+    // setAffecteduser(endUserIncident.Email);
+  }, []);
 
   const handleItemClose = () => {
     setItemOpen(false);
@@ -261,7 +262,7 @@ export default function ServiceCategoryForm() {
     <div style={{ overflowX: "hidden" }}>
       <DraggableModal open={itemOpen} setOpen={setItemOpen} handleClickOpen={handleClickOpen} handleClose={handleItemClose} />
       {!update ? <StepperComponent steps={["General Information", "Technical Information", "Submit Request"]} /> : null}
-      {category == "Reset password" ? <>
+      {category === "Reset password" ? <>
         <ContentDevider title={`${category} service`} />
         <Grid container rowSpacing={1} sx={{ width: '100%', display: 'flex', alignItems: 'center' }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={6}>
@@ -277,7 +278,7 @@ export default function ServiceCategoryForm() {
           <CmdbGridContainer show={[true, true, false, false]} dropdown={[true, true]} name={["Priority", "Ticket Status"]} Name1={priorityLevel} setName1={setPriorityLevel} Name2={requesterName} setName2={setRequesterName} SelectedValue1={priorityLevel} setSelectValue1={setPriorityLevel} SelectedValue2={approvalStatus} setSelectValue2={setApprovalStatus} label={["Requested Date", ""]} MenuItems={[priorityStatus, requestState]} />}
       </> : null}
 
-      {category == "Access request" ? <>
+      {category === "Access request" ? <>
         <ContentDevider title={`${category} servcie`} />
         <CmdbGridContainer show={[true, true, false, false]} dropdown={[true, true]} name={["Requested access Service/System", "Need approval from"]} SelectedValue1={requestAccess} setSelectValue1={setRequestAccess} Name2={requesterName} setName2={setRequesterName} SelectedValue2={approvalFrom} setSelectValue2={setApprovalFrom} label={["Requested Date", ""]} MenuItems={[accessApplication, requestApprovers]} />
 
@@ -286,7 +287,7 @@ export default function ServiceCategoryForm() {
         {update && <CmdbGridContainer show={[true, false, false, false]} dropdown={[true, true]} name={["User Role", ""]} Name1={priorityLevel} setName1={setPriorityLevel} Name2={requesterName} setName2={setRequesterName} SelectedValue1={userRole} setSelectValue1={setUserRole} SelectedValue2={approvalStatus} setSelectValue2={setApprovalStatus} label={["Requested Date", ""]} MenuItems={[userRoles, requestState]} />}
 
       </> : null}
-      {category == "Change request" ? <>
+      {category === "Change request" ? <>
         <ContentDevider title={`${category} servcie`} />
         <CmdbGridContainer show={[true, true, false, false]} dropdown={[true, true]} name={["Affected system Service/System", "CAB Approval status"]} SelectedValue1={affectedService} setSelectValue1={setAffectedService} Name2={requesterName} setName2={setRequesterName} SelectedValue2={approvalStatus} setSelectValue2={setApprovalStatus} label={["Requested Date", ""]} MenuItems={[affectedServices, requestState]} />
 
@@ -312,9 +313,9 @@ export default function ServiceCategoryForm() {
 
 
       <Stack style={{ display: 'flex', alignItems: "center", justifyContent: "space-around", paddingRight: 20, paddingTop: 50, paddingBottom: 30 }} direction="row">
-        <Button variant="outlined" color="warning" style={{ width: 100 }} onClick={() => { dispatch(setActiveStep(activeStep - 2)); navigate(-1) }}>Back</Button>
+        <Button variant="outlined" color="warning" style={{ width: 100 }} onClick={() => { }}>Back</Button>
         <Button variant="contained" color="primary" style={{ width: 200 }} onClick={() => {
-          !update ? createRequest() : updateRequest(); dispatch(setActiveStep(activeStep + 2));
+          // !update ? createRequest() : updateRequest(); dispatch(setActiveStep(activeStep + 2));
 
           if (localStorage.getItem("userEmail") == "user@teksiblegroup.com") { navigate("/") }
         }}>{!update ? "Create request" : "Update request"}</Button>

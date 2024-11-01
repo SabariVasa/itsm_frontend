@@ -23,12 +23,14 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { TextareaAutosize } from '@mui/material';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import GlobalService from '../../../services/GlobalService';
+import { resturls } from '../../../global/utils/apiurls';
 
 
 function RequestForm(props) {
   // const[quantity,setQuantity]=useState();
   const [update, setUpdate] = useState(false);
-  const [searchParams, setSearchParams] = useState();
+  // const [searchParams, setSearchParams] = useState();
   // const{setRequestDetails,requestService,setRequestService}=useContext(RequestContext);
   // const [itemData, setItemData] = useState();
   const [requestNumber, setRequestNumber] = useState("");
@@ -77,14 +79,14 @@ function RequestForm(props) {
   const [comment, setComment] = React.useState("");
 
   const handleAddNote = () => {
-    if (comment.trim()) { // Check for empty value
+    if (comment.trim()) {
       const noteObject = {
         text: comment,
         createdBy: localStorage.getItem("userEmail"),
-        timestamp: new Date().toLocaleString() // Add timestamp
+        timestamp: new Date().toLocaleString()
       };
-      setNotes([noteObject, ...notes]); // Add new note object, preserving order
-      setComment(''); // Clear input after adding
+      setNotes([noteObject, ...notes]);
+      setComment('');
     } else {
       alert('Please enter a note before adding.');
     }
@@ -133,16 +135,40 @@ function RequestForm(props) {
   }, [])
 
   async function countRequest() {
-    await axios.get(`${serverAPI}/allRequestCount`).then((res) => {
-      if (res.data) {
-        setRequestNumber(`REQ2400000${parseInt(res.data.responseData) + 1}`)
+    GlobalService.generalSelect((respData) => {
+      console.log(respData, 'responseData	');
+      if (respData.responseData) {
+        setRequestNumber(`REQ2400000${parseInt(respData.responseData) + 1}`)
       }
-    }).catch((err) => { console.log(err) })
+    }, resturls.allHardwareRequestCount, {}, "GET")
   }
 
   async function fetchedRequestDetails(RID) {
-    await axios.get(`${serverAPI}/getRequestByRID/${RID}`).then((res) => {
-      console.log(res.data)
+    // await axios.get(`${serverAPI}/getRequestByRID/${RID}`).then((res) => {
+    //   console.log(res.data)
+    //   if (res.data) {
+    //     const requestData = {
+    //       requestNumber: res.data[0].requestNumber,
+    //       requestFor: res.data[0].requestFor,
+    //       approvalStatus: res.data[0].approvalStatus,
+    //       openedBy: res.data[0].openedBy,
+    //       openedDate: res.data[0].openedDate,
+    //       dueDate: res.data[0].dueDate,
+    //       selectedItem: res.data[0].requestItemList,
+    //       shortDescription: res.data[0].shortDescription
+    //     };
+    //     setRequestNumber(res.data[0].requestNumber)
+    //     setRequestedFor(res.data[0].requestFor)
+    //     setApprovalStatus(res.data[0].approvalStatus)
+    //     setOpenedDate(res.data[0].openedDate)
+    //     setDueDate(res.data[0].dueDate)
+    //     setOpenedBy(res.data[0].openedBy);
+    //     setShortDescription(res.data[0].shortDescription)
+    //     setSelectedItem(res.data[0].requestItemList)
+    //   }
+    // }).catch((err) => { console.log(err) })
+    GlobalService.generalSelect((res) => {
+      console.log(res, 'responseData	');
       if (res.data) {
         const requestData = {
           requestNumber: res.data[0].requestNumber,
@@ -162,11 +188,8 @@ function RequestForm(props) {
         setOpenedBy(res.data[0].openedBy);
         setShortDescription(res.data[0].shortDescription)
         setSelectedItem(res.data[0].requestItemList)
-        // dispatch(setUpdateRequestDetails(res.data[0].requestItemList));
-        // dispatch(setRequestServiceData(requestData));
-        // dispatch(setRequestDetails([...res.data[0].requestItemList]))
       }
-    }).catch((err) => { console.log(err) })
+    }, `${resturls.getHardwareRequestById}/${requestNumber}`, {}, "GET")
   }
 
   async function updateRequest() {
@@ -182,31 +205,30 @@ function RequestForm(props) {
       requestItemlist: []
     }
     console.log(storingData)
-    await axios.post(`${serverAPI}/update-request/${searchParams.get('update')}`, storingData).then((res) => {
-      if (res.data) {
-        setNotifyStatus(true);
-        setNotifyMessage("Request succesfully updated")
-      } else {
-        setError(true);
-        setNotifyMessage("Something went wrong,please try again")
-      }
-    }).catch((err) => {
-      setError(true);
-      setNotifyMessage("Something went wrong,please try again")
-    })
+    // await axios.post(`${serverAPI}/update-request/${searchParams.get('update')}`, storingData).then((res) => {
+    //   if (res.data) {
+    //     setNotifyStatus(true);
+    //     setNotifyMessage("Request succesfully updated")
+    //   } else {
+    //     setError(true);
+    //     setNotifyMessage("Something went wrong,please try again")
+    //   }
+    // }).catch((err) => {
+    //   setError(true);
+    //   setNotifyMessage("Something went wrong,please try again")
+    // })
   }
 
   useEffect(() => {
     // searchParams(update.get('update'))
     // console.log(searchParams.get('update'))
-    setUpdate(searchParams.get('update'))
-    if (searchParams.get('update')) {
-      fetchedRequestDetails(searchParams.get('update'));
-      setUpdate(true)
-      console.log("opened")
-    } else {
-      countRequest()
-    }
+    // setUpdate(searchParams.get('update'))
+    // if (searchParams.get('update')) {
+    fetchedRequestDetails();
+    //   setUpdate(true)
+    //   console.log("opened")
+    // }
+    countRequest();
   }, [])
 
   async function storeItem() {

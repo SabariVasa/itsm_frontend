@@ -1,32 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   DataGrid,
   GridRowEditStopReasons,
 } from '@mui/x-data-grid';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { serverAPI } from '../../../Utils/Server';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import { RequestContext } from '../../../Routes/HomeRouter';
 import ReactLoading from 'react-loading';
+import { resturls } from '../../../global/utils/apiurls';
+import GlobalService from '../../../services/GlobalService';
 // import CmdbSelectField from '../../HelperComponents/SelectField';
 // import { Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 // import { RequestHeaderData,RequestData } from '../../../Utils/Request Data/RequestItemData';
 
 
 export default function MyRequestTable(props) {
+  const { selectedRequest } = props;
+  const history = useHistory
+  const [requestedData, setRequestedData] = useState([]);
   // const navigate = useNavigate();
   // const{selectedRequest} = useContext(RequestContext);
 
-  const selectedRequest = useSelector((state) => state.requestReducers.selectedRequest);
-  const requestService = useSelector((state) => state.requestReducers.requestService);
-  const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
+  // const selectedRequest = useSelector((state) => state.requestReducers.selectedRequest);
+  // const requestService = useSelector((state) => state.requestReducers.requestService);
+  // const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
 
   const handleCellClick = (params) => {
 
   };
-  const { category } = useParams();
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -58,13 +63,13 @@ export default function MyRequestTable(props) {
 
   const processRowUpdate = (newItem) => {
     const updatedRow = { ...newItem, isNew: false };
-    props.setRequestData(requestDetails.map((item) => (item.id === newItem.id ? updatedRow : requestDetails)));
+    // props.setRequestData(requestDetails.map((item) => (item.id === newItem.id ? updatedRow : requestDetails)));
     return updatedRow;
   };
   const RequestHeaderData = [
     {
       field: 'ID', headerName: 'Request ID', width: 170, renderCell: (params) => {
-        return <a href={`/request_service/hardware?update=${params.id}`}>{params.id}</a>;
+        return <a href={`superadmin/request_service/hardware/${params.id}`}>{params.id}</a>;
       },
     },
     { field: 'requestFor', headerName: 'Request For', width: 180 },
@@ -92,8 +97,18 @@ export default function MyRequestTable(props) {
   ];
   const GeneralRequestHeaderData = [
     {
-      field: 'requestNumber', headerName: 'Request ID', width: 150, renderCell: (params) => {
-        return <a href={`/request-service/general-service/${params.row.requestType}?update=${params.id}`}>{params.id}</a>;
+      field: 'requestNumber',
+      headerName: 'Request ID',
+      width: 220,
+      renderCell: (params) => {
+        return (
+          <div
+            style={{ cursor: 'pointer', color: 'blue' }}
+            onClick={() => history.push(`/superadmin/request-service/general-service/${params.row.requestNumber}`)}
+          >
+            {params.row.requestNumber}
+          </div>
+        );
       },
     },
     { field: 'requesterName', headerName: 'Requester Name', width: 250 },
@@ -122,16 +137,21 @@ export default function MyRequestTable(props) {
   const [HeaderData, setHeaderData] = useState([]);
   const [tempSelectedRequest, setTempSelectedRequest] = useState();
   useEffect(() => {
-    // setTempSelectedRequest(selectedRequest)
-    if (props.selectedRequest == "General requests") {
-      setHeaderData(GeneralRequestHeaderData);
-      fetchRequest(`${serverAPI}/all-general-request`)
-    } else {
-      setHeaderData(RequestHeaderData)
-      fetchRequest(`${serverAPI}/all-request`)
-    }
-    console.log(selectedRequest)
-  }, [props.selectedRequest])
+    const url = selectedRequest === "General requests" ? resturls.allGeneralRequests : resturls.allHardwareRequest
+    GlobalService.generalSelect(
+      (respdata) => {
+        const { data } = respdata;
+        if (respdata) {
+          // setRequestNumber(`REQ-GR-24-00000${parseInt(data.responseData) + 1}`)
+          setRequestedData(respdata);
+          setHeaderData(selectedRequest === "General requests" ? GeneralRequestHeaderData : RequestHeaderData)
+        }
+      },
+      url,
+      {},
+      'GET'
+    );
+  }, [selectedRequest])
 
   const [loading, setLoading] = useState(true);
   function spinnerLoading(message) {
@@ -143,18 +163,7 @@ export default function MyRequestTable(props) {
     }, 2000)
   }
 
-  async function fetchRequest(path) {
-    await axios.get(path).then((res) => {
-      if (res.data) {
-        // setLoading(false);
-        setRequestedData(res.data);
-        console.log(res.data);
-        // spinnerLoading()
-      }
-    }).catch((err) => { console.log(err) })
-  }
-  const [requestedData, setRequestedData] = useState([]);
-
+  console.log(requestedData, 'requestedData');
   return (
     <div style={{ height: "95%", marginLeft: 30, marginTop: 20, marginBottom: 30, width: '96%', overflowY: "auto" }}>
 

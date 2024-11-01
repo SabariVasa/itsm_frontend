@@ -17,6 +17,8 @@ import SearchTextField from '../../HelperComponents/SearchTextField';
 // import { setEndUserIncident } from '../../../Redux state management/Redux Slices/IncidentRequestSlice';
 import DraggableModal from '../../User Management/DraggableModal';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import GlobalService from '../../../services/GlobalService';
+import { resturls } from '../../../global/utils/apiurls';
 
 export default function GeneralService() {
 
@@ -46,11 +48,22 @@ export default function GeneralService() {
     // dispatch(setActiveStep(activeStep + 1));
   }, [])
   async function countRequest() {
-    await axios.get(`${serverAPI}/allServiceRequestCount`).then((res) => {
-      if (res.data) {
-        setRequestNumber(`REQ-GR-24-00000${parseInt(res.data.responseData) + 1}`)
-      }
-    }).catch((err) => { console.log(err) })
+    // await axios.get(`${serverAPI}/allServiceRequestCount`).then((res) => {
+    //   if (res.data) {
+    //     setRequestNumber(`REQ-GR-24-00000${parseInt(res.data.responseData) + 1}`)
+    //   }
+    // }).catch((err) => { console.log(err) })
+    GlobalService.generalSelect(
+      (respdata) => {
+        const { estatus, emessage, data } = respdata;
+        if (estatus && emessage) {
+          setRequestNumber(`REQ-GR-24-00000${parseInt(data.responseData) + 1}`)
+        }
+      },
+      resturls.allGeneralRequestCount,
+      {},
+      'GET'
+    );
   }
 
   function storeRequestData() {

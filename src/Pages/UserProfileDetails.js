@@ -22,7 +22,7 @@ import { Image } from '@mui/icons-material';
 import ContentDevider from '../Components/HelperComponents/ContentDevider';
 import { Button, Modal } from '@mui/material';
 import UserDetailsAndEdit from './userManagement/UserDetailsAndEdit';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom';
 
 export default function UserProfileDetails() {
   const { toggleDrawer, state } = useDrawer();
@@ -57,7 +57,7 @@ export default function UserProfileDetails() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/sign');
+    navigate.push('/');
   };
 
   const list = (anchor) => (
