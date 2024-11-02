@@ -14,7 +14,7 @@ function RequestManagementMainPanel() {
             <div style={{ margin: '2em' }}>
                 <>
                     <Switch>
-                        <Route path={`${path}/request-service/general-service/:category`} element={<ServiceCategoryForm />} />
+                        <Route path={`${path}/request-service/general-service/details`} element={<ServiceCategoryForm />} />
                         <Route path={`${path}/request_service/hardware/:id`} element={<RequestItemDetails />} />
                         <Route path={`${path}/request-service/request_item/:item_id`} component={() => <RequestItem />} />
                         <Route path={`${path}/request_service/general-service`} component={() => <GeneralService />} />

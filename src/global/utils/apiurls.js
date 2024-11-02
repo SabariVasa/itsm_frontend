@@ -33,7 +33,9 @@ export const resturls = {
   obtainCategoryAttributes: '/cmdb_service/fetch_class_instance',
   updateClassInstance: '/cmdb_service/update_class_instance',
   allIncidentCount: '/incident_service/all_incident_count',
-  deleteClassCategory: '/cmdb_service/delete_class_category'
+  deleteClassCategory: '/cmdb_service/delete_class_category',
+  uploadUserExcel: '/auth_service/upload_user_excel',
+  removeUser: '/auth_service/delete_user'
 };
 
 export const successurl = `${restbaseurl}student/success`;

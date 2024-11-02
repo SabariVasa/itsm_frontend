@@ -15,7 +15,7 @@ function DefaultHeader(props) {
       <div>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-            <img alt="logo" src={"https://res.cloudinary.com/doiff4svr/image/upload/v1723208791/logo_yjmays.png"} style={{ height: '118px', width: '286px' }} />
+            <img alt="logo" src={"https://res.cloudinary.com/doiff4svr/image/upload/v1723208791/logo_yjmays.png"} style={{ height: '83px', width: '190px' }} />
           </Grid>
           <Grid item xs={8} >
             <div className="userProfile">

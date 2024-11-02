@@ -10,8 +10,10 @@ import { serverAPI } from '../../../Utils/Server';
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import { RequestContext } from '../../../Routes/HomeRouter';
 import ReactLoading from 'react-loading';
+import DefaultLoader from '../../../global/commonComponents/DefaultLoader';
 import { resturls } from '../../../global/utils/apiurls';
 import GlobalService from '../../../services/GlobalService';
+import { Link } from 'react-router-dom';
 // import CmdbSelectField from '../../HelperComponents/SelectField';
 // import { Grid } from '@mui/material';
 // import { useSelector } from 'react-redux';
@@ -22,6 +24,7 @@ export default function MyRequestTable(props) {
   const { selectedRequest } = props;
   const history = useHistory
   const [requestedData, setRequestedData] = useState([]);
+  const [loader, setLoader] = useState(false);
   // const navigate = useNavigate();
   // const{selectedRequest} = useContext(RequestContext);
 
@@ -69,7 +72,7 @@ export default function MyRequestTable(props) {
   const RequestHeaderData = [
     {
       field: 'ID', headerName: 'Request ID', width: 170, renderCell: (params) => {
-        return <a href={`superadmin/request_service/hardware/${params.id}`}>{params.id}</a>;
+        return <div href={`superadmin/request_service/hardware/${params.id}`}>{params.id}</div>;
       },
     },
     { field: 'requestFor', headerName: 'Request For', width: 180 },
@@ -102,12 +105,12 @@ export default function MyRequestTable(props) {
       width: 220,
       renderCell: (params) => {
         return (
-          <div
+          <Link
             style={{ cursor: 'pointer', color: 'blue' }}
-            onClick={() => history.push(`/superadmin/request-service/general-service/${params.row.requestNumber}`)}
+            onClick={() => history.push(`/superadmin/request-service/general-service/details`)}
           >
             {params.row.requestNumber}
-          </div>
+          </Link>
         );
       },
     },
@@ -138,11 +141,13 @@ export default function MyRequestTable(props) {
   const [tempSelectedRequest, setTempSelectedRequest] = useState();
   useEffect(() => {
     const url = selectedRequest === "General requests" ? resturls.allGeneralRequests : resturls.allHardwareRequest
+    setLoader(true);
     GlobalService.generalSelect(
       (respdata) => {
         const { data } = respdata;
         if (respdata) {
           // setRequestNumber(`REQ-GR-24-00000${parseInt(data.responseData) + 1}`)
+          setLoader(false);
           setRequestedData(respdata);
           setHeaderData(selectedRequest === "General requests" ? GeneralRequestHeaderData : RequestHeaderData)
         }
@@ -166,36 +171,38 @@ export default function MyRequestTable(props) {
   console.log(requestedData, 'requestedData');
   return (
     <div style={{ height: "95%", marginLeft: 30, marginTop: 20, marginBottom: 30, width: '96%', overflowY: "auto" }}>
-
-      {loading ? <div className='loading-container'>
-        <ReactLoading type={"spinningBubbles"} color={"#e68a00"} height={50} width={100} className='loading-spinner' />
-      </div> : null}
-      <DataGrid
-        rows={requestedData}
-        editMode='row'
-        getRowId={(row) => row.requestNumber}
-        columns={HeaderData}
-        // isRowSelected: (id: GridRowId) => boolean
-        processRowUpdate={processRowUpdate}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
-        }}
-        sx={{
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#e600e6 !important', // Container for the headers
-          },
-          '& .MuiDataGrid-columnHeader': {
-            backgroundColor: '#bfbfbf',
-            color: "white" // Individual header cells
-          },
-        }}
-        pageSizeOptions={[10]}
-        checkboxSelection={true}
-        onCellClick={handleCellClick}
-      />
-
+      {loader ? <DefaultLoader /> : (
+        <>
+          {loading ? <div className='loading-container'>
+            <ReactLoading type={"spinningBubbles"} color={"#e68a00"} height={50} width={100} className='loading-spinner' />
+          </div> : null}
+          <DataGrid
+            rows={requestedData}
+            editMode='row'
+            getRowId={(row) => row.requestNumber}
+            columns={HeaderData}
+            // isRowSelected: (id: GridRowId) => boolean
+            processRowUpdate={processRowUpdate}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 10 },
+              },
+            }}
+            sx={{
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: '#e600e6 !important',
+              },
+              '& .MuiDataGrid-columnHeader': {
+                backgroundColor: '#bfbfbf',
+                color: "white"
+              },
+            }}
+            pageSizeOptions={[10]}
+            checkboxSelection={true}
+            onCellClick={handleCellClick}
+          />
+        </>
+      )}
     </div>
   );
 }
