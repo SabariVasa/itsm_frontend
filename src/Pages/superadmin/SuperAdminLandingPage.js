@@ -25,6 +25,7 @@ import UserProfileDetails from "../UserProfileDetails";
 import { useDrawer } from "../../global/commonComponents/drawer/DrawerContext";
 import ClassManagementMain from "../../Components/cmdb/classmanagement/ClassManagementMain";
 import UserDetailsAndEdit from "../userManagement/UserDetailsAndEdit";
+import RequestStatusManagement from "../../Components/Request Management/RequestStatusManagement";
 import UserManagmentMainPanel from "../userManagement/UserManagementMainPanel";
 import GroupManagmentMainPanel from "../../Components/groupCreation/GroupManagmentMainPanel";
 import CreateGroupForm from "../../Components/groupCreation/CreateGroupForm";
@@ -62,7 +63,6 @@ function SuperAdminLandingPage() {
   const [drawer, setDrawer] = useState(false);
   const [activeTab, setActiveTab] = useState('');
   const { theme } = useTheme();
-  const [selectedRequest, setSelectedRequest] = useState("Hardware requests");
   const [requestDetails, setRequestDetails] = useState([]);
   const [requestService, setRequestService] = useState({});
   const [requestGeneralService, setRequestGeneralService] = useState({});
@@ -126,12 +126,7 @@ function SuperAdminLandingPage() {
           </ChangeContext.Provider>
         </>;
       case "my_request":
-        return <div>
-          <BasicSelect label="Select requests to fetch" MenuItems={[{ value: "Hardware requests" }, { value: "General requests" }]} style={{ width: "30%", marginTop: 5, marginLeft: 5 }} selectedValue={selectedRequest} setSelectValue={setSelectedRequest} />
-          <ContentDevider title={selectedRequest} />
-          {selectedRequest ? <MyRequestTable selectedRequest={selectedRequest} /> : null}
-          {/* <Component2/> */}
-        </div>;
+        return <RequestStatusManagement />
       case "request_service":
         return <RequestManagementMainPanel />;
       case "assign_to_me":
@@ -178,7 +173,7 @@ function SuperAdminLandingPage() {
       >
         <Grid container>
           <Grid item xs={drawer ? 3 : 1} style={{ margin: '0 0 0 1m' }}>
-            <div style={{ overflowY: 'scroll', height: 520, }}>
+            <div style={{ overflowY: 'scroll', height: 520, marginTop: 12 }}>
               <SuperAdminPortalLeftPanel
                 activeTab={activeTab}
                 navbarOptions={navbarOptions}
@@ -194,7 +189,7 @@ function SuperAdminLandingPage() {
                     fontSize: 25,
                     backgroundColor: theme.outerBodyColor,
                     position: "absolute",
-                    left: 325,
+                    left: 350,
                     top: 360,
                     color: "white",
                     height: 60,

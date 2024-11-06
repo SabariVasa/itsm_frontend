@@ -1,39 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   DataGrid,
   GridRowEditStopReasons,
 } from '@mui/x-data-grid';
-// import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useHistory, Link } from 'react-router-dom';
 import { serverAPI } from '../../../Utils/Server';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import { RequestContext } from '../../../Routes/HomeRouter';
 import ReactLoading from 'react-loading';
 import DefaultLoader from '../../../global/commonComponents/DefaultLoader';
 import { resturls } from '../../../global/utils/apiurls';
 import GlobalService from '../../../services/GlobalService';
-import { Link } from 'react-router-dom';
-// import CmdbSelectField from '../../HelperComponents/SelectField';
-// import { Grid } from '@mui/material';
-// import { useSelector } from 'react-redux';
-// import { RequestHeaderData,RequestData } from '../../../Utils/Request Data/RequestItemData';
+// import { Link } from 'react-router-dom';
 
 
 export default function MyRequestTable(props) {
   const { selectedRequest } = props;
-  const history = useHistory
+  const history = useHistory()
   const [requestedData, setRequestedData] = useState([]);
   const [loader, setLoader] = useState(false);
-  // const navigate = useNavigate();
-  // const{selectedRequest} = useContext(RequestContext);
-
-  // const selectedRequest = useSelector((state) => state.requestReducers.selectedRequest);
-  // const requestService = useSelector((state) => state.requestReducers.requestService);
-  // const requestDetails = useSelector((state) => state.requestReducers.requestDetails);
 
   const handleCellClick = (params) => {
-
+    // history.push("/superadmin/request-service/general-service/details");
+    // if (selectedRequest === "General requests") {
+    //   history.push("/superadmin/request-service/general-service/details");
+    // } else {
+    //   history.push(`superadmin/request_service/hardware/${params.id}`)
+    // }
   };
 
   const handleRowEditStop = (params, event) => {
@@ -72,7 +63,7 @@ export default function MyRequestTable(props) {
   const RequestHeaderData = [
     {
       field: 'ID', headerName: 'Request ID', width: 170, renderCell: (params) => {
-        return <div href={`superadmin/request_service/hardware/${params.id}`}>{params.id}</div>;
+        return <div style={{ cursor: 'pointer', color: 'blue' }} onClick={() => { history.push(`/request_service/hardware?update=${params.id}`); console.log('working') }}>{params.id}</div>;
       },
     },
     { field: 'requestFor', headerName: 'Request For', width: 180 },
@@ -105,12 +96,13 @@ export default function MyRequestTable(props) {
       width: 220,
       renderCell: (params) => {
         return (
-          <Link
+          <div
             style={{ cursor: 'pointer', color: 'blue' }}
-            onClick={() => history.push(`/superadmin/request-service/general-service/details`)}
+            onClick={() => history.push(`/request-service/general-service/${params.row.requestType}?update=${params.id}`)
+            }
           >
             {params.row.requestNumber}
-          </Link>
+          </div >
         );
       },
     },
@@ -163,8 +155,6 @@ export default function MyRequestTable(props) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      // setNotifyStatus(true);
-      // setNotifyMessage(message)
     }, 2000)
   }
 
@@ -198,7 +188,7 @@ export default function MyRequestTable(props) {
               },
             }}
             pageSizeOptions={[10]}
-            checkboxSelection={true}
+            // checkboxSelection={true}
             onCellClick={handleCellClick}
           />
         </>

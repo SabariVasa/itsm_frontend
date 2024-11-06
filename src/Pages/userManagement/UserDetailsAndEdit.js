@@ -22,17 +22,19 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { resturls } from "../../global/utils/apiurls";
 import GlobalService from "../../services/GlobalService";
+import DefaultLoader from "../../global/commonComponents/DefaultLoader";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const UserDetailsAndEdit = (props) => {
   const history = useHistory();
   const {
-    match: { params: { user_id } }, defaultLoader
+    match: { params: { user_id } }, DefaultLoaderComp
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
   const [photoFile, setPhotoFile] = useState(null);
+  const [defaultLoader, setDefaultLoader] = useState(false);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
   const [departments, setDepartments] = useState([]);
@@ -146,6 +148,7 @@ const UserDetailsAndEdit = (props) => {
       (respdata) => {
         const { estatus, emessage, data } = respdata;
         if (estatus && emessage) {
+          setDefaultLoader(false);
           setGetUserDetailObject(data);
         }
       },
@@ -189,11 +192,15 @@ const UserDetailsAndEdit = (props) => {
     getAllDepartment();
     if (user_id) {
       getSingleUserDetails();
+      setDefaultLoader(true);
     }
   }, [user_id]);
 
   return (
-    <>
+    <>{defaultLoader ? <DefaultLoader /> : (
+      <>
+      </>
+    )}
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
         <ArrowBackIcon sx={{ marginRight: 2 }} onClick={() => history.goBack()} />
         <GroupIcon />
@@ -251,6 +258,7 @@ const UserDetailsAndEdit = (props) => {
           </Grid>
         </Grid>
       )}
+      {console.log(getUserDetailObject?.lastName, 'getUserDetailObject?.lastName')}
       <Formik
         initialValues={{
           // userId: getUserDetailObject?.id || '',
@@ -290,7 +298,6 @@ const UserDetailsAndEdit = (props) => {
                     error={touched.firstName && Boolean(errors.firstName)}
                     helperText={touched.firstName && errors.firstName}
                   />
-                  {console.log(values, 'values')}
                   <Field
                     name="lastName"
                     as={TextField}

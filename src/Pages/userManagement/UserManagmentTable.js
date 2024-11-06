@@ -27,7 +27,7 @@ export default function UserManagmentTable(props) {
 
   const getAllUserDetails = () => {
     // setLoading(true);
-    setDefaultLoader(false)
+    setDefaultLoader(true)
     GlobalService.generalSelect(
       (respdata) => {
         setUsers(respdata);
@@ -53,7 +53,11 @@ export default function UserManagmentTable(props) {
   const skeletonRows = users.length;
   return (
     <>
-      {defaultLoader ? <DefaultLoader /> : (
+      {defaultLoader ? <DefaultLoader style={{
+        position: "absolute",
+        left: 600,
+        top: 600,
+      }} /> : (
         <>
           {isCreateUserOpen ? (
             <UserDetailsAndEdit isCreateUserOpen={setIsCreateUserOpen} setDefaultLoader={setDefaultLoader} DefaultLoaderComp={DefaultLoader} defaultLoader={defaultLoader} />
@@ -68,7 +72,7 @@ export default function UserManagmentTable(props) {
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="user table">
                   <TableHead>
-                    <TableRow sx={{ backgroundColor: 'black' }}>
+                    <TableRow sx={{ backgroundColor: '#1976d2' }}>
                       {/* <TableCell sx={{ color: 'white' }}>ID</TableCell> */}
                       <TableCell sx={{ color: 'white' }}>First Name</TableCell>
                       <TableCell sx={{ color: 'white' }}>Last Name</TableCell>

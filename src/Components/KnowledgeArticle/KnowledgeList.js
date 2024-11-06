@@ -37,7 +37,7 @@ export default function KnowledgeList() {
 
   const [knowledgeData, setKnowledgeData] = useState([]);
   async function loadKnowledgeArticles() {
-    await axios.get(`${serverAPI}/all-articles`, {
+    await axios.get(`${serverAPI}/knowledge_article_service/all_articles`, {
       auth: {
         username: 'admin',
         password: 'admin@123'
@@ -63,18 +63,18 @@ export default function KnowledgeList() {
   // const knowledgeContent = useSelector((state) => state.knowledgeReducers.knowledgeContent);
   // const dispatch = useDispatch();
 
-  // async function fetchMyArticles() {
-  //   await axios.get(`${serverAPI}/get-knowledge-articles-by-author/${knowledgeContent.author}`).then((res) => {
-  //     console.log(res.data);
-  //     setKnowledgeData(res.data)
-  //   }).catch((err) => { console.log(err) })
-  // }
+  async function fetchMyArticles() {
+    await axios.get(`${serverAPI}/get-knowledge-articles-by-author/${"Mahathir Mohamed"}`).then((res) => {
+      console.log(res.data);
+      setKnowledgeData(res.data)
+    }).catch((err) => { console.log(err) })
+  }
 
   const [myArticle, setMyArticle] = useState(false);
   useEffect(() => {
-    if (category == "My articles") {
+    if (category === "My articles") {
       spinnerLoading();
-      // fetchMyArticles();
+      fetchMyArticles();
       setMyArticle(true);
     } else {
       spinnerLoading();

@@ -59,9 +59,9 @@ export default function GroupManagementDetailsTable(props) {
         </Button>
       </Box>
       <TableContainer component={Paper}>
-        <Table>
+        <Table sx={{ minWidth: 650 }} aria-label="user table">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: '#1976d2' }}>
               <TableCell>Group Name</TableCell>
               <TableCell>Group Description</TableCell>
               <TableCell>Group Type</TableCell>

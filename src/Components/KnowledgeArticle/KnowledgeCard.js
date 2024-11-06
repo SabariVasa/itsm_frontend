@@ -4,18 +4,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 // import { useNavigate, Link } from 'react-router-dom';
 import axios from "axios";
 import { serverAPI } from '../../Utils/Server';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { setKnowledgeContent } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
 import AlertComponent from '../HelperComponents/AlertComponent';
-import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link, useHistory } from 'react-router-dom';
 // import { Alert } from 'flowbite-react';
 
 
 export default function KnowledgeCard(props) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useHistory();
   async function editArticle() {
-    navigate(`/create-knowledge-article?articleID=${props.articleNumber}`)
+    navigate.push(`/create-knowledge-article?articleID=${props.articleNumber}`)
   }
 
   const [error, setError] = useState(false);
@@ -38,7 +38,7 @@ export default function KnowledgeCard(props) {
         console.log("Knowledge article successfully deleted:", response.data);
         setNotifyStatus(true);
         setNotifyMessage("Knowledge article successfully deleted")
-        dispatch(setKnowledgeContent({}));
+      // dispatch(setKnowledgeContent({}));??
         window.location.reload();
         setConfirm(false)  // Resetting knowledge content after deletion
       } else {
@@ -75,7 +75,7 @@ export default function KnowledgeCard(props) {
         <div className="knowledge-card">
 
           <div style={{ display: "flex", alignItems: "center" }}>
-
+            
             <img
               src={props.img}
               width={160}

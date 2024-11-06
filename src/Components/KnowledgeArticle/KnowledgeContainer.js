@@ -3,7 +3,7 @@ import ContentDevider from '../HelperComponents/ContentDevider'
 import KnowledgeList from './KnowledgeList';
 import KnowledgeNavbar from './KnowledgeNavbar';
 import CreateKnowledge from './CreateKnowledge';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Switch } from 'react-router-dom';
 import PreviewPage from './HelperComponents/PreviewPage';
 
 export const KnowledgeContext = createContext(null);
@@ -23,6 +23,10 @@ export default function KnowledgeContainer() {
         {/* <KnowledgeNavbar setCreateKnowledge={setCreateKnowledge} />
         <ContentDevider title="Knowledge Articles" img={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfQBgB33joO4vztszGsK3VUnceedDFJ2Kcpw&s"} />
         <KnowledgeList /> */}
+        <Switch>
+          <Route path="/superadmin/knowledge-preview-page" element={<PreviewPage />} />
+          <Route path="/superadmin/endUser/knowledge-creation" Component={<CreateKnowledge />} />
+        </Switch>
         {createKnowledge ? (
           <CreateKnowledge />
         ) : (

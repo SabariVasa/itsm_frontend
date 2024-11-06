@@ -8,11 +8,11 @@ const RoleBasedRoute = () => {
   let redirectUrl;
   console.log(role, 'role');
 
-  if (role === 'super_admin') {
+  if (role === 'Super Admin') {
     redirectUrl = '/superadmin';
-  } else if (role === 'admin') {
+  } else if (role === 'Admin') {
     redirectUrl = '/admin';
-  } else if (role === 'user') {
+  } else if (role === 'End User') {
     redirectUrl = '/endUser';
   } else {
     redirectUrl = null;
