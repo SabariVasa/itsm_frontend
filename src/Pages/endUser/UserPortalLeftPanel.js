@@ -355,9 +355,9 @@ function UserPortalLeftPanel(props) {
                     <ListItem onClick={() => tabClickHandler(i, "request_service")}>
                       <ListItemText sx={{ color: "white" }} primary="Request Service" />
                     </ListItem>
-                    {/* <ListItem onClick={() => tabClickHandler(i, "request_status")}>
+                    <ListItem onClick={() => tabClickHandler(i, "request_status")}>
                       <ListItemText sx={{ color: "white" }} primary="Request Status" />
-                    </ListItem> */}
+                    </ListItem>
                   </>
                 ) : null}
               </AccordionDetails>

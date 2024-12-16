@@ -24,17 +24,17 @@ import Popover from "@mui/material/Popover";
 import BusinessIcon from '@mui/icons-material/Business';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
-// import UserInfo from "../../models/UserInfo";
+import UserInfo from "../../models/UserInfo";
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import styles from "../../Pages/endUser/scss/UserPortalLeftPanel.module.scss";
 import { useHistory } from "react-router-dom";
-import _ from "lodash";
+// import _ from "lodash";
 import GroupIcon from '@mui/icons-material/Group';
 import PersonIcon from '@mui/icons-material/Person';
-import { AiOutlineForm } from "react-icons/ai";
-import styless from './scss/SuperAdmin.module.scss';
+// import { AiOutlineForm } from "react-icons/ai";
+// import styless from './scss/SuperAdmin.module.scss';
 
-function SuperAdminPortalLeftPanel(props) {
+function AdminPortalLeftPanel(props) {
   const { navbarOptions, tabClickHandler, drawer, t, bgcolur } = props;
   const history = useHistory
   const [expanded, setExpanded] = useState(false);
@@ -58,9 +58,7 @@ function SuperAdminPortalLeftPanel(props) {
     'CMDB Management': StorageIcon,
     'Generate Token': TokenIcon,
     'User Management': PersonIcon,
-    'Form Generator': FormatAlignJustifyIcon,
     'Group Management': GroupIcon,
-    'Organization Management': BusinessIcon
   };
 
   useEffect(() => {
@@ -276,4 +274,4 @@ function SuperAdminPortalLeftPanel(props) {
   );
 }
 
-export default withTranslation('common')(SuperAdminPortalLeftPanel);
+export default withTranslation('common')(AdminPortalLeftPanel);

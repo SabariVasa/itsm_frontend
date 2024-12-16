@@ -10,9 +10,10 @@ function GroupManagmentMainPanel() {
         <div style={{ margin: '2em' }}>
             <>
                 <Switch>
-                    <Route path="/superadmin/createDep" component={(props) => <CreateGroupForm {...props} />} />
-                    <Route path="/superadmin/update_dep/:group_id" component={(props) => <CreateGroupForm {...props} />} />
-                    <Route path={`${path}/:show_group`} component={(props) => <ShowSingleGroupDetailsAndEdit {...props} />} />
+                    <Route path="/superadmin/createDep/:orgId" component={(props) => <CreateGroupForm {...props} />} />
+                    <Route path="/admin/createDep/:orgId" component={(props) => <CreateGroupForm {...props} />} />
+                    <Route path="/superadmin/update_dep/:group_id/:orgId" component={(props) => <CreateGroupForm {...props} />} />
+                    <Route path={`${path}/show_group/:group_id/:orgId`} component={(props) => <ShowSingleGroupDetailsAndEdit {...props} />} />
                     <Route path={`${path}`} component={(props) => <GroupManagementDetailsTable {...props} />} />
                 </Switch>
             </>

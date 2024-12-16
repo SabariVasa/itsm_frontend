@@ -107,8 +107,9 @@ const UserDetailsAndEdit = (props) => {
   };
 
   const xlfileUpload = () => {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', excelFile);
+    console.log(formData, 'formData');
     GlobalService.generalSelect(
       (respdata) => {
         const { estatus, emessage } = respdata;

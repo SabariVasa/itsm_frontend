@@ -635,10 +635,13 @@ import { Edit, Save, Cancel } from '@mui/icons-material';
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { Formik, Field, Form } from 'formik';
 import CreateGroupForm from "./CreateGroupForm";
+import GroupManagementDetailsTable from "./GroupManagementDetailsTable";
+import UserManagmentTable from "../../Pages/userManagement/UserManagmentTable";
 
 function ShowSingleGroupDetailsAndEdit(props) {
-  const { match: { params: { show_group } } } = props;
-  // const history = useHistory();
+  const { match: { params: { group_id, orgId } } } = props;
+  const history = useHistory();
+  const { path } = useRouteMatch();
   const [group, setGroup] = useState({});
   const [isEditingEnable, setIsEditingEnable] = useState(false);
 
@@ -649,7 +652,7 @@ function ShowSingleGroupDetailsAndEdit(props) {
       (respdata) => {
         const { estatus, emessage, data } = respdata;
         if (estatus && emessage) {
-          const foundObject = data.find(item => item.id === show_group);
+          const foundObject = data.find(item => item.id === group_id);
           setGroup(foundObject);
         }
       },
@@ -659,71 +662,76 @@ function ShowSingleGroupDetailsAndEdit(props) {
     );
   }, []);
 
-  console.log(isEditingEnable, 'isEditingEnable');
+  console.log(isEditingEnable, group, 'isEditingEnable');
 
   return (
     <>
-      {isEditingEnable ? (
+      {/* {isEditingEnable ? (
         <CreateGroupForm group={group} isEditingEnable={isEditingEnable} />
-      ) : (
-        <>
-          <ContentDevider title="Group Info" />
-          <Card variant="outlined">
-            <CardContent>
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Typography variant="h5" gutterBottom>
-                  {
-                    group?.groupName
-                  }
-                </Typography>
-                <IconButton onClick={() => setIsEditingEnable(true)}>
-                  <Edit />
-                </IconButton>
+      ) : ( */}
+      <>
+        <ContentDevider title="Group Info" />
+        <Card variant="outlined">
+          <CardContent>
+            <Grid container justifyContent="space-between" alignItems="center">
+              <Typography variant="h5" gutterBottom>
+                {
+                  group?.groupName
+                }
+              </Typography>
+              <IconButton onClick={() => history.push(`/superadmin/update_dep/${group_id}/${orgId}`)}>
+                <Edit />
+              </IconButton>
+            </Grid>
+            <Divider />
+
+            <Grid container spacing={2} marginTop={2}>
+              <Grid item xs={6}>
+                <Typography variant="subtitle1" color="textSecondary">Group Type:</Typography>
+                {
+                  <Typography variant="body1">{group?.groupType}</Typography>
+                }
               </Grid>
-              <Divider />
-
-              <Grid container spacing={2} marginTop={2}>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" color="textSecondary">Group Type:</Typography>
-                  {
-                    <Typography variant="body1">{group?.groupType}</Typography>
-                  }
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" color="textSecondary">Scope:</Typography>
-                  {
-                    <Typography variant="body1">{group?.groupScope}</Typography>
-                  }
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" color="textSecondary">Active Status:</Typography>
-                  {
-                    <Typography variant="body1">{group?.activeStatus}</Typography>
-                  }
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="subtitle1" color="textSecondary">Permission:</Typography>
-                  {
-                    <Typography variant="body1">{group?.userPermission}</Typography>
-                  }
-                </Grid>
+              <Grid item xs={6}>
+                <Typography variant="subtitle1" color="textSecondary">Scope:</Typography>
+                {
+                  <Typography variant="body1">{group?.groupScope}</Typography>
+                }
               </Grid>
+              <Grid item xs={6}>
+                <Typography variant="subtitle1" color="textSecondary">Active Status:</Typography>
+                {
+                  <Typography variant="body1">{group?.activeStatus}</Typography>
+                }
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="subtitle1" color="textSecondary">Permission:</Typography>
+                {
+                  <Typography variant="body1">{group?.userPermission}</Typography>
+                }
+              </Grid>
+            </Grid>
 
-              <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2 }} />
 
-              <Typography variant="subtitle1" color="textSecondary">Group Description:</Typography>
-              {
-                <Typography variant="body1" gutterBottom>{group?.groupDescription}</Typography>
-              }
+            <Typography variant="subtitle1" color="textSecondary">Group Description:</Typography>
+            {
+              <Typography variant="body1" gutterBottom>{group?.groupDescription}</Typography>
+            }
 
-              <Typography variant="subtitle1" color="textSecondary">Group Manager:</Typography>
-              {
-                <Typography variant="body1" gutterBottom>{group?.groupManager}</Typography>
-              }
-            </CardContent>
-          </Card>
-        </>
-      )}
+            <Typography variant="subtitle1" color="textSecondary">Group Manager:</Typography>
+            {
+              <Typography variant="body1" gutterBottom>{group?.groupManager}</Typography>
+            }
+          </CardContent>
+        </Card>
+        <UserManagmentTable
+          groupMember={true}
+          // setSelectedUserRows={setSelectedUserRows}
+          userData={group && group?.groupMembers}
+        />
+      </>
+      {/* )} */}
     </>
   );
 }

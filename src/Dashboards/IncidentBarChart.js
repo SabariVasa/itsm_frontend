@@ -1,64 +1,31 @@
-import * as React from 'react';
-import { BarChart } from '@mui/x-charts/BarChart';
-import { axisClasses } from '@mui/x-charts/ChartsAxis';
-
-
+import React from "react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, defs, linearGradient, stop } from "recharts";
 
 const dataset = [
-{
-    "state":"1 - Critical ",
-    "openIncidents":10,
-    "count":20
-}
-    ,{
-    "state":"5-Planning ",
-    "openIncidents":10,
-    "count":15
-},{
-    "state":"3 - Moderate",
-    "openIncidents":20,
-    "count":10
-},{
-    "state":"2 - High",
-    "openIncidents":15,
-    "count":5
-},{
-    "state":"4 - low",
-    "openIncidents":20,
-    "count":0
-}
+  { state: "1 - Critical", openIncidents: 10 },
+  { state: "5 - Planning", openIncidents: 15 },
+  { state: "3 - Moderate", openIncidents: 20 },
+  { state: "2 - High", openIncidents: 5 },
+  { state: "4 - Low", openIncidents: 0 },
 ];
 
-const valueFormatter = (value) => `${value}mm`;
-
-const chartSetting = {
-  yAxis: [
-    {
-      scaleType:'linear',
-      dataKey:'count',
-      label: 'Incidents Count',
-    },
-  ],
-  series: [{ dataKey:'openIncidents', label: 'Open Incidents Grouped', valueFormatter }],
-  height: 300,
-  sx: {
-    [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
-      transform: 'translateX(-10px)',
-    },
-  },
-};
-
-export default function IncidentBarChart(props) {
-
+export default function IncidentBarChart() {
   return (
-    <div style={{ width: '100%' }}>
-      <BarChart
-        dataset={dataset}
-        xAxis={[
-          { scaleType:'band', dataKey: 'state',},
-        ]}
-        {...chartSetting}
-      />
-    </div>
+    <ResponsiveContainer width="100%" height={400}>
+      <BarChart data={dataset} margin={{ top: 40, right: 30, left: 20, bottom: 5 }}>
+        <defs>
+          <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#F51275" />
+            <stop offset="100%" stopColor="#622098" />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="state" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="openIncidents" fill="url(#gradientColor)" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }

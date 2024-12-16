@@ -7,6 +7,7 @@ import { Divider } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import GlobalService from '../services/GlobalService';
 import { resturls } from '../global/utils/apiurls';
+// import loginImg from '../../public/loginbg.jpeg'
 // import { useMsal } from '@azure/msal-react'
 // import { msalConfig,loginRequest } from "../MicrosoftAzureSSO/authConfig";
 // import { GoogleLogin, useGoogleLogin, useGoogleLogout } from '@react-oauth/google';
@@ -26,11 +27,15 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 // import FormHelperText from '@mui/material/FormHelperText';
+// import { useHistory } from "react-router-dom";
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import md5 from "md5";
 import { Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import DefaultLoader from "../global/commonComponents/DefaultLoader";
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import { updateUserInfo } from "../global/utils";
 // import { loginRequest } from "../Features/SSOFeatures/MicrosoftAzureSSO/authConfig";
 // import { PublicClientApplication } from "@azure/msal-browser";
 
@@ -64,7 +69,9 @@ function Signin(props) {
   // const Emailregex = new RegExp("/.+@.+\.[A-Za-z]+$/");
   const [User, setUser] = useState();
   const [profile, setProfile] = useState([]);
+  const [code, setCode] = useState(null);
   const [alreadyLogin, setAlreadyLogin] = useState(false);
+  const [loader, setLoader] = useState(false)
 
   const triggerLoginCredentials = () => {
     // console.log('triggerLoginCredentials');
@@ -130,28 +137,28 @@ function Signin(props) {
     // }
   }
 
-  const getUserDetails = () => {
-    GlobalService.generalSelect(
-      (respdata) => {
-        const {
-          estatus, data, emessage, valid
-        } = respdata;
+  // const getUserDetails = () => {
+  //   GlobalService.generalSelect(
+  //     (respdata) => {
+  //       const {
+  //         estatus, data, emessage, valid
+  //       } = respdata;
 
-        console.log(respdata, 'reqObj');
-        if (estatus && emessage) {
-          console.log(estatus, 'estatus');
-          setValid(valid);
-          setError(emessage);
-          if (valid) {
-            setAlreadyLogin(true);
-          } else {
-            setCurrentPage('relogin');
-          }
-        }
-        console.log(estatus, 'estatus');
-      }, resturls.getUserDetails, {}, 'GET',
-    );
-  }
+  //       console.log(respdata, 'reqObj');
+  //       if (estatus && emessage) {
+  //         console.log(estatus, 'estatus');
+  //         setValid(valid);
+  //         setError(emessage);
+  //         if (valid) {
+  //           setAlreadyLogin(true);
+  //         } else {
+  //           setCurrentPage('relogin');
+  //         loader}
+  //       }
+  //       console.log(estatus, 'estatus');
+  //     }, resturls.getUserDetails, {}, 'GET',
+  //   );
+  // }
 
 
   const Login = (e) => {
@@ -205,29 +212,29 @@ function Signin(props) {
   const onFailure = (res) => {
     console.log("log in failed:res:", res)
   }
-  const ClientId = "1096249476767-6aq8j72hth183jchc5d16uqq7u1s3881.apps.googleusercontent.com"
-  useEffect(
-    () => {
-      getUserDetails();
-      // if (User) {
-      //   axios
-      //     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${User.access_token}`, {
-      //       headers: {
-      //         Authorization: `Bearer ${User.access_token}`,
-      //         Accept: 'application/json'
-      //       }
-      //     })
-      //     .then((res) => {
-      //       setProfile(res.data);
-      //       localStorage.setItem("Auth", "Verfied")
-      //     })
-      //     .catch(
-      //       (err) => console.log(err)
-      //     );
-      // }
-    },
-    [User]
-  );
+  // const ClientId = "1096249476767-6aq8j72hth183jchc5d16uqq7u1s3881.apps.googleusercontent.com"
+  // useEffect(
+  //   () => {
+  //     // getUserDetails();
+  //     // if (User) {
+  //     //   axios
+  //     //     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${User.access_token}`, {
+  //     //       headers: {
+  //     //         Authorization: `Bearer ${User.access_token}`,
+  //     //         Accept: 'application/json'
+  //     //       }
+  //     //     })
+  //     //     .then((res) => {
+  //     //       setProfile(res.data);
+  //     //       localStorage.setItem("Auth", "Verfied")
+  //     //     })
+  //     //     .catch(
+  //     //       (err) => console.log(err)
+  //     //     );
+  //     // }
+  //   },
+  //   []
+  // );
   function validateEmail(mail) {
     var re = /\S+@\S+\.\S+/;
     return re.test(mail);
@@ -253,146 +260,231 @@ function Signin(props) {
   //   console.log(error);
   // };
   console.log(alreadyLogin, 'alreadyLogin');
-  return (
-    alreadyLogin ? (
-      <Redirect to={'/'} />
-    ) : (
-      <>
-        < Container component="main" maxWidth="xs" >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-            className="SignupBox"
-          >
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              height: 60
-            }}>
-              <img alt="logoimage" src={"https://res.cloudinary.com/doiff4svr/image/upload/v1723209680/logo_1_page-0001-removebg-preview_suhly2.png"} style={{ height: 150, width: 170 }} />
-            </Box>
-            <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
-              Sign in
-            </Typography>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                onChange={(e) => { setEmail(e.target.value) }}
-                name="email"
-                autoComplete="email"
-              />
-              {/* <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="Password"
-            onChange={(e)=>{setPassword(e.target.value)}}
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          /> */}
-              <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password" >Password</InputLabel>
-                <OutlinedInput
-                  inputProps={{
-                    autocomplete: 'new-password',
-                    form: {
-                      autocomplete: 'off',
-                    },
-                  }}
-                  id="outlined-adornment-password"
-                  onChange={(e) => { setPassword(e.target.value) }}
-                  type={showPassword ? 'text' : 'password'}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-              </FormControl>
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
+  const getUserInfoDetails = (authCode) => {
+    GlobalService.generalSelect(
+      (respdata) => {
+        const {
+          estatus, data, emessage, valid
+        } = respdata;
+        console.log(respdata, 'reqObj');
+      }, `${resturls.getAccessToken}?code=${authCode}`, {}, 'POST',
+    );
+  }
+
+  useEffect(() => {
+    // const params = new URLSearchParams(window.location.search);
+    // const authCode = params.get("code");
+    // console.log(params, authCode, 'code');
+    // if (authCode) {
+    //   setLoader(true);
+    //   setCode(authCode);
+    //   getUserInfoDetails(authCode);
+    // }
+
+  }, []);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+      setLoader(true);
+      fetch(`http://teksible.fortiddns.com:18080/api/v1/auth_service/azure/get_access_token?code=${code}`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.data, 'updateUserInfo');
+          if (data.estatus) {
+            updateUserInfo(data.data);
+            setAlreadyLogin(true);
+            setLoader(false);
+          }
+        })
+        .catch(error => {
+          console.error('Error exchanging code for token:', error);
+        });
+    } else {
+      console.error('Authorization code not found in URL');
+    }
+  }, [navigate]);
+
+  const azureLoginAuthentication = async () => {
+    setLoader(true);
+    await GlobalService.generalSelect(
+      (respdata) => {
+        const {
+          estatus, data, emessage, valid
+        } = respdata;
+        console.log(respdata, 'reqObj');
+      }, resturls.azure_login, {}, 'GET',
+    );
+  }
+
+  return (
+    !loader ?
+      (alreadyLogin ? (
+        <Redirect to={'/'} />
+      ) : (
+        <div>
+          <Container component="main" maxWidth="xs" >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+              className="SignupBox"
+            >
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height: 60
+              }}>
+                <img alt="logoimage" src={"https://res.cloudinary.com/doiff4svr/image/upload/v1723209680/logo_1_page-0001-removebg-preview_suhly2.png"} style={{ height: 150, width: 170 }} />
+              </Box>
+              <Typography component="h1" variant="h5" sx={{ mt: 3 }}>
+                Sign in
+              </Typography>
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  onChange={(e) => { setEmail(e.target.value) }}
+                  name="email"
+                  autoComplete="email"
+                />
+                {/* <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="Password"
+              onChange={(e)=>{setPassword(e.target.value)}}
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            /> */}
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password" >Password</InputLabel>
+                  <OutlinedInput
+                    inputProps={{
+                      autocomplete: 'new-password',
+                      form: {
+                        autocomplete: 'off',
+                      },
+                    }}
+                    id="outlined-adornment-password"
+                    onChange={(e) => { setPassword(e.target.value) }}
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
+                <Box sx={{ display: 'flex', fontFamily: 'popins', justifyContent: 'flex-end' }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ display: 'flex', justifyContent: 'flex-end', borderRadius: '2em', mt: 2, mb: 2, background: 'linear-gradient(89.34deg, #E41670 0.56%, #622098 99.44%)' }}
+                    onClick={(e) => Login(e)}
+                  >
+                    Sign In
+                  </Button>
+                </Box>
+                <Grid container spacing={2}>
+                  <Grid item  >
+                    <Link href="/forget-password" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                  <Grid item >
+                    <Link href="/Verify-Partner" variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+                <div style={{ marginTop: 6 }}>
+                  <Divider style={{ opacity: 0.5, color: "black" }} >OR</Divider>
+                </div>
+              </Box>
+              <Button fullWidth
+                // variant="outlined"
+                // color="error"
+                // startIcon={<GoogleIcon/>}
                 sx={{ mt: 3, mb: 2 }}
-                onClick={(e) => Login(e)}
+              // onClick={()=>{GoogleLogin()}}
               >
-                Sign In
+                {/* Sign-In with Google */}
+                {/* <GoogleLogin onSuccess={(credentialResponse) => {
+              const decoded = jwtDecode(credentialResponse.credential);
+              console.log(decoded);
+              localStorage.setItem('Auth','Verfied')
+              window.location.reload('/');
+            }}
+            onError={() => {console.log("Login Failed");}}/> */}
               </Button>
-              <Grid container spacing={2}>
-                <Grid item  >
-                  <Link href="/forget-password" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item >
-                  <Link href="/Verify-Partner" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-              <div style={{ marginTop: 6 }}>
-                <Divider style={{ opacity: 0.5, color: "black" }} >OR</Divider>
-              </div>
+              <Button
+                fullWidth
+                variant="outlined"
+                sx={{ mb: 2 }}
+                color="warning"
+                startIcon={<MicrosoftIcon />}
+                onClick={() => { window.location.href = 'http://teksible.fortiddns.com:18080/api/v1/auth_service/azure_login'; }}
+              // window.location.href = 'http://teksible.fortiddns.com:18080/api/v1/auth_service/azure_login';
+              // }
+
+              >
+                Sign-In with Microsoft Azure AD
+              </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                sx={{ mb: 2 }}
+                color="warning"
+                startIcon={<AccountTreeIcon />}
+                onClick={() => navigate.push('/adLogin')}
+              // window.location.href = 'http://teksible.fortiddns.com:18080/api/v1/auth_service/azure_login';
+              // }
+
+              >
+                Sign-In AD
+              </Button>
             </Box>
-            <Button fullWidth
-              // variant="outlined"
-              // color="error"
-              // startIcon={<GoogleIcon/>}
-              sx={{ mt: 3, mb: 2 }}
-            // onClick={()=>{GoogleLogin()}}
-            >
-              {/* Sign-In with Google */}
-              {/* <GoogleLogin onSuccess={(credentialResponse) => {
-            const decoded = jwtDecode(credentialResponse.credential);
-            console.log(decoded);
-            localStorage.setItem('Auth','Verfied')
-            window.location.reload('/');
-          }}
-          onError={() => {console.log("Login Failed");}}/> */}
-            </Button>
-            <Button fullWidth
-              variant="outlined"
-              sx={{ mb: 2 }} color="warning" startIcon={<MicrosoftIcon />}
-              onClick={props.handleRequest}
-            >
-              Sign-In with Microsoft Azure AD
-            </Button>
-          </Box>
-          <Snackbar
-            anchorOrigin={{ vertical, horizontal }}
-            open={open}
-            onClose={handleClose}
-            message={ErrorMessage}
-            key={vertical + horizontal}
-            ContentProps={{
-              sx: {
-                background: "#ff3333"
+            <Snackbar
+              anchorOrigin={{ vertical, horizontal }}
+              open={open}
+              onClose={handleClose}
+              message={ErrorMessage}
+              key={vertical + horizontal}
+              ContentProps={{
+                sx: {
+                  background: "#ff3333"
+                }
               }
-            }
-            }
-          />
-        </Container >
-      </>
-    )
+              }
+            />
+          </Container >
+        </div>
+      )) : <DefaultLoader />
   );
 
 }

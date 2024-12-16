@@ -7,7 +7,7 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState({
     mainBodyColor: '#ffffff', 
-    outerBodyColor: 'black', 
+    outerBodyColor: 'linear-gradient(89.34deg, #E41670 0.56%, #622098 99.44%)', 
   });
 
   const updateTheme = (newTheme) => {

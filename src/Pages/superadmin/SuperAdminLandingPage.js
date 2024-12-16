@@ -35,6 +35,7 @@ import RequestManagementMainPanel from "../../Components/Request Management/Requ
 import MyRequestTable from "../../Components/Request Management/Main Component/MyRequestTable";
 import BasicSelect from "../../Components/HelperComponents/SelectField";
 import ContentDevider from "../../Components/HelperComponents/ContentDevider";
+import OrganizationManagementMainPanel from "../organizationmanagement/OrganizationManagementMainPanel";
 // import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
 
 export const RequestContext = createContext(null);
@@ -54,13 +55,14 @@ function SuperAdminLandingPage() {
     { label: "Change Management", icon: "Change Management" },
     { label: "Knowledge Article", icon: "Knowledge Article" },
     // { label: "Generate Token", icon: "Generate Token" },
+    { label: "Organization Management", icon: "Organization Management" },
     { label: "User Management", icon: "User Management" },
     { label: "Group Management", icon: "Group Management" },
     { label: "Form Generator", icon: "Form Generator" },
     { label: "CMDB Management", icon: "CMDB Management" },
   ];
 
-  const [drawer, setDrawer] = useState(false);
+  const [drawer, setDrawer] = useState(true);
   const [activeTab, setActiveTab] = useState('');
   const { theme } = useTheme();
   const [requestDetails, setRequestDetails] = useState([]);
@@ -139,6 +141,8 @@ function SuperAdminLandingPage() {
         return <div><KnowledgeContainer /></div>;
       case "Form Generator":
         return <div><FormMenu /></div>;
+      case "Organization Management":
+        return <OrganizationManagementMainPanel />;
       case "User Management":
         return <div><UserManagmentMainPanel /></div>;
       case "Group Management":
@@ -152,10 +156,12 @@ function SuperAdminLandingPage() {
         return <IncidentDashboard />;
     }
   };
+  const userDetails = UserInfo.getUserDetail();
+  console.log('User Details:', userDetails);
 
   return (
-    <div style={{ background: theme.outerBodyColor }}>
-      <DefaultHeader drawer={drawer} toggleDrawer={toggleDrawer} state={state} />
+    <div>
+      {/* <DefaultHeader 8ucbvx0 c6c3------2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdrawer={drawer} toggleDrawer={toggleDrawer} state={state} /> */}
       <UserProfileDetails toggleDrawer={toggleDrawer} state={state} />
       <RequestContext.Provider
         value={{
@@ -172,9 +178,16 @@ function SuperAdminLandingPage() {
         }}
       >
         <Grid container>
-          <Grid item xs={drawer ? 3 : 1} style={{ margin: '0 0 0 1m' }}>
-            <div style={{ overflowY: 'scroll', height: 520, marginTop: 12 }}>
+          <Grid item xs={drawer ? 3 : 1} style={{
+            margin: '0 0 0 1m',
+            // background: theme.outerBodyColor
+            // backgroundImage: 'url(/sidebarImg.jpeg)',
+            // width: '100%',
+            // height: '100%'
+          }}>
+            <div style={{ overflowY: 'scroll', height: 600, marginTop: 8 }}>
               <SuperAdminPortalLeftPanel
+                bgcolur={theme.outerBodyColor}
                 activeTab={activeTab}
                 navbarOptions={navbarOptions}
                 tabClickHandler={tabClickHandler}
@@ -223,7 +236,7 @@ function SuperAdminLandingPage() {
             xs={drawer ? 9 : 11}
             style={{ padding: '0.5em', }}
           >
-            <div style={{ borderRadius: '1em', overflowY: 'scroll', backgroundColor: theme.mainBodyColor, height: 520 }}>
+            <div style={{ borderRadius: '1em', overflowY: 'scroll', backgroundColor: theme.mainBodyColor, height: 600 }}>
               {getRightPanelContent()}
             </div>
           </Grid>

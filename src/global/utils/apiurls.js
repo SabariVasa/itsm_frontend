@@ -35,7 +35,17 @@ export const resturls = {
   allIncidentCount: '/incident_service/all_incident_count',
   deleteClassCategory: '/cmdb_service/delete_class_category',
   uploadUserExcel: '/auth_service/upload_user_excel',
-  removeUser: '/auth_service/delete_user'
+  removeUser: '/auth_service/delete_user',
+  azure_login: 'auth_service/azure_login',
+  getAccessToken: 'auth_service/azure/get_access_token',
+  FetchAllOrganizations: 'auth_service/fetch_all_organizations',
+  FetchGroupDetails: 'auth_service/groups',
+  AdLogin: '/auth_service/ldap_connection_test',
+  getADUser: '/auth_service/login_AD_user',
+  getAllADUsers: '/auth_service/get_all_AD_users',
+  getCategory: '/incident_service/category',
+  fetchGroups: '/auth_service/fetch_groups',
+  fetchAdminGroup: '/auth_service/fetch_admin_group'
 };
 
 export const successurl = `${restbaseurl}student/success`;

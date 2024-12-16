@@ -35,10 +35,10 @@ iframe#webpack-dev-server-client-overlay {
 }
 
 .SignupBox {
-  padding: 20px;
+  /* padding: 20px;
   margin-top: 4vh;
-  background-color: white;
-  /* opacity: 0.8; */
+  background-color: white; */
+  opacity: 0.8;
 }
 
 .hr-text {
@@ -132,19 +132,28 @@ iframe#webpack-dev-server-client-overlay {
 
 .sidebar-item {
   /* margin:100px 0; */
+  top: 316.11px;
+  left: 138.9px;
+  gap: 0px;
+  border-radius: 6px 0px 0px 0px;
+  opacity: 0px;
+  display: flex;
+  justify-content: center;
 }
 
-.sidebar-item a {
+/* .sidebar-item a {
   color: black;
   text-decoration: none;
-}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
 
-.sidebar-item a:hover {
+/* .sidebar-item a:hover {
   color: #809fff;
-  /* Hover color for menu items */
   background-color: #f5f5f0;
   border: 1px solid black;
-}
+} */
 
 hr {
   border: 1px solid #808080;
@@ -329,9 +338,9 @@ hr {
 }
 
 .profile-container-admin {
-  height: 110px;
+  /* height: 110px;
   width: 260px;
-  margin-top: 200px;
+  margin-top: 200px; */
   background-color: #8EC5FC;
   background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
   border-radius: 15px;
@@ -647,6 +656,7 @@ hr {
   background: #f1f1f1;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 10px;

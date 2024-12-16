@@ -216,13 +216,21 @@ import SuperAdminLandingPage from './Pages/superadmin/SuperAdminLandingPage';
 import SuperAdminRouter from './Routes/SuperAdminRouter';
 import { PrivateRoute } from './global/utils';
 import CreateGroupForm from './Components/groupCreation/CreateGroupForm';
+import AdminLandingPage from './Pages/admin/AdminLandingPage';
 
+const ADSigninScreen = lazy(() => import('./Pages/ADSignin'));
 const SigninScreen = lazy(() => import('./Pages/Signin'));
 
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className="App">
+      <div className="App" style={{
+        backgroundImage: 'url(/bodybg.jpeg)', // Correct syntax for backgroundImage
+        backgroundSize: 'cover', // Ensures the image covers the area
+        backgroundPosition: 'center', // Centers the image
+        height: '100%', // Added 'px' to explicitly define units
+        width: '100%',
+      }}>
         <ThemeProvider>
           <Suspense fallback={<DefaultLoader />}>
             {/* Wrap everything in Router */}
@@ -235,9 +243,11 @@ function App() {
                   <DrawerProvider><SuperAdminLandingPage /></DrawerProvider>
                 )} />
                 <Route path="/admin" component={() => (
-                  <DrawerProvider><AuthenticationRoutes /></DrawerProvider>
+                  <DrawerProvider><AdminLandingPage /></DrawerProvider>
                 )} />
+                {/* /adLogin */}
                 <Route path="/sign" component={SigninScreen} />
+                <Route path="/adLogin" component={ADSigninScreen} />
                 <Route path="/" component={RoleBasedRoute} />
               </Switch>
             </Router>
