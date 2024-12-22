@@ -64,40 +64,40 @@ const RoleBasedRoute = () => {
 
 
   return (
-    <>
+    <div style={{ display: 'flex' }}>
       {/* {(redirectUrl !== undefined && redirectUrl !== null && redirectUrl !== '')
         ? ( */}
       <>
         {userDetails.group.length > 0 ? (
-          <Modal
-            open
-            aria-labelledby="profile-modal-title"
-            aria-describedby="profile-modal-description"
+          // <Modal
+          //   open
+          //   aria-labelledby="profile-modal-title"
+          //   aria-describedby="profile-modal-description"
+          //   sx={{
+          //     display: 'flex',
+          //     alignItems: 'center',
+          //     justifyContent: 'center'
+          //   }}
+          // >
+          <Box
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              flexWrap: 'wrap',
+              '& > :not(style)': {
+                margin: '3px',
+                width: '167px',
+                height: '155px',
+              },
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                '& > :not(style)': {
-                  margin: '3px',
-                  width: '167px',
-                  height: '155px',
-                },
-              }}
-            >
-              {userDetails.group.map((ele, id) =>
-                <Item key={id} sx={{ background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", color: 'white' }} elevation={showCategorieOfRoles(ele)} onClick={() => redirectUrlController(showCategorieOfRoles(ele))}>
-                  <Image src="" sx={{ marginTop: '1em' }} />
-                  <h3>{showCategorieOfRoles(ele)}</h3>
-                </Item>
-              )}
-            </Box>
-          </Modal>
+            {userDetails.group.map((ele, id) =>
+              <Item key={id} sx={{ background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", color: 'white' }} elevation={showCategorieOfRoles(ele)} onClick={() => redirectUrlController(showCategorieOfRoles(ele))}>
+                <Image src="" sx={{ marginTop: '1em' }} />
+                <h3>{showCategorieOfRoles(ele)}</h3>
+              </Item>
+            )}
+          </Box>
+          // </Modal>
         ) : (
           <Redirect to={'/sign'} />
         )}
@@ -106,7 +106,7 @@ const RoleBasedRoute = () => {
       {/* ) : ( */}
       {/* <Redirect to="/sign" /> */}
       {/* )} */}
-    </>
+    </div>
   );
 };
 

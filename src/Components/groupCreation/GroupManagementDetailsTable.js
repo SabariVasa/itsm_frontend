@@ -284,7 +284,7 @@ export default function GroupManagementDetailsTable(props) {
       renderCell: (params) => (
         <div
           style={{ cursor: 'pointer', color: 'blue' }}
-          onClick={() => history.push(`${path}/show_group/${params.row.id}/${selectedOrgId.id}`)}
+          onClick={() => history.push(`${path}/show_group/${params.row.id}/${selectedOrgId.id || userDetails.organization_id}`)}
         >
           {params.row.groupName}
         </div>

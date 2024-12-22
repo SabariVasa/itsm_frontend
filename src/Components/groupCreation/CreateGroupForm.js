@@ -1,220 +1,3 @@
-
-// import React, { useEffect, useState } from "react";
-// import { Box, Button, TextField, TextareaAutosize, Grid, FormControlLabel, Checkbox } from "@mui/material";
-// import { Formik, Form, Field } from "formik";
-// import { useHistory } from "react-router-dom";
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import * as Yup from "yup";
-// import GlobalService from "../../services/GlobalService";
-// import { resturls } from "../../global/utils/apiurls";
-// import UserManagmentTable from "../../Pages/userManagement/UserManagmentTable";
-
-// const validationSchema = Yup.object({
-//   groupName: Yup.string()
-//     .when("group", {
-//       is: (group) => !group,
-//       then: (schema) => schema.required("Group Name is required"),
-//       otherwise: (schema) => schema.notRequired(),
-//     }),
-//   groupDescription: Yup.string()
-//     .when("group", {
-//       is: (group) => !group,
-//       then: (schema) => schema.required("Group Description is required"),
-//       otherwise: (schema) => schema.notRequired(),
-//     }),
-//   groupType: Yup.string()
-//     .when("group", {
-//       is: (group) => !group,
-//       then: (schema) => schema.required("Group Type is required"),
-//       otherwise: (schema) => schema.notRequired(),
-//     }),
-//   userPermission: Yup.string()
-//     .when("group", {
-//       is: (group) => !group,
-//       then: (schema) => schema.required("User Permission is required"),
-//       otherwise: (schema) => schema.notRequired(),
-//     }),
-//   groupManager: Yup.string()
-//     .when("group", {
-//       is: (group) => !group,
-//       then: (schema) => schema.required("Group Manager is required"),
-//       otherwise: (schema) => schema.notRequired(),
-//     }),
-//   groupScope: Yup.string()
-//     .when("group", {
-//       is: (group) => !group,
-//       then: (schema) => schema.required("Group Scope is required"),
-//       otherwise: (schema) => schema.notRequired(),
-//     }),
-// });
-
-// const CreateGroupForm = (props) => {
-//   const { match: { params: { group_id, orgId } }, organizationId } = props;
-//   console.log(orgId, 'orgId');
-//   const history = useHistory();
-//   const [group, setGroup] = useState(null);
-//   const [showMemberEnable, setShowMemberEnable] = useState(false);
-//   const [addGroupMember, setAddGroupMember] = useState([])
-
-//   const handleSubmit = (values) => {
-//     const url = group ? `${resturls.updateGroup}/${group.id}` : resturls.CreateNewGroup;
-//     GlobalService.generalSelect(
-//       (responseData) => {
-//         const { data, estatus, emessage } = responseData;
-//         console.log(data, estatus, emessage, 'data, estatus, emessage');
-//         if (estatus) {
-//           history.goBack();
-//         }
-//       },
-//       url,
-//       { ...values, organizationId: orgId || organizationId },
-//       group ? 'PUT' : 'POST'
-//     );
-//   };
-
-//   useEffect(() => {
-//     if (group_id) {
-//       GlobalService.generalSelect(
-//         (respdata) => {
-//           const { estatus, emessage, data } = respdata;
-//           if (estatus && emessage) {
-//             const foundObject = data.find(item => item.id === group_id);
-//             setGroup(foundObject || {});
-//           }
-//         },
-//         resturls.getAllGroupDetails,
-//         {},
-//         'GET'
-//       );
-//     }
-//   }, [group_id]);
-
-//   console.log(group, 'group==');
-
-//   return (
-//     <Box>
-//       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-//         <ArrowBackIcon sx={{ marginRight: 2 }} onClick={() => history.goBack()} />
-//         <h3>{group ? 'Edit Group' : 'Add New Department'}</h3>
-//       </div>
-//       <Formik
-//         initialValues={{
-//           groupName: group?.groupName || '',
-//           groupType: group?.groupType || '',
-//           groupDescription: group?.groupDescription || '',
-//           groupScope: group?.groupScope || '',
-//           activeStatus: group?.activeStatus ?? true,
-//           userPermission: group?.userPermission || '',
-//           groupManager: group?.groupManager || '',
-//           group: group || null,
-//         }}
-//         validationSchema={validationSchema}
-//         onSubmit={handleSubmit}
-//         enableReinitialize
-//       >
-//         {({ errors, touched, handleChange, values }) => (
-//           <Form>
-//             <Grid container justifyContent="center" sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
-//               <Button type="submit" variant="contained" color="primary">
-//                 {group ? 'Update' : 'Submit'}
-//               </Button>
-//             </Grid>
-//             <Grid container spacing={2}>
-//               <Grid item xs={6}>
-//                 <Field
-//                   name="groupName"
-//                   as={TextField}
-//                   label="Group Name"
-//                   fullWidth
-//                   error={touched.groupName && Boolean(errors.groupName)}
-//                   helperText={touched.groupName && errors.groupName}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <Field
-//                   name="groupType"
-//                   as={TextField}
-//                   label="Group Type"
-//                   fullWidth
-//                   error={touched.groupType && Boolean(errors.groupType)}
-//                   helperText={touched.groupType && errors.groupType}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <Field
-//                   name="userPermission"
-//                   as={TextField}
-//                   label="User Permission"
-//                   fullWidth
-//                   error={touched.userPermission && Boolean(errors.userPermission)}
-//                   helperText={touched.userPermission && errors.userPermission}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <Field
-//                   name="groupManager"
-//                   as={TextField}
-//                   label="Group Manager"
-//                   fullWidth
-//                   error={touched.groupManager && Boolean(errors.groupManager)}
-//                   helperText={touched.groupManager && errors.groupManager}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <Field
-//                   name="groupScope"
-//                   as={TextField}
-//                   label="Group Scope"
-//                   fullWidth
-//                   error={touched.groupScope && Boolean(errors.groupScope)}
-//                   helperText={touched.groupScope && errors.groupScope}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <FormControlLabel
-//                   control={
-//                     <Field
-//                       name="activeStatus"
-//                       type="checkbox"
-//                       as={Checkbox}
-//                       checked={values.activeStatus}
-//                       onChange={handleChange}
-//                     />
-//                   }
-//                   label="Active Status"
-//                 />
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <Field
-//                   name="groupDescription"
-//                   as={TextareaAutosize}
-//                   minRows={3}
-//                   placeholder="Group Description"
-//                   style={{ width: '100%', padding: '10px' }}
-//                 />
-//                 {touched.groupDescription && errors.groupDescription ? (
-//                   <div style={{ color: 'red', fontSize: '0.8rem' }}>{errors.groupDescription}</div>
-//                 ) : null}
-//               </Grid>
-//             </Grid>
-//             <Grid container justifyContent="center" sx={{ mt: 3, mb: 3, display: 'flex', justifyContent: 'flex-start' }}>
-//               <Button variant="contained" color="primary" onClick={() => setShowMemberEnable(true)}>
-//                 Add Group Member
-//               </Button>
-//             </Grid>
-//           </Form>
-//         )}
-//       </Formik>
-//       {showMemberEnable && <UserManagmentTable groupMember={true} userData={group && group.groupMembers} />}
-//     </Box>
-//   );
-// };
-
-// export default CreateGroupForm;
 import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, TextareaAutosize, Grid, FormControlLabel, Checkbox, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { Formik, Form, Field } from "formik";
@@ -223,8 +6,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import * as Yup from "yup";
 import GlobalService from "../../services/GlobalService";
 import { resturls } from "../../global/utils/apiurls";
-import UserManagmentTable from "../../Pages/userManagement/UserManagmentTable";
+// import UserManagmentTable from "../../Pages/userManagement/UserManagmentTable";
 import { CustomSelect, CustomTextField, GradientHeader, HeaderContainer, StyledButton, StyledFormContainer, StyledPatternL, StyledPatternR } from "../../commonComponents/StyledComponents";
+import GroupManagementViewSettingsDetails from "./GroupManagementViewSettingsDetails";
+import UserInfo from "../../models/UserInfo";
+import { useLocation, useParams } from "react-router-dom/cjs/react-router-dom";
 
 const validationSchema = Yup.object({
   groupName: Yup.string()
@@ -266,7 +52,17 @@ const validationSchema = Yup.object({
 });
 
 const CreateGroupForm = (props) => {
-  const { match: { params: { group_id, orgId } }, organizationId } = props;
+  const location = useLocation();
+
+  // Check if the URL contains the keyword "update_dep"
+  const isKeywordPresent = location.pathname.includes("update_dep");
+  // console.log(isKeywordPresent, 'isKeywordPresent');
+  const userDetails = UserInfo.getUserDetail();
+  const { group_id, orgId } = useParams();
+  const { organizationId, groupId } = props;
+
+  const effectiveOrgId = orgId || organizationId;
+  const effectiveGroupId = group_id || groupId;
   const [selectedUserRows, setSelectedUserRows] = useState();
   const history = useHistory();
   const [group, setGroup] = useState(null);
@@ -287,7 +83,7 @@ const CreateGroupForm = (props) => {
         }
       },
       url,
-      { ...values, organizationId: orgId || organizationId, groupMembers },
+      { ...values, organizationId: (effectiveOrgId), groupMembers },
       group ? 'PUT' : 'POST'
     );
   };
@@ -295,12 +91,12 @@ const CreateGroupForm = (props) => {
   console.log(selectedUserRows, 'selectedUserRows');
 
   useEffect(() => {
-    if (group_id) {
+    if (effectiveGroupId) {
       GlobalService.generalSelect(
         (respdata) => {
           const { estatus, emessage, data } = respdata;
           if (estatus && emessage) {
-            const foundObject = data.find(item => item.id === group_id);
+            const foundObject = data.find(item => item.id === (effectiveGroupId));
             setGroup(foundObject || {});
           }
         },
@@ -309,7 +105,7 @@ const CreateGroupForm = (props) => {
         'GET'
       );
     }
-  }, [group_id]);
+  }, [effectiveGroupId]);
 
   return (
     <Box>
@@ -410,9 +206,9 @@ const CreateGroupForm = (props) => {
                   name="userPermission"
                   labelId="userPermission-label"
                 >
-                  <MenuItem sx={{ color: "#E81885" }} value="Read">Read</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Write">Write</MenuItem>
+                  <MenuItem sx={{ color: "#E81885" }} value="Super Admin">Super Admin</MenuItem>
                   <MenuItem sx={{ color: "#E81885" }} value="Admin">Admin</MenuItem>
+                  <MenuItem sx={{ color: "#E81885" }} value="End User">End User</MenuItem>
                 </Field>
                 <StyledPatternR
                   style={{ opacity: loading ? 0.5 : 1 }}
@@ -468,11 +264,18 @@ const CreateGroupForm = (props) => {
           </Form>
         )}
       </Formik>
-      {showMemberEnable && <UserManagmentTable
-        groupMember={true}
-        setSelectedUserRows={setSelectedUserRows}
-        userData={group && group.groupMembers}
-      />}
+      {(isKeywordPresent) && (
+        <div>
+          <GroupManagementViewSettingsDetails
+            edit={true}
+            isKeywordPresent={isKeywordPresent}
+            setSelectedUserRows={setSelectedUserRows}
+            userData={group && group.groupMembers}
+            childGroups={group && group.childGroups}
+            groupAdminData={group && group.groupAdmins}
+          />
+        </div>
+      )}
     </Box>
   );
 };

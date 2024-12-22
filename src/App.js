@@ -228,7 +228,7 @@ function App() {
         backgroundImage: 'url(/bodybg.jpeg)', // Correct syntax for backgroundImage
         backgroundSize: 'cover', // Ensures the image covers the area
         backgroundPosition: 'center', // Centers the image
-        height: '100%', // Added 'px' to explicitly define units
+        height: '100vh', // Added 'px' to explicitly define units
         width: '100%',
       }}>
         <ThemeProvider>
