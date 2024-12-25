@@ -1,6 +1,10 @@
 // StyledComponents.js
 import { styled } from "@mui/system";
 import { TextField, Box, Button, Select } from "@mui/material";
+// import { useTheme } from "../global/commonComponents/ThemeContext";
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+// const { theme } = useTheme();
 
 export const StyledIcon = styled("img")({
   position: "absolute",
@@ -16,19 +20,19 @@ export const StyledPatternR = styled("img")({
   position: "absolute",
   right: "130px",
   borderRadius: "2em 2em 0 0",
-  top: "95%",
+  top: "93%",
   background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
   transform: "translateY(-50%)",
   width: "70px",
-  height: "8px",
+  height: "6px",
   cursor: "pointer",
 });
 
-export const StyledPatternL = styled(Box)({
+export const StyledPatternL = styled("img")({
   position: "absolute",
   right: "50px",
   borderRadius: "2em 2em 0 0",
-  top: "90%",
+  top: "93%",
   background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
   transform: "translateY(-50%)",
   width: "70px",
@@ -149,14 +153,88 @@ export const CustomSelect = styled(Select)({
   },
 });
 
+// export const StyledButton = styled(Button)({
+//   backgroundColor: "#752B8D",
+//   color: "#fff",
+//   fontWeight: "bold",
+//   borderRadius: "0.5em",
+//   boxShadow:
+//     "4px 4px 0px #2c3e50,8px 8px 0px #34495e,12px 12px 0px #ecf0f1",
+//   transition: "transform 0.3s ease, box-shadow 0.3s ease",
+//   textTransform: "none",
+//   marginTop: "20px",
+//   ":hover": {
+//     backgroundColor: "#752B8D",
+//   },
+// });
+// console.log(theme.outerBodyColor, 'outerBodyColor');
 export const StyledButton = styled(Button)({
   backgroundColor: "#752B8D",
   color: "#fff",
   fontWeight: "bold",
-  borderRadius: "2em",
+  borderRadius: "0.5em",
+  boxShadow: "4px 4px 0px #2c3e50, 8px 8px 0px #34495e, 12px 12px 0px #ecf0f1",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
   textTransform: "none",
   marginTop: "20px",
+
   ":hover": {
     backgroundColor: "#752B8D",
   },
+
+  ":active": {
+    transform: "translate(12px, 12px)", // Simulates pressing the button
+    boxShadow: "0px 0px 0px #2c3e50", // Removes shadow to create a pressed effect
+  },
 });
+
+//left side panel 
+
+export const styles = {
+  menuContainer: {
+    // backgroundColor: theme.outerBodyColor,
+    padding: "10px",
+    borderRadius: "8px",
+  },
+  menuItem: {
+    margin: "10px 0",
+    padding: "12px",
+    borderRadius: "8px",
+    background: "linear-gradient(145deg, #e6e6e6, #ffffff)",
+    boxShadow: "5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+  },
+  menuItemHover: {
+    boxShadow: "8px 8px 15px #c1c1c1, -8px -8px 15px #ffffff",
+  },
+  activeMenu: {
+    background: "linear-gradient(145deg, #ffffff, #e6e6e6)",
+    boxShadow: "inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff",
+    transform: "scale(1.05)",
+  },
+  accordion: {
+    margin: "10px 0",
+    borderRadius: "8px",
+    background: "linear-gradient(145deg, #e6e6e6, #ffffff)",
+    boxShadow: "5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff",
+    transition: "all 0.3s ease",
+  },
+  accordionHover: {
+    boxShadow: "8px 8px 15px #c1c1c1, -8px -8px 15px #ffffff",
+  },
+  activeAccordion: {
+    background: "linear-gradient(145deg, #ffffff, #e6e6e6)",
+    boxShadow: "inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff",
+  },
+  accordionSummary: {
+    padding: "12px",
+  },
+  icon: {
+    color: "#606060",
+    transition: "color 0.3s ease",
+  },
+  iconHover: {
+    color: "#007bff",
+  },
+};

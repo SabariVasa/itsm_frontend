@@ -25,7 +25,7 @@ export default function IncidentDashboard() {
     { "title": "Unassigned Incidents", "total": 21, "color": "black" },
     { "title": "Overdue Incidents", "total": 20, "color": "red" },
     { "title": "Open Incidents", "total": 5, "color": "black" },
-    { "title": "Incident not updated for 7 days", "total": 6, "color": "black" },
+    { "title": "Incident not updated for 7 days", "total": 5, "color": "black" },
     { "title": "Open incidents older than 30 days", "total": 30, "color": "black" }];
   return (
     // <Box sx={{ flexGrow: 1 }} style={{ padding: 10, marginBottom: 100 }}>
@@ -80,7 +80,7 @@ export default function IncidentDashboard() {
       >
         {incidents.map((incident, index) => (
           <Grid item xs={4} sm={4} md={4} key={index}>
-            <Card
+            {/* <Card
               variant="outlined"
               sx={{
                 borderRadius: 3,
@@ -88,7 +88,7 @@ export default function IncidentDashboard() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between", // Align content horizontally
-                height: 150, // Set a fixed height
+                height: 100, // Set a fixed height
                 minWidth: 250, // Set a minimum width
               }}
             >
@@ -117,7 +117,53 @@ export default function IncidentDashboard() {
                   {incident.title}
                 </Typography>
               </CardContent>
+            </Card> */}
+            <Card
+              variant="outlined"
+              sx={{
+                borderRadius: 3,
+                padding: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                height: 100,
+                minWidth: 250,
+                background: "white",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-8px)",
+                  boxShadow: "0px 10px 15px rgba(0, 0, 0, 0.3)",
+                },
+              }}
+            >
+              <Typography
+                variant="h3"
+                sx={{
+                  background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  fontWeight: "bold",
+                }}
+              >
+                {incident.total}
+              </Typography>
+              <Divider
+                orientation="vertical"
+                sx={{
+                  width: 2,
+                  height: 100,
+                  marginX: 2,
+                  backgroundColor: "gray",
+                }}
+              />
+              <CardContent>
+                <Typography variant="h6" sx={{ marginTop: 1 }}>
+                  {incident.title}
+                </Typography>
+              </CardContent>
             </Card>
+
           </Grid>
         ))}
       </Grid>

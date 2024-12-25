@@ -4,7 +4,7 @@ import {
   List,
   Avatar,
   SwipeableDrawer,
-  ListItem, ListItemButton, ListItemIcon, ListItemText 
+  ListItem, ListItemButton, ListItemIcon, ListItemText
 } from '@mui/material';
 import AvailablThemeList from "../../../Pages/SettingsBarSlide/AvailablThemeList";
 import { useDrawer } from '../drawer/DrawerContext';
@@ -28,13 +28,16 @@ function UserProfileDrawer() {
       <Box
         sx={{
           width: 450,
-          height: '40vh',
+          height: '35vh',
           borderRadius: '20px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
-          gap: '1em'
+          gap: '1em',
+          position: 'fixed',
+          left: '8em',
+          top: '4rem'
         }}
         role="presentation"
         onClick={() => toggleDrawer(anchor, false)} // Use context function to close the drawer
@@ -58,7 +61,7 @@ function UserProfileDrawer() {
               <ListItemText primary="Profile" />
             </ListItemButton>
           </ListItem>
-  
+
           {/* Theme Settings */}
           <ListItem key="AppSettingsAltIcon" disablePadding>
             <ListItemButton>
@@ -68,10 +71,10 @@ function UserProfileDrawer() {
               <ListItemText primary="Theme Settings" />
             </ListItemButton>
           </ListItem>
-  
+
           {/* Available Theme List */}
           <AvailablThemeList />
-  
+
         </List>
       </div>
     </>
@@ -87,7 +90,7 @@ function UserProfileDrawer() {
             onClose={() => toggleDrawer(anchor, false)} // Close drawer on close event
             sx={{
               '& .MuiDrawer-paper': {
-                background: "linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)",
+                background: "#F2F2F2",
                 borderRadius: '20px',
                 padding: '0 20px',
                 width: 400,

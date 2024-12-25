@@ -3,7 +3,7 @@ const Common = {
     create_incident: 'Create Incident',
     open_incident: 'Open Incident',
     assign_to_me: 'Assign to me',
-    all_incident: 'All Incident',
+    all_incident: 'All Incidents',
     request_status: 'Request Status',
     request_service: 'Request Service',
     new_change: 'New Change',

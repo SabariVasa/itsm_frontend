@@ -2,7 +2,7 @@ import React from 'react';
 // import { Navigate } from 'react-router-dom';
 import UserInfo from '../models/UserInfo';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, Modal, Typography } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import { useHistory } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -64,7 +64,12 @@ const RoleBasedRoute = () => {
 
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%'
+    }}>
       {/* {(redirectUrl !== undefined && redirectUrl !== null && redirectUrl !== '')
         ? ( */}
       <>
@@ -83,19 +88,69 @@ const RoleBasedRoute = () => {
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
-              '& > :not(style)': {
-                margin: '3px',
-                width: '167px',
-                height: '155px',
-              },
+              gap: '16px',
+              justifyContent: 'center',
+              marginTop: 2,
             }}
           >
-            {userDetails.group.map((ele, id) =>
-              <Item key={id} sx={{ background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", color: 'white' }} elevation={showCategorieOfRoles(ele)} onClick={() => redirectUrlController(showCategorieOfRoles(ele))}>
-                <Image src="" sx={{ marginTop: '1em' }} />
-                <h3>{showCategorieOfRoles(ele)}</h3>
-              </Item>
-            )}
+            {userDetails.group.map((ele, id) => {
+              const category = showCategorieOfRoles(ele);
+              let description;
+
+              switch (category) {
+                case 'Super Admin':
+                  description = "Oversees piloteDesk configuration, customization, and administration to ensure optimal performance and IT service alignment.";
+                  break;
+                case 'Admin':
+                  description = "An Admin for Help Desk piloteDesk focuses on day-to-day operations and maintenance of the piloteDesk platform.";
+                  break;
+                default:
+                  description = "Uses the piloteDesk platform to log incidents, request services, track issue resolutions, and access self-service resources for IT support.";
+              }
+
+              return (
+                <Card
+                  key={id}
+                  sx={{
+                    width: 250,
+                    height: 250,
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                    "&:hover": {
+                      transform: "translateY(-8px)",
+                      boxShadow: "0px 10px 15px rgba(0, 0, 0, 0.3)",
+                    },
+                    background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
+                    color: 'white',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => redirectUrlController(category)}
+                >
+                  <CardMedia
+                    component="img"
+                    image=""
+                    alt={`${category} Image`}
+                    sx={{
+                      height: 100,
+                      margin: '16px auto 0',
+                      width: 'auto',
+                      objectFit: 'contain',
+                    }}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" component="div" sx={{ textAlign: 'center' }}>
+                      {category}
+                    </Typography>
+                    <Typography variant="body2" sx={{ textAlign: 'center', fontSize: '0.9em' }}>
+                      {description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
           // </Modal>
         ) : (

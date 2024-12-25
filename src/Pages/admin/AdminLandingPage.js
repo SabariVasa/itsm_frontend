@@ -172,7 +172,7 @@ function AdminLandingPage() {
     console.log('User Details:', userDetails);
 
     return (
-        <div style={{ opacity: 0.7 }}>
+        <div>
             {/* <DefaultHeader 8ucbvx0 c6c3------2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdrawer={drawer} toggleDrawer={toggleDrawer} state={state} /> */}
             <UserProfileDetails toggleDrawer={toggleDrawer} state={state} />
             <RequestContext.Provider

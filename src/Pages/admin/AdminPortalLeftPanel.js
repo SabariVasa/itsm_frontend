@@ -74,7 +74,7 @@ function AdminPortalLeftPanel(props) {
       <List style={{ margin: '0.5em', background: bgcolur, borderRadius: '0.5em' }}>
         <div className="sidebar-item">
           {props.drawer ?
-            <div style={{ height: 100, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ height: 57, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
               <img alt="logo" src={"/updateLogo.png"} style={{
                 width: '154.09px',
                 height: '35.32px',
@@ -105,50 +105,50 @@ function AdminPortalLeftPanel(props) {
                   aria-controls={`${ele.label}-content`}
                   id={`${ele.label}-header`}
                 >
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ minWidth: "37px !important" }}>
                     {IconComponent && <IconComponent sx={{ color: "white" }} />}
                   </ListItemIcon>
-                  {drawer && <ListItemText sx={{ color: "white" }} primary={ele.label} />}
+                  {drawer && <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', marginLeft: '2.5em' }} primary={ele.label} />}
                 </AccordionSummary>
-                <AccordionDetails sx={{ marginLeft: "3em" }}>
-                  {ele.label === "Incident Management" ? (
+                <AccordionDetails sx={{ padding: '8px 8px 8px !important', background: 'white', }}>
+                  {ele.label === "Incident Mansx={{ paddingTop: '0 !important', paddingLeft: '29px' }}agement" ? (
                     <>
-                      <ListItem onClick={() => tabClickHandler(i, "create_incident")}>
-                        <ListItemText sx={{ color: "white" }} primary="Create Incident" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "create_incident")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="Create Incident" />
                       </ListItem>
-                      <ListItem onClick={() => tabClickHandler(i, "open_incident")}>
-                        <ListItemText sx={{ color: "white" }} primary="Open Incident" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "open_incident")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="Open Incident" />
                       </ListItem>
-                      <ListItem onClick={() => tabClickHandler(i, "assign_to_me")}>
-                        <ListItemText sx={{ color: "white" }} primary="Assign-to-me" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "assign_to_me")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="Assign-to-me" />
                       </ListItem>
-                      <ListItem onClick={() => tabClickHandler(i, "all_incidents")}>
-                        <ListItemText sx={{ color: "white" }} primary="All Incident" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "all_incidents")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="All Incident" />
                       </ListItem>
                     </>
                   ) : ele.label === "Request Management" ? (
                     <>
-                      <ListItem onClick={() => tabClickHandler(i, "my_request")}>
-                        <ListItemText sx={{ color: "white" }} primary="My Request" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "my_request")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="My Request" />
                       </ListItem>
-                      <ListItem onClick={() => tabClickHandler(i, "request_service")}>
-                        <ListItemText sx={{ color: "white" }} primary="Request Service" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "request_service")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="Request Service" />
                       </ListItem>
                     </>
                   ) : ele.label === "Change Management" ?
                     <>
-                      <ListItem onClick={() => tabClickHandler(i, "new_change")}>
-                        <ListItemText sx={{ color: "white" }} primary="New Change" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "new_change")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="New Change" />
                       </ListItem>
-                      <ListItem onClick={() => tabClickHandler(i, "all_change")}>
-                        <ListItemText sx={{ color: "white" }} primary="All Change" />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "all_change")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary="All Change" />
                       </ListItem>
                     </> : ele.label === "CMDB Management" && <>
-                      <ListItem onClick={() => tabClickHandler(i, "create_config")}>
-                        <ListItemText sx={{ color: "white" }} primary={t('create_config')} />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "create_config")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary={t('create_config')} />
                       </ListItem>
-                      <ListItem onClick={() => tabClickHandler(i, "class_manage")}>
-                        <ListItemText sx={{ color: "white" }} primary={t('class_manage')} />
+                      <ListItem sx={{ paddingTop: '0 !important', paddingLeft: '29px' }} onClick={() => tabClickHandler(i, "class_manage")}>
+                        <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary={t('class_manage')} />
                       </ListItem>
                     </>}
                 </AccordionDetails>
@@ -159,22 +159,23 @@ function AdminPortalLeftPanel(props) {
               !(ele.label === "Incident Management" || ele.label === "Request Management" || ele.label === "Change Management") ? (
                 <>
                   <ListItem
+                    // sx={{ paddingTop: '0 !important', paddingLeft: '29px' }}
                     key={`${ele.label}-key`}
                     onClick={() => tabClickHandler(i)}
                     button
                   >
                     {drawer ? (
-                      <ListItemIcon>
+                      <ListItemIcon sx={{ minWidth: "37px !important" }}>
                         {IconComponent && <IconComponent sx={{ color: 'white' }} />}
                       </ListItemIcon>
                     ) : (
-                      <ListItemIcon sx={{ margin: '1em 0', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                      <ListItemIcon sx={{ minWidth: "37px !important" }}>
                         {IconComponent && <IconComponent sx={{ color: 'white' }} />}
                       </ListItemIcon>
                     )}
                     {drawer ? <ListItemText
                       primary={ele.label}
-                      sx={{ color: 'white' }}
+                      sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }}
                     /> : null}
                   </ListItem>
                 </>
@@ -183,14 +184,15 @@ function AdminPortalLeftPanel(props) {
                   {(popupState) => (
                     <>
                       <ListItem
+                        sx={{ paddingTop: '0 !important', paddingLeft: '29px' }}
                         button
                         onClick={() => tabClickHandler(i)}
                         {...bindTrigger(popupState)}
                       >
-                        <ListItemIcon sx={{ margin: '1em 0', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                        <ListItemIcon sx={{ minWidth: "37px !important" }}>
                           {IconComponent && <IconComponent sx={{ color: "white" }} />}
                         </ListItemIcon>
-                        {drawer && <ListItemText primary={t(ele.label)} sx={{ color: "white" }} />}
+                        {drawer && <ListItemText sx={{ cursor: 'pointer', fontSize: '12px !important', borderBottom: '1px solid #B2BEB5', marginLeft: '2.5em' }} primary={t(ele.label)} />}
                       </ListItem>
                       {ele.label === "Knowledge Article" ? <hr className="sidenav-hr" /> : null}
                       <Popover

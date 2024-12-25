@@ -36,6 +36,7 @@ import { Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import DefaultLoader from "../global/commonComponents/DefaultLoader";
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import { updateUserInfo } from "../global/utils";
+import { useTheme } from "../global/commonComponents/ThemeContext";
 // import { loginRequest } from "../Features/SSOFeatures/MicrosoftAzureSSO/authConfig";
 // import { PublicClientApplication } from "@azure/msal-browser";
 
@@ -43,6 +44,7 @@ import { updateUserInfo } from "../global/utils";
 
 function Signin(props) {
   const [showPassword, setShowPassword] = useState(false);
+  // const [loader, setLoader] = useState(false)
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -55,6 +57,7 @@ function Signin(props) {
   const [error, setError] = useState(null);
   // const { instance } = useMsal()
   const navigate = useHistory();
+  const { theme } = useTheme();
   const [state, setState] = useState({
     open: false,
     vertical: 'bottom',
@@ -117,9 +120,15 @@ function Signin(props) {
           console.log(valid, 'validreqObj');
           if (valid) {
             setAlreadyLogin(true);
+            setLoader(false);
           } else {
-            setCurrentPage('relogin');
+            setLoader(false);
+            navigate.push("/sign")
+            // setCurrentPage('relogin');
           }
+        } else {
+          setLoader(false);
+          navigate.push("/sign")
         }
       }, resturls.login, { emailAddress: email, password: Password }, 'POST',
     );
@@ -171,8 +180,10 @@ function Signin(props) {
     const userName = email.trim();
     if (userName.match(emailRegex)) {
       obj.email = userName;
+      setLoader(true)
     } else {
       obj.username = userName;
+      setLoader(true)
     }
 
     triggerLoginCredentials(obj);

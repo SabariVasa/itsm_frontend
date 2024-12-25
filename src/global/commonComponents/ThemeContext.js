@@ -6,8 +6,10 @@ export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState({
-    mainBodyColor: '#ffffff', 
-    outerBodyColor: 'linear-gradient(89.34deg, #E41670 0.56%, #622098 99.44%)', 
+    mainBodyColor: '#ffffff',
+    outerBodyColor: 'linear-gradient(270deg, #F51275 0%, #622098 100%)',
+    fontColor: "#ffffff",
+    btnColor: 'linear-gradient(270deg, #F51275 0%, #622098 100%)'
   });
 
   const updateTheme = (newTheme) => {

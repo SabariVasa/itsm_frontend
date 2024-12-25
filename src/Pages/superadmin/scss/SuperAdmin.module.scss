@@ -1,35 +1,262 @@
+// // .accordionContainer {
+// //   background-color: #1f2937; /* Adjust this for your dark mode */
+// //   border: none;
+// //   box-shadow: none;
+// // }
+
+// // .activeAccordion {
+// //   background-color: #4b5563; /* Highlight the active accordion */
+// // }
+
+// // .menuItem {
+// //   color: #ffffff; /* Default color */
+// // }
+
+// // .menuItemActive {
+// //   color: #fbbf24; /* Highlight color for active item */
+// // }
+
+// // .listItemIcon {
+// //   color: white;
+// // }
+
+// // .listItemIconActive {
+// //   color: #fbbf24; /* Icon color for active state */
+// // }
+
+// // .accordionSummary {
+// //   background-color: #1f2937;
+// //   color: white;
+// // }
+
+// // .accordionSummaryActive {
+// //   background-color: #4b5563;
+// //   color: #fbbf24;
+// // }
+
+// .menuContainer {
+//   background-color: #f4f4f4;
+//   padding: 10px;
+//   border-radius: 8px;
+// }
+
+// .menuItem {
+//   margin: 10px 0;
+//   padding: 12px;
+//   border-radius: 8px;
+//   background: linear-gradient(145deg, #e6e6e6, #ffffff);
+//   box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+
+//   &:hover {
+//     box-shadow: 8px 8px 15px #c1c1c1, -8px -8px 15px #ffffff;
+//   }
+// }
+
+// .activeMenu {
+//   background: linear-gradient(145deg, #ffffff, #e6e6e6);
+//   box-shadow: inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff;
+//   transform: scale(1.05);
+// }
+
+// .accordion {
+//   margin: 10px 0;
+//   border-radius: 8px;
+//   background: linear-gradient(145deg, #e6e6e6, #ffffff);
+//   box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff;
+//   transition: all 0.3s ease;
+
+//   &:hover {
+//     box-shadow: 8px 8px 15px #c1c1c1, -8px -8px 15px #ffffff;
+//   }
+// }
+
+// .activeAccordion {
+//   background: linear-gradient(145deg, #ffffff, #e6e6e6);
+//   box-shadow: inset 5px 5px 10px #d1d1d1, inset -5px -5px 10px #ffffff;
+// }
+
+// .accordionSummary {
+//   padding: 12px;
+// }
+
+// .icon {
+//   color: #606060;
+//   transition: color 0.3s ease;
+
+//   .accordion:hover &,
+//   .menuItem:hover & {
+//     color: #007bff;
+//   }
+// }
+/* UserPortalLeftPanel.module.scss */
+
+/* Accordion Container Style */
+// .accordionContainer {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   // margin: 20px;
+//   // padding: 10px;
+//   background-color: transparent;
+//   /* Light background for accordion */
+//   border-radius: 8px;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// }
+
+// /* Accordion Header Style */
+// .accordionHeader {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 15px;
+//   // background-color: #ffffff;
+//   /* White background for header */
+//   border: 1px solid #ddd;
+//   border-radius: 5px;
+//   font-size: 16px;
+//   font-weight: bold;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+// }
+
+// .accordionHeader:hover {
+//   // background-color: #f0f0f0;
+//   /* Slight hover effect */
+// }
+
+// /* Accordion Content Style */
+// .accordionContent {
+//   display: none;
+//   /* Hidden by default */
+//   padding: 15px;
+//   // background-color: #ffffff;
+//   border: 1px solid #ddd;
+//   border-top: none;
+//   font-size: 14px;
+//   line-height: 1.5;
+// }
+
+// /* Show Content when Active */
+// .accordionContent.active {
+//   display: block;
+// }
+
+// /* Icons (if used) */
+// .accordionIcon {
+//   font-size: 18px;
+//   color: #666;
+// }
+
+// .accordionIcon.open {
+//   transform: rotate(180deg);
+//   /* Rotate the icon for open state */
+//   transition: transform 0.3s ease;
+// }
+/* UserPortalLeftPanel.module.scss */
+
+/* Accordion Container Style */
 .accordionContainer {
-  background-color: #1f2937; /* Adjust this for your dark mode */
-  border: none;
-  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  // height: auto;
+  // height: 4vh;
+  // margin: 0.8em;s
+  width: 20vw;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2) !important;
 }
 
-.activeAccordion {
-  background-color: #4b5563; /* Highlight the active accordion */
+.css-eqpfi5-MuiAccordionSummary-content {
+  margin: 0 !important;
 }
 
-.menuItem {
-  color: #ffffff; /* Default color */
+/* Accordion Header Style */
+.accordionHeader {
+  display: flex;
+  justify-content: flex-end;
+  /* Align items to the right */
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  /* White background for header */
+  // border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.menuItemActive {
-  color: #fbbf24; /* Highlight color for active item */
+.accordionHeader:hover {
+  background-color: #f0f0f0;
+  /* Slight hover effect */
 }
 
-.listItemIcon {
-  color: white;
+/* Accordion Content Style */
+.accordionContent {
+  display: none;
+  /* Hidden by default */
+  padding: 15px;
+  background-color: #ffffff;
+  // border: 1px solid #ddd;
+  border-top: none;
+  font-size: 14px;
+  // line-height: 1.5;
+  text-align: right;
+  /* Align content to the right */
 }
 
-.listItemIconActive {
-  color: #fbbf24; /* Icon color for active state */
+/* Show Content when Active */
+.accordionContent.active {
+  display: block;
 }
 
-.accordionSummary {
-  background-color: #1f2937;
-  color: white;
+/* Icons (if used) */
+.accordionIcon {
+  font-size: 18px;
+  color: #666;
 }
 
-.accordionSummaryActive {
-  background-color: #4b5563;
-  color: #fbbf24;
+.accordionIcon.open {
+  transform: rotate(180deg);
+  /* Rotate the icon for open state */
+  transition: transform 0.3s ease;
+}
+
+// SCSS styles for sidebar menu
+.sidebar-item {
+  &-menu {
+    position: relative;
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 8px;
+    background-color: #333; // Sidebar menu background
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2); // 3D bottom shadow
+      transform: translateY(-2px); // Subtle lift effect
+    }
+  }
+
+  &-menu-active {
+    background-color: #d1cece; // Active menu background
+    color: white;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 10%;
+      width: 80%;
+      height: 5px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #ff7e5f, #feb47b); // Active menu bottom highlight
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
 }

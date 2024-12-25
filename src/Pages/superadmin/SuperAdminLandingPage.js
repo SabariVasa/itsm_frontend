@@ -185,8 +185,10 @@ function SuperAdminLandingPage() {
             // width: '100%',
             // height: '100%'
           }}>
-            <div style={{ overflowY: 'scroll', height: 600, marginTop: 8 }}>
+            <div style={{ overflowY: 'scroll', width: '92%', height: 600, marginTop: 8, }}>
               <SuperAdminPortalLeftPanel
+                toggleDrawer={toggleDrawer}
+                state={state}
                 bgcolur={theme.outerBodyColor}
                 activeTab={activeTab}
                 navbarOptions={navbarOptions}

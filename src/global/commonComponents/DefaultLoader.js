@@ -3,7 +3,7 @@ import styles from './DefaultLoader.module.scss';
 
 function DefaultLoader() {
   return (
-    <div className={styles.df_loading_grid} id="defaultLoader">
+    <div className={styles.df_loading_grid} style={{ borderTopColor: "rgb(106, 185, 216)"}} id = "defaultLoader" >
       <div />
       <div />
       <div />
@@ -13,7 +13,7 @@ function DefaultLoader() {
       <div />
       <div />
       <div />
-    </div>
+    </div >
   );
 }
 

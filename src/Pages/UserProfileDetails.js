@@ -64,22 +64,38 @@ export default function UserProfileDetails() {
     <Box
       sx={{
         width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 380,
-        background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Same gradient for the Box
+        background: 'transparent', // Same gradient for the Box
         borderRadius: '3em',
         height: '100%',
       }}
       role="presentation"
       onKeyDown={handleToggle(anchor, false)}
     >
-      <div style={{ borderRadius: 22, marginTop: '3em', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+      {/* <div style={{ borderRadius: 22, marginTop: '3em', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
         <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTadSAgMa0Si3aeLKU9sPJ24i1IZX3nKOVLnA&s" height="65px" width="65px" alt="profile-pic" />
         <div>{localStorage.getItem('userName')}</div>
+      </div> */}
+      <div style={{ cursor: "pointer" }}>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTadSAgMa0Si3aeLKU9sPJ24i1IZX3nKOVLnA&s"
+          height="100px"
+          width="100px"
+          alt="profile-pic"
+          style={{
+            borderRadius: '22rem',
+            position: 'fixed',
+            top: '12rem',
+            left: '26.5rem'
+          }}
+        />
+        <p style={{ color: "black", margin: '4em 0 0 5em' }}>{localStorage.getItem('userName')}</p>
       </div>
-      <ContentDevider />
+      {/* <ContentDevider /> */}
       <div style={{ marginTop: '2em', }} >
         <Accordion
           sx={{
-            background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Apply same gradient for Accordion
+            // background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Apply same gradient for Accordion
+            background: 'transparent',
             borderRadius: '1em',
             marginBottom: '10px',
           }}
@@ -89,7 +105,7 @@ export default function UserProfileDetails() {
             aria-controls="theme-content"
             id="theme-header"
             sx={{
-              backgroundColor: 'transparent',
+              background: 'transparent',
               color: '#fff',
             }}
           >
@@ -103,7 +119,7 @@ export default function UserProfileDetails() {
                   key={themeOption.name}
                   onClick={() => changeTheme(themeOption)}
                   style={{
-                    backgroundColor: themeOption.mainBodyColor,
+                    // backgroundColor: themeOption.mainBodyColor,
                     color: themeOption.outerBodyColor,
                     border: `1px solid ${themeOption.outerBodyColor}`,
                     marginBottom: '10px',
@@ -150,10 +166,13 @@ export default function UserProfileDetails() {
             onOpen={handleToggle(anchor, true)}
             PaperProps={{
               sx: {
-                background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Same gradient for the Drawer
+                background: '#E8E5E5', // Same gradient for the Drawer
                 borderRadius: '1em',
                 margin: '8.2em 0.7em 0 0',
-                height: '79%'
+                height: '50%',
+                position: 'absolute',
+                left: '18em',
+                top: '7em'
               },
             }}
           >
