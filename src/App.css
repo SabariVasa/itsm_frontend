@@ -655,20 +655,69 @@ hr {
   cursor: pointer;
 }
 
+/* Scrollbar track (background) */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 12px;
+  /* Width for vertical scrollbar */
+  height: 12px;
+  /* Height for horizontal scrollbar */
 }
 
+/* Background of the scrollbar track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
+  background: #f0f0f0;
+  /* Light gray */
 }
 
+/* Scrollbar handle (thumb) */
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
+  background: linear-gradient(45deg, #ff7b00, #ff007b);
+  /* Gradient color */
+  border-radius: 6px;
 }
 
+/* Hover effect on the scrollbar handle */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: linear-gradient(45deg, #ff007b, #ff7b00);
+  /* Reversed gradient on hover */
 }
+
+/* Optional: For active state when scrolling */
+::-webkit-scrollbar-thumb:active {
+  background: #ff007b;
+  /* Solid color */
+}
+
+/* Apply styles to Firefox scrollbars */
+html {
+  scrollbar-color: #ff7b00 #f0f0f0;
+  /* Thumb color, Track color */
+  scrollbar-width: thin;
+  /* Thin scrollbar width */
+}
+
+/* Hide native scrollbar for Firefox */
+.custom-scrollbar {
+  scrollbar-width: none;
+  /* Hide Firefox scrollbar */
+  -ms-overflow-style: none;
+  /* Hide scrollbar in IE/Edge */
+  overflow-y: scroll;
+  /* Enable scrolling */
+  position: relative;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Hide WebKit scrollbar */
+}
+
+/* Custom scrollbar container */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Hide for WebKit browsers */
+}
+
+.custom-scrollbar-track {}
+
+.scrollbar-thumb {}

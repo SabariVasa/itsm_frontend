@@ -354,7 +354,7 @@ function SuperAdminPortalLeftPanel(props) {
   }, []);
 
   return (
-    <div style={{ width: '93%', marginLeft: '0.5em', background: bgcolur, borderRadius: '0.5em' }}>
+    <div style={{ width: '95%', marginLeft: '0.5em', background: bgcolur, borderRadius: '0.5em' }}>
       {drawer && (
         <div style={{ height: 57, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <img

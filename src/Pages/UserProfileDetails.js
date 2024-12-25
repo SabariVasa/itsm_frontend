@@ -15,6 +15,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useDrawer } from '../global/commonComponents/drawer/DrawerContext';
 import { useTheme } from '../global/commonComponents/ThemeContext';
 import { Image } from '@mui/icons-material';
@@ -57,7 +58,7 @@ export default function UserProfileDetails() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate.push('/');
+    navigate.push('/sign');
   };
 
   const list = (anchor) => (
@@ -75,23 +76,36 @@ export default function UserProfileDetails() {
         <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTadSAgMa0Si3aeLKU9sPJ24i1IZX3nKOVLnA&s" height="65px" width="65px" alt="profile-pic" />
         <div>{localStorage.getItem('userName')}</div>
       </div> */}
-      <div style={{ cursor: "pointer" }}>
+      <div style={{
+        cursor: "pointer",
+
+        position: 'fixed',
+        top: '12rem',
+        left: '26.5rem'
+      }}>
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTadSAgMa0Si3aeLKU9sPJ24i1IZX3nKOVLnA&s"
           height="100px"
           width="100px"
           alt="profile-pic"
-          style={{
-            borderRadius: '22rem',
-            position: 'fixed',
-            top: '12rem',
-            left: '26.5rem'
-          }}
+          style={{ borderRadius: '22rem', }}
         />
-        <p style={{ color: "black", margin: '4em 0 0 5em' }}>{localStorage.getItem('userName')}</p>
+        <div style={{
+          position: "fixed",
+          left: "22rem",
+          top: "18em",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <h3 style={{ color: "black", marginBottom: '0%', fontWeight: 'normal' }}>{localStorage.getItem('userName')}</h3>
+          <p style={{ color: "#E81885", }}>Software Developer</p>
+        </div>
       </div>
       {/* <ContentDevider /> */}
-      <div style={{ marginTop: '2em', }} >
+      <div style={{ height: '16vh' }}></div>
+      {/* <div style={{ marginTop: '2em', }} >
         <Accordion
           sx={{
             // background: 'linear-gradient(to right bottom, #176deb, #8968da, #b668c6, #d06eb2, #de7ba2)', // Apply same gradient for Accordion
@@ -106,12 +120,12 @@ export default function UserProfileDetails() {
             id="theme-header"
             sx={{
               background: 'transparent',
-              color: '#fff',
+              // color: '#fff',
             }}
           >
             <Typography>Theme Options</Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails sx={{overflowY: 'scroll'}}>
             <List component="nav" aria-label="theme options">
               {themes.map((themeOption) => (
                 <ListItem
@@ -131,16 +145,34 @@ export default function UserProfileDetails() {
             </List>
           </AccordionDetails>
         </Accordion>
-      </div>
-      <List>
-        <ListItem button onClick={handleProfileClick}>
-          <ListItemIcon>
+      </div> */}
+      <div style={{ margin: "1em 6em" }}>
+        <List>
+          <ListItem button>
+            <ListItemText sx={{ textAlign: 'center', borderBottom: "1px solid #E81885" }} primary="Theme" />
+            <ListItemIcon>
+              <ChevronRightIcon sx={{ width: '2px' }} />
+            </ListItemIcon>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem button onClick={handleProfileClick}>
+            {/* <ListItemIcon>
             <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItem>
-      </List>
-      <Button
+          </ListItemIcon> */}
+            <ListItemText sx={{ textAlign: 'center', borderBottom: "1px solid #E81885" }} primary="Profile" />
+          </ListItem>
+        </List>
+        <List>
+          <ListItem button onClick={handleLogout}>
+            {/* <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon> */}
+            <ListItemText sx={{ textAlign: 'center', borderBottom: "1px solid #E81885" }} primary="Logout" />
+          </ListItem>
+        </List>
+      </div>
+      {/* <Button
         variant="text"
         startIcon={<LogoutIcon />}
         onClick={handleLogout}
@@ -151,8 +183,8 @@ export default function UserProfileDetails() {
         }}
       >
         Logout
-      </Button>
-    </Box>
+      </Button> */}
+    </Box >
   );
 
   return (
@@ -194,7 +226,7 @@ export default function UserProfileDetails() {
             transform: 'translate(-50%, -50%)',
             width: 800,
             height: 450,
-            overflowY: 'scroll',
+            // overflowY: 'scroll',
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
