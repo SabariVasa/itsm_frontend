@@ -21,11 +21,18 @@ import NotifyBar from '../Notification Components/NotifyBar';
 import { useSelector, useDispatch } from "react-redux";
 import { setKnowledgeContent } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom';
 
 export default function CreateKnowledge({ placeholder }) {
 
   // const{articleID} = useParams();
   const navigate = useHistory();
+  const { path } = useRouteMatch();
+
+  const handleCellClick = (params) => {
+    const updatedPath = path.replace('knowledge-creation', '');
+    navigate.push(`${updatedPath}created-knowledge-preview`);
+  };
   // const{knowledgeContent,setknowledgeContent}=useContext(RequestContext);
   const [articleNumber, setArticleNumber] = useState("");
   const [articleType, setArticleType] = useState("");
@@ -194,7 +201,7 @@ export default function CreateKnowledge({ placeholder }) {
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
         {/* <Link to="/knowledge-preview-page"> */}
-        <Button variant="contained" color="warning" style={{ width: 200, fontSize: 12, marginTop: 13, marginRight: 5 }} onClick={() => { console.log(articleContent) }}>show Preview</Button>
+        <Button variant="contained" color="warning" style={{ width: 200, fontSize: 12, marginTop: 13, marginRight: 5 }} onClick={() => handleCellClick(articleContent)}>show Preview</Button>
         {/* </Link> */}
         <Button variant="contained" color="primary" style={{ width: 200, fontSize: 12, marginTop: 13, }} onClick={() => { postArticle() }}>{update ? "Update Article" : "Publish Article"}</Button>
       </div>

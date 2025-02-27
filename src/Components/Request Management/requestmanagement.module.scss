@@ -1,0 +1,28 @@
+.custom-textfield {
+    .MuiOutlinedInput-notchedOutline {
+      border: 2px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(45deg, #ff7eb3, #e81885); // Pink gradient border
+    }
+  
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border: 2px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(45deg, #ff7eb3, #e81885);
+    }
+  
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: 2px solid;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(45deg, #ff7eb3, #e81885);
+    }
+  
+    .MuiInputLabel-root {
+      color: #e81885; // Always pink label color
+    }
+  
+    .MuiInputLabel-root.Mui-focused {
+      color: #e81885; // Ensure it stays pink when focused
+    }
+  }
+  

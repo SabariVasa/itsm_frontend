@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, TextareaAutosize, Grid, FormControlLabel, Checkbox, MenuItem, InputLabel, FormControl } from "@mui/material";
+import { Box, FormControlLabel, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { useHistory } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import * as Yup from "yup";
 import GlobalService from "../../services/GlobalService";
 import { resturls } from "../../global/utils/apiurls";
-// import UserManagmentTable from "../../Pages/userManagement/UserManagmentTable";
 import { CustomSelect, CustomTextField, GradientHeader, HeaderContainer, StyledButton, StyledFormContainer, StyledPatternL, StyledPatternR } from "../../commonComponents/StyledComponents";
 import GroupManagementViewSettingsDetails from "./GroupManagementViewSettingsDetails";
-import UserInfo from "../../models/UserInfo";
 import { useLocation, useParams } from "react-router-dom/cjs/react-router-dom";
+import { useTheme } from "../../global/commonComponents/ThemeContext";
 
 const validationSchema = Yup.object({
   groupName: Yup.string()
@@ -53,11 +52,9 @@ const validationSchema = Yup.object({
 
 const CreateGroupForm = (props) => {
   const location = useLocation();
-
-  // Check if the URL contains the keyword "update_dep"
+  const { theme } = useTheme();
   const isKeywordPresent = location.pathname.includes("update_dep");
   // console.log(isKeywordPresent, 'isKeywordPresent');
-  const userDetails = UserInfo.getUserDetail();
   const { group_id, orgId } = useParams();
   const { organizationId, groupId } = props;
 
@@ -67,11 +64,8 @@ const CreateGroupForm = (props) => {
   const history = useHistory();
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showMemberEnable, setShowMemberEnable] = useState(false);
 
   const handleSubmit = (values) => {
-    console.log(values, 'values...');
-    // const userIds =  [ "67270aad16f9ac7caad6e541", "67138e4832d08628c5faabae", "67091cafaf07335b3ce6a7dc", "67091cedaf07335b3ce6a7dd" ]
     const groupMembers = selectedUserRows || []
 
     const url = group ? `${resturls.updateGroup}/${group.id}` : resturls.CreateNewGroup;
@@ -109,10 +103,6 @@ const CreateGroupForm = (props) => {
 
   return (
     <Box>
-      {/* <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-
-        <h3>{group ? 'Edit Group' : 'Add New Department'}</h3>
-      </div> */}
       <Formik
         initialValues={{
           groupName: group?.groupName || "",
@@ -160,19 +150,15 @@ const CreateGroupForm = (props) => {
                   name="groupType"
                   labelId="groupType-label"
                 >
-                  <MenuItem sx={{ color: "#E81885" }} value="Type1">Type 1</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Type2">Type 2</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Type3">Type 3</MenuItem>
+                  <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="Type1">Type 1</MenuItem>
+                  <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="Type2">Type 2</MenuItem>
+                  <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="Type3">Type 3</MenuItem>
                 </Field>
                 <StyledPatternR
                   style={{ opacity: loading ? 0.5 : 1 }}
                 />
               </FormControl>
 
-              {/* Group Description */}
-
-
-              {/* Group Scope */}
               <div style={{ position: "relative" }}>
                 <Field
                   name="groupScope"
@@ -206,27 +192,15 @@ const CreateGroupForm = (props) => {
                   name="userPermission"
                   labelId="userPermission-label"
                 >
-                  <MenuItem sx={{ color: "#E81885" }} value="Super Admin">Super Admin</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Admin">Admin</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="End User">End User</MenuItem>
+                  <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="Super Admin">Super Admin</MenuItem>
+                  <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="Admin">Admin</MenuItem>
+                  <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="End User">End User</MenuItem>
                 </Field>
                 <StyledPatternR
                   style={{ opacity: loading ? 0.5 : 1 }}
                 />
               </FormControl>
 
-              {/* <FormControlLabel
-                control={
-                  <Field
-                    name="activeStatus"
-                    // as={CustomTextField}
-                    type="checkbox"
-                    checked={values.activeStatus}
-                    onChange={() => setFieldValue("activeStatus", !values.activeStatus)}
-                  />
-                }
-                label="Active Status"
-              /> */}
 
               <FormControlLabel
                 control={
@@ -237,7 +211,7 @@ const CreateGroupForm = (props) => {
                     onChange={() => setFieldValue("activeStatus", !values.activeStatus)}
                     style={{
                       background: values.activeStatus
-                        ? "linear-gradient(90deg, #F51275 0%, #622098 100%)"
+                        ? `${theme.outerBodyColor}`
                         : "transparent",
                       border: "1px solid #ccc",
                       borderRadius: "4px",

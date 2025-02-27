@@ -20,6 +20,38 @@ export default function UserIncidentTable(props) {
   const [loading, setLoading] = useState(true);
   const [requestedData, setRequestedData] = useState([]);
 
+  useEffect(() => {
+    if (requestedData?.length > 0) {
+      const excludeFields = ["id","notes", "assignGroup","category","subCategory","service","serviceCategory","configurationItem","impactReason","urgencyReason","createdBy","shortDescription","description","callerDepartment","updatedBy","notesUpdateTime"];
+      const dynamicHeaders = Object.keys(requestedData[0])
+      .filter((key) =>!excludeFields.includes(key))// Exclude the 'notes' field
+        .map((key) => {
+          switch (key) {
+            case "caller":
+            case "callerDepartment":
+            case "assignGroup":
+            case "assignedTo":
+              return {
+                field: key,
+                headerName: key === "caller" ? "Caller Name" : "Assigned To",
+                width: 200,
+                renderCell: (params) => params.value?.name || "N/A",
+              };
+            default:
+              return {
+                field: key,
+                headerName: key
+                  .replace(/([a-z])([A-Z])/g, "$1 $2")
+                  .replace(/([_])/g, " ")
+                  .toUpperCase(),
+                width: 150,
+              };
+          }
+        });
+      setHeaderData(dynamicHeaders);
+    }
+  }, [requestedData]);
+
   const GeneralRequestHeaderData = [
     { field: 'userIncidentId', headerName: 'Incident ID', width: 150, renderCell: (params) => {
         return <a href={`/incident/${params.id}`}>{params.id}</a>;
@@ -102,7 +134,7 @@ export default function UserIncidentTable(props) {
             },
             '& .MuiDataGrid-columnHeader': {
               backgroundColor: '#bfbfbf',
-              color: "white"
+              color: "white",
             },
           }}
           pageSizeOptions={[10]}

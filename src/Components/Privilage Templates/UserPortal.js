@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import NetworkPingIcon from '@mui/icons-material/NetworkPing';
@@ -9,10 +9,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useMsal } from '@azure/msal-react';
 import { googleLogout } from '@react-oauth/google';
 import Tooltip from '@mui/material/Tooltip';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function UserPortal(props) {
   const { instance } = useMsal();
-  const navigate = useNavigate();
+  const navigate = useHistory();
   const [isComponentsOpen, setIsComponentsOpen] = useState(false);
   const [isCMDBOpen, setIsCMDBOpen] = useState(false);
   const [OverClicked, setOnoverviewClicked] = useState(false);
@@ -135,11 +136,11 @@ export default function UserPortal(props) {
           </Link>
           {incidentOpen ? <div>
             <ol className={`dropdown ${incidentOpen ? 'open' : ''}`} >
-              <li className="dropdown-item" style={style.listFontSize} onClick={() => { navigate("/create-incident") }}>
+              <li className="dropdown-item" style={style.listFontSize} onClick={() => { navigate.push("/create-incident") }}>
                 {/* <span  className="fontStyle"></span> */}
                 <span style={{ color: "white" }}>Create Incident</span>
               </li>
-              <li className="dropdown-item" style={style.listFontSize} onClick={() => { navigate("/request-status/incident") }}>
+              <li className="dropdown-item" style={style.listFontSize} onClick={() => { navigate.push("/request-status/incident") }}>
                 <spna style={{ color: "white" }}>Incident Status</spna>
               </li>
               {/* <li className="dropdown-item">

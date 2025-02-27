@@ -133,40 +133,15 @@ export default function CreateChange() {
     }).catch((err) => { console.log(err) })
   }
 
-  useEffect(() => {
-    // setChangeNumber()
-    // setModel(changeRequest.changeModel)
-    // setRequestedBy(changeRequest.requestBy)
-    // setState(changeRequest.changeState)
-    // setSelecteditem(changeRequest.selectedItem)
-    // setConflictStatus(changeRequest.conflictStatus)
-    // setAssignmentTo(changeRequest.assignmentTo)
-    // setAssignmentGroup(changeRequest.assignementGroup)
-    // setPriority(changeRequest.changePriority)
-    // setRisk(changeRequest.changeRisk)
-    // setImpact(changeRequest.changeImpact)
-    // setShortDescription(changeRequest.shortDescription)
-    // setDescription(changeRequest.Description)
-    // setImplementation(changeRequest.implementationPlan)
-    // setBackoutPlan(changeRequest.backoutPlan)
-    // setTestPlan(changeRequest.TestPlan)
-    // setPlanningStartDate(changeRequest.planningStartDate)
-    // setPlanningEndDate(changeRequest.planningEndDate)
-    // setActualStartDate(changeRequest.actualStartdate)
-    // setActualEndDate(changeRequest.actualEnddate)
-    // if (searchParam.get("CHID")) {
-    //   getChangeDetails(searchParam.get("CHID"));
-    //   setUpdate(true)
-    // }
+  // useEffect(() => {
 
+  // }, [])
 
-  }, [])
-
-  useEffect(() => {
-    // if (!searchParam.get("CHID")) {
-    //   countChanges();
-    // }
-  }, [])
+  // useEffect(() => {
+  //   // if (!searchParam.get("CHID")) {
+  //   //   countChanges();
+  //   // }
+  // }, [])
   useEffect(() => {
     setModel(model)
     setRequestedBy(RequestedBy)

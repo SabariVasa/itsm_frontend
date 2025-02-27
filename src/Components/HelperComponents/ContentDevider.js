@@ -1,10 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { useTheme } from '../../global/commonComponents/ThemeContext';
+import { Divider } from '@mui/material';
 
 export default function ContentDevider(props) {
+  const { theme } = useTheme()
   return (
-    <div class="centered-rule">
-       {props.img? <img width="50px" height="50px" src={props.img}/>:null}
-        <h3 style={{fontSize:23,marginLeft:20}}>{props.title}</h3>
+    <div>
+      <h1
+        style={{
+          color: `${theme.InnerBodyfontColor}`,
+        }}
+        className='p-2 ml-2 !text-xl'
+      >
+        {props.title}
+      </h1>
+      <Divider />
     </div>
   )
 }

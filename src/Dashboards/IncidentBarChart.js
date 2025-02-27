@@ -15,8 +15,8 @@ export default function IncidentBarChart() {
       <BarChart data={dataset} margin={{ top: 40, right: 30, left: 20, bottom: 5 }}>
         <defs>
           <linearGradient id="gradientColor" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#F51275" />
-            <stop offset="100%" stopColor="#622098" />
+            <stop offset="30%" stopColor="#540c00" />
+            <stop offset="100%" stopColor="#9A7127" />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" />

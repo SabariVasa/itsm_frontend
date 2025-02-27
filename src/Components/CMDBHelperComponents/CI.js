@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ContentDevider from '../HelperComponents/ContentDevider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import StepperComponent from '../HelperComponents/StepperComponent';
 import TechnicalInfo from './TechnicalInfo';
 import SoftwareInfo from './SoftwareInfo';
@@ -10,6 +10,7 @@ import CMDBService from './update-CMDB-Component/CMDBService';
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
 import GeneratedForm from '../cmdb/classmanagement/GeneratedForm';
+import { sharedStyles } from '../../commonComponents/StyledComponents';
 
 
 
@@ -77,7 +78,7 @@ export default function CI() {
   return (
     callMethod ? (
       <Box sx={{ minWidth: 80, maxWidth: '80%', marginLeft: 10, marginTop: 2 }}>
-        
+
         <GeneratedForm formFields={formData}
           setFormFields={setFormData}
           selectCategoryType={'selectCategoryType'}
@@ -101,13 +102,15 @@ export default function CI() {
           <Grid item xs={12}>
             <Box sx={{ minWidth: 80, maxWidth: '80%', marginLeft: 10, marginTop: 2 }}>
               <FormControl fullWidth>
-                <InputLabel id="class-select-label">CI Type</InputLabel>
-                <Select
+                {/* <InputLabel id="class-select-label">CI Type</InputLabel> */}
+                <TextField
+                  select
                   labelId="class-select-label"
                   id="class-select"
                   value={ServiceValue}
                   label="Select Class"
                   onChange={(e) => setServiceValue(e.target.value)}
+                  sx={sharedStyles}
                 >
                   <MenuItem value="">
                     <em>Select Service</em>
@@ -115,7 +118,7 @@ export default function CI() {
                   {OrgOptions.map((item, index) => {
                     return <MenuItem value={item.value} key={index} >{item.value}</MenuItem>
                   })}
-                </Select>
+                </TextField>
               </FormControl>
             </Box>
           </Grid>
@@ -125,8 +128,10 @@ export default function CI() {
             <Grid item xs={12}>
               <Box sx={{ minWidth: 80, maxWidth: '80%', marginLeft: 10, marginTop: 2 }}>
                 <FormControl fullWidth>
-                  <InputLabel id="class-select-label">Select Class</InputLabel>
-                  <Select
+                  {/* <InputLabel id="class-select-label">Select Class</InputLabel> */}
+                  <TextField
+                    select
+                    sx={sharedStyles}
                     labelId="class-select-label"
                     id="class-select"
                     value={selectedClass}
@@ -138,7 +143,7 @@ export default function CI() {
                         {item.className}
                       </MenuItem>
                     ))}
-                  </Select>
+                  </TextField>
                 </FormControl>
               </Box>
             </Grid>

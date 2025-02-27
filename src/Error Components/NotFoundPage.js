@@ -3,9 +3,10 @@ import animationData from "../lotties/NotFound.json";
 import Lottie from 'react-lottie';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function NotFoundPage() {
-    const navigate=useNavigate();
+    const navigate=useHistory();
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -25,7 +26,7 @@ function NotFoundPage() {
         <h1>404 NOT FOUND</h1>
         </div>
         <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <Button variant="outlined"  color="primary" style={{width:120}} onClick={()=>{navigate(-1)}}>Go Back</Button>
+        <Button variant="outlined"  color="primary" style={{width:120}} onClick={()=>{navigate.goBack()}}>Go Back</Button>
         </div>
       </div>
   )

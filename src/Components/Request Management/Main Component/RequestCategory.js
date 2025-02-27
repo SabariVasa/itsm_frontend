@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import RequestForm from '../Helper Components/RequestForm';
 import { Hardware } from '@mui/icons-material';
 import GeneralService from './GeneralService';
+import { StyledCard, StyledTypography } from '../../../commonComponents/StyledComponents';
 
 function RequestCategory() {
    const history = useHistory();
@@ -15,19 +16,30 @@ function RequestCategory() {
       <>
          <ContentDevider title="Request Catelog" />
          <Grid container spacing={3} p={10}>
-            <Grid xs={4}>
-               <div style={{ height: 150, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} className='requestItemCard' onClick={() => history.push(`${path}/request_service/general-service`)}>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSemm1Dd0iu6XkNa_nD8HcLarmbY1EkJLpVtA&s" height="80" width="120" />
-                  <h3 style={{ color: "black" }}>General service request</h3>
-               </div>
+            <Grid item xs={4}>
+               <StyledCard onClick={() => history.push(`${path}/request_service/general-service`)}>
+                  <img
+                     src="./general_request.png"
+                     alt="General Service"
+                     height="80"
+                     width="120"
+                  />
+                  <StyledTypography>General service request</StyledTypography>
+               </StyledCard>
             </Grid>
-            <Grid xs={4}>
-               <div onClick={() => history.push(`${path}/request_service/hardware`)} style={{ height: 150, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} className='requestItemCard' >
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKb4zi2eLNEFEQUhycbKIU9CFZ6yojnJChdw&s" height="80" width="100" />
-                  <h3 style={{ color: "black" }}>Hardware Request</h3>
-               </div>
+            <Grid item xs={4}>
+               <StyledCard onClick={() => history.push(`${path}/request_service/hardware`)}>
+                  <img
+                     src="./hardware_request.png"
+                     alt="Hardware Request"
+                     height="80"
+                     width="100"
+                  />
+                  <StyledTypography>Hardware Request</StyledTypography>
+               </StyledCard>
             </Grid>
          </Grid>
+
       </>
    )
 }

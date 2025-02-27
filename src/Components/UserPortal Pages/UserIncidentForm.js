@@ -1,20 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Stack } from '@mui/material';
-// import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { serverAPI } from '../../Utils/Server';
-import ContentDevider from '../HelperComponents/ContentDevider';
-import TextAreaResizer from '../HelperComponents/TextAreaResizer';
-import SelectField from '../HelperComponents/SelectField';
-import NotifyBar from '../Notification Components/NotifyBar';
-import DraggableModal from '../User Management/DraggableModal';
-// import { setEndUserIncident } from '../../Redux state management/Redux Slices/IncidentRequestSlice';
-import SearchTextField from '../HelperComponents/SearchTextField';
-import ReactLoading from 'react-loading';
-// import { useNavigate } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
-// import CmdbGridContainer from "../../Components/HelperComponents/GridContainer";
-import CustomTextField from '../HelperComponents/TextField';
+import { Button, FormControl, InputLabel, MenuItem, Stack } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -24,39 +9,115 @@ import { Box } from "@mui/material";
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from "yup";
+import { CustomSelect, CustomTextField, GradientHeader, HeaderContainer, StyledFormContainer, StyledPatternL, StyledPatternR } from '../../commonComponents/StyledComponents';
+import { useTheme } from '../../global/commonComponents/ThemeContext';
+import { useParams } from 'react-router-dom/cjs/react-router-dom';
+import DefaultLoader from '../../global/commonComponents/DefaultLoader';
+import toast from 'react-hot-toast';
 
 export default function UserIncidentForm(props) {
-  // const dispatch = useDispatch();
-  const { activeComponentMethod: Id } = props;
-  // const endUserIncident = useSelector((state) => state.incidentReducers.endUserIncident);
-  // const [userName, setUserName] = useState("");
-  const [emailAddress, setEmailAddress] = useState(localStorage.getItem("userEmail"));
+  const { isEdit } = props;
+  const { theme } = useTheme();
+  const history = useHistory();
+
+  const [impactRatio, setImpactRatio] = useState("");
+  const [urgencyRatio, setUrgencyRatio] = useState("");
+  const [priorityRatio, setPriorityRatio] = useState("");
+  const { incident_id } = useParams();
   const [impact, setImpact] = useState("");
   const [urgency, setUrgency] = useState("");
-  const [title, setTitle] = useState("");
-  const [Description, setDescription] = useState("");
-
-  const [priority, setPriority] = useState("");
-  const [imapctStatus, setImpactStatus] = useState("");
-
-  const [createdBy, setCreatedBy] = useState("");
-
+  const [Number, setNumber] = useState();
+  const [Message, setMessage] = useState({
+    open: false,
+    vertical: 'bottom',
+    horizontal: 'center',
+  });
+  const [loader, setLoader] = useState(false)
   const [comment, setComment] = useState("");
   const [notes, setNotes] = useState([]);
-
   const [value, setValue] = React.useState('1');
-  const [UpdatedDate, setUpdatedDate] = React.useState("");
 
+  const formatDateTime = () => {
+    const date = new Date();
+    const formattedDate = new Intl.DateTimeFormat("en-CA", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
 
+    const formattedTime = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    }).format(date);
+
+    return `${formattedDate}, ${formattedTime}`;
+  };
+
+  const notifySuccess = (message) => {
+    toast.success(message,
+      history.goBack(),
+      {
+        duration: 4000,
+        position: 'top-right',
+      });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message,
+      history.goBack(),
+      {
+        duration: 4000,
+        position: 'top-right',
+      });
+  };
+
+  const [intialValues, setIntialValues] = useState({
+    state: "New",
+    caller: { id: localStorage.getItem("userId"), name: localStorage.getItem("userName") },
+    impactReason: "",
+    urgencyReason: "",
+    description: "",
+    impact: impactRatio,
+    urgency: urgencyRatio,
+    priority: priorityRatio,
+    createdBy: localStorage.getItem("userId"),
+    updatedBy: {
+      id: localStorage.getItem('userId'),
+      name: localStorage.getItem('userName'),
+    },
+    notesUpdateTime: formatDateTime()
+  })
+
+  const [openedDate, setOpenedDate] = useState();
   const handleAddNote = () => {
-    if (comment.trim()) { // Check for empty value
+    if (comment.trim()) {
       const noteObject = {
         text: comment,
-        createdBy: localStorage.getItem("userEmail"),
-        timestamp: new Date().toLocaleString() // Add timestamp
+        createdBy: localStorage.getItem("userName"),
+        timeStamp: formatDateTime(),
       };
-      setNotes([noteObject, ...notes]); // Add new note object, preserving order
-      setComment(''); // Clear input after adding
+      GlobalService.generalSelect(
+        (response) => {
+          const { estatus, emessage } = response;
+          if (estatus) {
+            notifySuccess(emessage);
+            setLoader(true)
+            setMessage({ ...Message, open: true })
+          } else {
+            setMessage({ ...Message, open: true })
+            notifyError(emessage);
+          }
+        },
+        `${resturls.addNotes}${incident_id}`,
+        { ...noteObject },
+        'PUT'
+      );
+      setNotes([noteObject, ...notes]);
+      setComment('');
     } else {
       alert('Please enter a note before adding.');
     }
@@ -65,9 +126,7 @@ export default function UserIncidentForm(props) {
     setValue(newValue);
   };
 
-  const [error, setError] = useState(false);
-  const [notifyStatus, setNotifyStatus] = useState(false);
-  const [notifyMessage, setNotifyMessage] = useState("");
+
 
   const impactOptions = [
     { value: "This issue has a minor impact on my productivity" },
@@ -76,6 +135,8 @@ export default function UserIncidentForm(props) {
     { value: "Issues affect more than just me and prevents critical business functions" }
   ];
 
+  // const priorityOptions = [{ value: "Low" }, { value: "High" }, { value: "Medium" }]
+
   const urgencyOptions = [
     { value: "Initial investigation with next business day" },
     { value: "Initial investigation within the next 4 business hours" },
@@ -83,10 +144,16 @@ export default function UserIncidentForm(props) {
     { value: "This issue has financial, reputational or regulatory impact" }
   ];
 
+  const priorityOptions = [
+    { value: "Low" },
+    { value: "Medium" },
+    { value: "High" }
+  ];
+
+
 
 
   function getPrioritiesAndImpact(selectedImpact, selectedUrgency) {
-    // Define mappings
     const impactLevels = {
       "This issue has a minor impact on my productivity": "Low",
       "This issue making me less productivity,but i can still work": "Medium",
@@ -101,11 +168,9 @@ export default function UserIncidentForm(props) {
       "This issue has financial, reputational or regulatory impact": "High"
     };
 
-    // Get the impact and urgency level from the mappings
-    const impactLevel = impactLevels[selectedImpact] || "unknown";
-    const urgencyLevel = urgencyLevels[selectedUrgency] || "unknown";
+    const impactLevel = impactLevels[selectedImpact] || "Low";
+    const urgencyLevel = urgencyLevels[selectedUrgency] || "Low";
 
-    // Determine priority based on impact and urgency
     const priorityLevel = (() => {
       if (urgencyLevel === "High" || impactLevel === "High") {
         return "High";
@@ -123,64 +188,6 @@ export default function UserIncidentForm(props) {
     };
   }
 
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    setEmailAddress('endUserIncident.Email');
-  }, []);
-
-  useEffect(() => {
-    fetchRequestCount();
-    fetchDocumentCount();
-  }, []);
-
-  const [requestCount, setRequestCount] = useState(0);
-  const [requestID, setRequestID] = useState("");
-  const [incidentId, setIncidentId] = useState("");
-
-  const [loading, setLoading] = useState(false);
-  // const { vertical, horizontal} = Message;
-  const [isVisible, setisVisible] = useState(true);
-  const [ErrorMessage, setErrorMessage] = useState();
-  const [Success, setSuccess] = useState(false);
-
-
-  async function fetchRequestCount() {
-    const email = localStorage.getItem("userEmail");
-    try {
-      const res = await axios.get(`${serverAPI}/incident-count-by-email/user@teksiblegroup.com`);
-
-      setRequestCount(res.data.responseData);
-      let TempNum = parseInt(res.data.responseData) + 1;
-      setRequestID("INC00000" + TempNum);
-      console.log(requestCount, res.data.responseData);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const navigate = useHistory();
-
-  const fetchDocumentCount = async () => {
-    await axios.get(`${serverAPI}/allIncidentsCount`).then((res) => {
-      let TempNum = parseInt(res.data.responseData) + 1;
-      setIncidentId("INC000000" + TempNum)
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
-
-  const [impactRatio, setImpactRatio] = useState("");
-  const [urgencyRatio, setUrgencyRatio] = useState("");
-  const [priorityRatio, setPriorityRatio] = useState("");
-
   useEffect(() => {
     if (impact && urgency) {
       const { impact: impactLevel, urgency: urgencyLevel, priority } = getPrioritiesAndImpact(impact, urgency);
@@ -188,231 +195,591 @@ export default function UserIncidentForm(props) {
       setUrgencyRatio(urgencyLevel);
       setPriorityRatio(priority);
     }
+
   }, [impact, urgency]);
 
+  const validationSchema = Yup.object({
+    urgency: Yup.string().required("Required"),
+    description: Yup.string().required("Required"),
+  });
 
-  function spinnerLoading(status) {
-    setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      if (status === 200) {
-        setNotifyStatus(true);
-        setNotifyMessage("Request Succesfully submitted");
-        navigate("/");
-      } else {
-        setNotifyStatus(true);
-        setNotifyMessage("something went wrong!please try again later")
-      }
-    }, 2000)
-  }
-  async function CreateRequest() {
-    const data = {
-      incidentId,
-      userIncidentId: requestID,
-      Title: title,
-      Description: Description,
-      Email: emailAddress,
-      impact: impactRatio,
-      urgency: urgencyRatio,
-      priority: priorityRatio,
-      state: "New",
-      assignmentTo: "Not yet assigned",
-      impactReason: impact,
-      urgencyReason: urgency,
-      email: emailAddress,
-      createdBy: localStorage.getItem("userEmail"),
-      shortDescription: Description
-    };
-    // await axios.post(`${serverAPI}/createIncident`, data).then((res) => {
-    //   spinnerLoading(res.data.statusCode);
-    //   console.log(res.data)
-    // }).catch((err) => { console.log(err) });
-    // console.log(data);
+
+
+  const fetchDocumentCount = async () => {
     GlobalService.generalSelect(
       (response) => {
-        const { estatus, data, statusCode } = response;
-        console.log(response, 'responseData');
-        if (statusCode === 200) {
-          console.log(response, 'response');
-          spinnerLoading(response.statusCode);
+        const { estatus, data } = response;
+        if (estatus) {
+          setNumber(data)
         } else {
-          console.log('Create Incident Fail');
+          setMessage({ ...Message, open: true });
+          notifyError("Sorry something went wrong");
         }
       },
-      resturls.createNewIncident,
-      { data },
-      'POST'
+      resturls.allIncidentCount,
+      {},
+      'GET'
+    );
+  };
+
+  const Submit = (values) => {
+    if (incident_id) {
+      GlobalService.generalSelect(
+        (response) => {
+          const { estatus, emessage } = response;
+          if (estatus) {
+            setLoader(true)
+            notifySuccess(emessage);
+            setMessage({ ...Message, open: true })
+          } else {
+            setMessage({ ...Message, open: true })
+            notifyError(emessage);
+          }
+        },
+        `${resturls.updateIncident}${incident_id}`,
+        { ...values, Notes: notes },
+        'POST'
+      );
+    } else {
+      GlobalService.generalSelect(
+        (response) => {
+          const { estatus, emessage } = response;
+          if (estatus) {
+            notifySuccess(emessage)
+            setMessage({ ...Message, open: true })
+          } else {
+            setMessage({ ...Message, open: true })
+            notifyError(emessage);
+          }
+        },
+        resturls.createNewIncident,
+        { ...values, incidentId: Number, notes: notes },
+        'POST'
+      );
+    }
+  }
+  useEffect(() => {
+    const today = new Date();
+    console.log(formatDateTime(today));
+  }, [])
+
+
+  const getIncidentData = () => {
+    setLoader(true);
+    GlobalService.generalSelect(
+      (respdata) => {
+        const { estatus, data } = respdata;
+        if (estatus) {
+          const incidentValues = data[0];
+          // const { urgency, priority, impact } = getPrioritiesAndImpact(incidentValues?.impactReason, incidentValues?.urgencyReason);
+          setIntialValues({
+            state: incidentValues?.state,
+            caller: incidentValues?.caller,
+            impactReason: incidentValues?.impactReason,
+            urgencyReason: incidentValues?.urgencyReason,
+            description: incidentValues?.description,
+            impact: incidentValues?.impact,
+            urgency: incidentValues?.urgency,
+            priority: incidentValues?.priority,
+            createdBy: incidentValues?.createdBy,
+            assignedTo: incidentValues?.assignedTo,
+            assignGroup: incidentValues?.assignGroup,
+            updatedBy: {
+              id: localStorage.getItem("userId"),
+              name: localStorage.getItem("userName")
+            },
+            notesUpdateTime: formatDateTime()
+          })
+          setLoader(false);
+          console.log(intialValues, 'incidentValues');
+          setNotes([...incidentValues?.notes].reverse());
+          setNumber(incidentValues?.incidentId)
+          setOpenedDate(incidentValues?.openedDate);
+        }
+      },
+      `${resturls.getIncidentById}/${incident_id}`,
+      {},
+      'GET'
     );
   }
 
-  const [incidentData, setIncidentData] = useState({});
-  const [openedDate, setOpenedDate] = useState("");
-
-  const fetchElementById = async () => {
-    const email = localStorage.getItem("userEmail");
-    await axios.get(`${serverAPI}/getIncidentByEmailAndUserIncidentId/${email}/${Id}`).then((res) => {
-      setIncidentData(res.data[0]);
-      setImpact(res.data[0].impactReason)
-      setUrgency(res.data[0].urgencyReason)
-      setEmailAddress(res.data[0].email);
-      setDescription(res.data[0].shortDescription);
-      setOpenedDate(res.data[0].openedDate);
-      setPriority(res.data[0].priority);
-      setImpactStatus(res.data[0].impact);
-      console.log(incidentData)
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
-
-  const updateData = async (id) => {
-    const data = {
-      incidentId: Id,
-      state: incidentData.state,
-      impact: imapctStatus,
-      priority,
-      shortDescription: Description
-    }
-    await axios.post(`${serverAPI}/Update-Incident/${id}`, data).then((res) => {
-      console.log("Succesfully Inci updated")
-      if (res.data) {
-        spinnerLoading(res.data.status);
-        setSuccess(true);
-      }
-    }).catch((err) => {
-      setErrorMessage("Something went wrong");
-    });
-  }
-
-
-
   useEffect(() => {
-    Id && fetchElementById();
-  }, [Id])
-
+    fetchDocumentCount();
+    if (incident_id) {
+      getIncidentData()
+    }
+  }, []);
 
   return (
-    <div style={{ width: "100%", overflowX: "hidden" }}>
-      <Stack style={{ display: 'flex', alignItems: "center", justifyContent: "right", paddingRight: 20, marginTop: 20 }} direction="row">
-        <Button variant="outlined" color="primary" style={{ width: 200, fontSize: 12, marginRight: 10 }} onClick={() => { if (!Id) { CreateRequest() } else { updateData(incidentData.incidentId) } }}>{Id ? "Update Request" : "Create Request"}</Button>
-        <Button variant="outlined" color="warning" style={{ width: 200, fontSize: 12 }}>Cancel Request</Button>
-      </Stack>
-      <ContentDevider title="Incident Ticket" />
-      <div style={{ marginTop: 30, marginRight: 10 }}>
-        {loading ? <div style={{ position: "absolute", left: 150, bottom: 100, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "60vh" }}>
-          <ReactLoading type={"spin"} color={"#e699ff"} />
-        </div> : null}
-        {Id ?
-          <div style={{}}>
-            {/* <CmdbGridContainer MenuItems={props.MenuItems1} show={[true,true,false,false]} name={props.Field1} dropdown={[false,true]} SelectedValue2={props.Type} setSelectValue2={props.setType} Name1={props.serverName}  setName1={props.setServerName}/> */}
-            <Grid container sx={{ width: '100%', display: 'flex', alignItems: 'center', marginBottom: 2 }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              <Grid item xs={4}>
-                <CustomTextField Name={incidentData.priority} setName={setPriority} disabled name={"Priority"} />
-              </Grid>
-              <Grid item xs={4} style={{ marginRight: 2 }}>
-                <CustomTextField Name={incidentData.impact} setImpact={setImpactStatus} disabled name={"Impact assigned"} />
-              </Grid>
-            </Grid>
-            <Grid container sx={{ width: '100%', display: 'flex', alignItems: 'center', marginBottom: 2 }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-              <Grid item xs={4}>
-                <CustomTextField Name={incidentData.state} disabled name={"Status"} />
-              </Grid>
-              <Grid item xs={4} style={{ marginRight: 2 }}>
-                <CustomTextField Name={incidentData.assignmentTo} disabled name={"Assigned To"} />
-              </Grid>
-            </Grid>
-          </div>
-          : null}
-        <Grid container style={{ width: "111%" }}>
-          <Grid item xs={12}>
-            <SearchTextField
-              style={{ width: "80%", marginLeft: 78 }}
-              placeholder={"Customer Email"}
-              fieldValue={emailAddress}
-              setFieldValue={setEmailAddress}
-              search={true}
-              handleClickOpen={handleClickOpen}
-              open={open}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <SelectField
-              label="What impact does this have on your ability to work?"
-              SelectedValue={impact}
-              setSelectValue={setImpact}
-              MenuItems={impactOptions}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <SelectField
-              label="How quickly do we need to start looking into this?"
-              SelectedValue={urgency}
-              setSelectValue={setUrgency}
-              MenuItems={urgencyOptions}
-            />
-          </Grid>
-        </Grid>
+    loader ? (
+      <DefaultLoader />
+    ) : (
+      <div style={{ margin: '2em', height: '100%' }}>
+        <Formik
+          initialValues={intialValues}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            Submit(values);
+          }}
+        >
+          {({ errors, touched, setFieldValue, values }) => (
+            <Form>
+              <HeaderContainer>
+                <GradientHeader>{incident_id ? "Update Incident" : "Create Incident"}</GradientHeader>
+                <Button
+                  sx={{
+                    background: `${theme.btnColor}`,
+                    color: `${theme.outerBodyfontColor}`,
+                    '&:hover': {
+                      backgroundColor: `${theme.btnHoverColor}`,
+                    },
+                  }}
+                  type="submit"
+                >
+                  {isEdit ? 'Update Incident' : 'Create New Incident'}
+                </Button>
+              </HeaderContainer>
+              <StyledFormContainer>
+                {incident_id ? <div style={{ position: "relative" }}>
+                  {console.log(values, 'incidentValues')}
+                  <Field
+                    name="incidentId"
+                    as={CustomTextField}
+                    label="Incident Id"
+                    value={incident_id || ""}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  />
+                  {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                  <StyledPatternL style={{ opacity: 1 }} />
+                </div> : null}
+                {incident_id ? <div style={{ position: "relative" }}>
+                  {console.log(values, 'incidentValues')}
+                  <Field
+                    name="state"
+                    as={CustomTextField}
+                    label="State"
+                    value={values?.state || "New"}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  />
+                  {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                  <StyledPatternL style={{ opacity: 1 }} />
+                </div> : null}
+                {incident_id ? <div style={{ position: "relative" }}>
+                  <Field
+                    name="assignedTo"
+                    as={CustomTextField}
+                    label="Assigned To"
+                    value={values?.assignedTo?.name || "Not yet assigned"}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  />
+                  {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                  <StyledPatternR style={{ opacity: 1 }} />
+                </div> : null}
+                {incident_id ? <div style={{ position: "relative" }}>
+                  <Field
+                    name="assignGroup"
+                    as={CustomTextField}
+                    label="Assigned Group"
+                    value={values?.assignGroup?.name || "Not yet assigned"}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  />
+                  {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                  <StyledPatternR style={{ opacity: 1 }} />
+                </div> : null}
+                {/* {incident_id ? <div style={{ position: "relative" }}>
+                  <Field
+                    name="priority"
+                    as={CustomSelect}
+                    label="Priority"
+                    value={values?.priority || ""}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    // disabled={true}
+                    setPriorityRatio={values.priority}
+                    InputLabelProps={{ shrink: true }}
+                  >
+                    <MenuItem value="High">High</MenuItem>
+                    <MenuItem value="Medium">Medium</MenuItem>
+                    <MenuItem value="Low">Low</MenuItem>
+                  </Field> */}
+                  {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                  {/* <StyledPatternL style={{ opacity: 1 }} />
+                </div> : null} */}
 
-        <Grid container style={{ width: "86%", marginLeft: 80 }}>
-          <Grid item xs={12}>
-            <TextAreaResizer
-              label={Id ? "If you consider changing impact and urgency please enter the proper reason for that" : "Enter the detailed description of the issue"}
-              value={Description}
-              setValue={setDescription}
-            />
-          </Grid>
-        </Grid>
-      </div>
-      <DraggableModal open={open} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} />
-      <NotifyBar error={error} setError={setError} notifyMessage={notifyMessage} notifyStatus={notifyStatus} setNotifyStatus={setNotifyStatus} />
+                {/* {incident_id?<div style={{ position: "relative" }}>
+                  {console.log(values, 'incidentValues')}
+                  <Field
+                    name="incidentId"
+                    as={CustomTextField}
+                    label="Incident Id"
+                    value={incident_id || ""}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  /> */}
+                {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                {/* <StyledPatternL style={{ opacity: loading ? 0.5 : 1 }} />
+                </div>:null}   */}
 
-      {Id ? <Box sx={{ width: '100%', typography: 'body1', marginTop: 10 }}>
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="Activity Bar" value="1" />
-            </TabList>
-          </Box>
 
-          <TabPanel value="1">
-            <Stack style={{ display: 'flex', alignItems: "center", justifyContent: "space-between", paddingRight: 20, marginTop: 20 }} direction="row">
-              <label style={{ display: 'block', color: "grey", marginLeft: 10, marginBottom: 10 }} htmlFor="textarea">
-                Activity Notes :
-              </label>
-              <Button variant="contained" color="secondary" style={{ width: 130, fontSize: 12, marginBottom: 10 }} onClick={handleAddNote}>update notes</Button>
-            </Stack>
-            <TextareaAutosize aria-label="empty textarea" minRows={5} placeholder="Enter the notes" style={{ width: "100%", padding: 20 }} value={comment} onChange={(e) => { setComment(e.target.value) }} />
 
-            <Box style={{ display: "flex", flexDirection: "column", justifyContent: "center", backgroundColor: "#e6e6e6", borderRadius: 10, paddingLeft: 10 }}>
-              {/* <div> */}
-              <h4 style={{ fontWeight: "normal", fontSize: 16 }}>Incident request raised by <strong>user@teksiblegroup.com</strong></h4>
-              {/* </div> */}
-              <h4 style={{ fontWeight: "normal", marginTop: -20, fontSize: 15 }}>created at <strong>{openedDate}</strong> </h4>
+                <div style={{ position: "relative" }}>
+                  <Field
+                    name="caller"
+                    as={CustomTextField}
+                    label="Caller"
+                    value={values.caller?.name || ""}
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  />
+                  {/* <StyledIcon
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                  alt="AI Icon"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  style={{ opacity: loading ? 0.5 : 1, width: 35, height: 35 }}
+                /> */}
+                  <StyledPatternL style={{ opacity: 1 }} />
+                </div>
+               {incident_id? <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="impact-label">Priority</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="priority"
+                    label="Priority"
+                    onChange={(event) => {
+                      const selectedPriority = event.target.value;
+                      // setFieldValue("impactReason", selectedGroup);
+                      setFieldValue("priority", selectedPriority);
+                      // setGropMemberList(selectedGroup.groupMembers);
+                    }}
+                  >
+                    {priorityOptions?.map((ele) => (
+                      <MenuItem sx={{ color: `${theme.valueFontColor}` }} key={ele.value} value={ele.value}>
+                        {ele.value}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternR style={{ opacity: 1 }} />
+                </FormControl>:null}
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="impact-label">What impact does this have on your ability to work?</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="impactReason"
+                    label="What impact does this have on your ability to work?"
+                    onChange={(event) => {
+                      const selectedGroup = event.target.value;
+                      setFieldValue("impactReason", selectedGroup);
+                      setImpact(impactRatio)
+                      const { impact } = getPrioritiesAndImpact(selectedGroup, values.urgencyReason);
+                      setFieldValue("impact", impact);
+                      // setGropMemberList(selectedGroup.groupMembers);
+                    }}
+                  >
+                    {impactOptions?.map((ele) => (
+                      <MenuItem sx={{ color: `${theme.valueFontColor}` }} key={ele.value} value={ele.value}>
+                        {ele.value}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternR style={{ opacity: 1 }} />
+                </FormControl>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="serviceCategory-label">How quickly do we need to start looking into this?</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="urgencyReason"
+                    label="How quickly do we need to start looking into this?"
+                    error={touched.urgency && !!errors.urgency}
+                    helperText={touched.urgency && errors.urgency}
+                    // disabled={true}
+                    // value={assignToMember}
+                    onChange={(event) => {
+                      const selectedGroup = event.target.value;
+                      setFieldValue("urgencyReason", selectedGroup);
+                      const { urgency, priority } = getPrioritiesAndImpact(values.impactReason, selectedGroup);
+                      setFieldValue("urgency", urgency);
+                      setFieldValue("priority", priority);
+                      setUrgency(selectedGroup)
+                      // setGropMemberList(selectedGroup.groupMembers);
+                    }}
+                    InputLabelProps={{ shrink: true }}
+                  >
+                    {urgencyOptions?.map((ele) => (
+                      <MenuItem sx={{ color: `${theme.valueFontColor}` }} key={ele.value} value={ele.value}>
+                        {ele.value}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternR
+                    style={{ opacity: 1 }}
+                  />
+                </FormControl>
+              </StyledFormContainer>
+              <div style={{ position: "relative", marginTop: "15px" }}>
+                <Field
+                  name="description"
+                  render={({ field, form }) => (
+                    <>
+                      <label
+                        style={{
+                          display: 'block',
+                          color: 'grey',
+                          marginLeft: '1.5em',
+                          marginBottom: 10,
+                          fontWeight: 'normal'
+                        }}
+                        htmlFor="description"
+                      >
+                        Description:
+                      </label>
+                      <TextareaAutosize
+                        {...field} // This ensures the value is connected to Formik
+                        placeholder="Enter the detailed description of the issue"
+                        minRows={5}
+                        style={{
+                          marginLeft: '1.5em',
+                          width: '93%',
+                          padding: 20,
+                          border: `2px solid ${theme.borderColor}`,
+                          borderRadius: 4,
+                          outline: 'none',
+                        }}
+                        onChange={(e) => form.setFieldValue("description", e.target.value)} // Manually set Formik value on change
+                      />
+                    </>
+                  )}
+                />
+                {touched.description && errors.description && (
+                  <div style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
+                    {errors.description}
+                  </div>
+                )}
+              </div>
+              {/* {incident_id && (
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="state-label">State</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="state"
+                    labelId="state-label"
+                    // disabled={values.state === "new"}
+                    value={values.state}
+                  >
+                    <MenuItem value="new">New</MenuItem>
+                    <MenuItem value="open">Open</MenuItem>
+                    <MenuItem value="inprogress">In Progress</MenuItem>
+                    <MenuItem value="completed">Completed</MenuItem>
+                  </Field>
+                  <StyledPatternL style={{ opacity: loading ? 0.5 : 1 }} />
+                </FormControl>
+            )} */}
+            </Form>
+          )}
+        </Formik>
+        {incident_id ? <Box sx={{ width: '100%', typography: 'body1', marginTop: 10 }}>
+          <TabContext value={value}>
+            <Box sx={{ padding: '16px' }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+                TabIndicatorProps={{
+                  style: { backgroundColor: `${theme.outerBodyColor}` },
+                }}
+                sx={{
+                  '& .MuiTab-root': {
+                    color: 'grey',
+                  },
+                  '& .Mui-selected': {
+                    color: `${theme.valueFontColor}`,
+                    fontWeight: 'bold',
+                  },
+
+                }}
+              >
+                <Tab
+                  style={{
+                    color: `${theme.valueFontColor}`
+                  }}
+                  label="Activity" value="1"
+                />
+              </TabList>
             </Box>
-            <Box
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                marginTop: 10
-              }}
-            >
-              {notes.map((note, index) => (
-                <div key={index} style={{
+            <TabPanel value="1" sx={{ padding: "16px" }}>
+              <Stack
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingRight: 20,
+                  marginTop: 20,
+                }}
+                direction="row"
+              >
+                <label
+                  style={{
+                    display: 'block',
+                    color: 'grey',
+                    marginLeft: 10,
+                    marginBottom: 10,
+                  }}
+                  htmlFor="textarea"
+                >
+                  Activity Notes :
+                </label>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{
+                    width: 130,
+                    fontSize: 12,
+                    marginBottom: 10,
+                    backgroundColor: "#A17D34",
+                    color: "#fff"
+                  }}
+                  onClick={handleAddNote}
+                >
+                  Update Notes
+                </Button>
+              </Stack>
+              <TextareaAutosize
+                aria-label="empty textarea"
+                minRows={5}
+                placeholder="Enter the notes"
+                style={{
+                  width: '97.3%',
+                  padding: '16px',
+                  border: `2px solid ${theme.borderColor}`,
+                  borderRadius: 4,
+                  outline: 'none',
+                }}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                onFocus={(e) => (e.target.style.borderColor = theme.borderColor)}
+                onBlur={(e) => (e.target.style.borderColor = theme.borderColor)}
+              />
+
+              <Box
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                   backgroundColor: '#e6e6e6',
                   borderRadius: 10,
-                  paddingLeft: 10, marginTop: 10
-                }}>
-                  <p style={{ fontWeight: 'normal', fontSize: 16 }}>{note.text}</p>
-                  <p style={{ fontWeight: 'normal', fontSize: 13 }}>Note updated by <strong>{note.createdBy}</strong></p>
-                  <p style={{ fontWeight: 'normal', fontSize: 13, marginTop: -10 }}>created at <strong>{note.timestamp}</strong></p>
-                </div>
-              ))}
-            </Box>
-          </TabPanel>
-        </TabContext>
-      </Box> : null}
-    </div>
-  );
+                  padding: 10,
+                }}
+              >
+                <h4 style={{ fontWeight: 'normal', fontSize: 16 }}>
+                  Incident request raised by <strong>{localStorage.getItem("userName")}</strong>
+                </h4>
+                <h4
+                  style={{
+                    fontWeight: 'normal',
+                    marginTop: 20,
+                    fontSize: 15,
+                  }}
+                >
+                  Created at <strong>{openedDate}</strong>
+                </h4>
+
+              </Box>
+              <Box
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  marginTop: 10,
+                }}
+              >
+                {notes.map((note, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      backgroundColor: '#e6e6e6',
+                      borderRadius: 10,
+                      padding: 10,
+                      marginTop: 10,
+                    }}
+                  >
+                    <p style={{ fontWeight: 'normal', fontSize: 16 }}>{note.text}</p>
+                    <p style={{ fontWeight: 'normal', fontSize: 13, lineHeight: '3em' }}>
+                      Note updated by <strong>{note.createdBy}</strong>
+                    </p>
+                    <p
+                      style={{
+                        fontWeight: 'normal',
+                        fontSize: 13,
+                        marginTop: -10,
+                      }}
+                    >
+                      Created at <strong>{note.timeStamp}</strong>
+                    </p>
+                  </div>
+                ))}
+              </Box>
+            </TabPanel>
+          </TabContext>
+        </Box> : null}
+      </div>
+    ));
 }

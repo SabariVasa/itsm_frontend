@@ -1,168 +1,144 @@
-import React, { createContext, useState, useEffect } from "react";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-// import UserPortalLeftPanel from "./UserPortalLeftPanel";
-import DefaultHeader from "../../global/commonComponents/DefaultHeader";
-import { Grid } from "@mui/material";
+import React, { createContext, useMemo, useState } from "react";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
-import UserOverview from "../../Dashboards/UserOverview";
-import KnowledgeContainer from "../../Components/KnowledgeArticle/KnowledgeContainer";
-import { Route, Router, Switch, useHistory } from "react-router-dom";
-import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
-import RequestCategory from "../../Components/Request Management/Main Component/RequestCategory";
-import SuperAdminPortalLeftPanel from "./SuperAdminPortalLeftPanel";
-import UserInfo from "../../models/UserInfo";
-import IncidentDashboard from "../../Dashboards/IncidentDashboard";
-import CreateNewIncident from "../../Components/IncidentHelperComponents/CreateNewIncident";
-import IncidentTable from "../../Components/HelperComponents/IncidentTable";
-import CMDB from "../CMDB";
-import CreateChange from "../../Components/Change Management/CreateChange";
-import AllChanges from "../../Components/Change Management/AllChanges";
-import FormMenu from "../../React-Forms/FormMenu";
-import CI from "../../Components/CMDBHelperComponents/CI";
-import UserProfileDetails from "../UserProfileDetails";
-// import { useNavigate } from "react-router-dom";
 import { useDrawer } from "../../global/commonComponents/drawer/DrawerContext";
-import ClassManagementMain from "../../Components/cmdb/classmanagement/ClassManagementMain";
-import UserDetailsAndEdit from "../userManagement/UserDetailsAndEdit";
-import RequestStatusManagement from "../../Components/Request Management/RequestStatusManagement";
+import UserProfileDetails from "../UserProfileDetails";
+import { Route, Switch, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  HomeOutlined as HomeOutlinedIcon,
+  NetworkPing as NetworkPingIcon,
+  Storage as StorageIcon,
+  Repeat as RepeatIcon,
+  MenuBook as MenuBookIcon,
+  Group as GroupIcon,
+  Person as PersonIcon,
+} from '@mui/icons-material';
+import KnowledgeContainer from "../../Components/KnowledgeArticle/KnowledgeContainer";
+import { Link } from "@mui/material";
+import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
+import CreateIncidentForm from "../../Components/IncidentHelperComponents/CreateNewIncident";
+import IncidentTable from "../../Components/HelperComponents/IncidentTable";
+import RequestServiceManagement from "../request/RequestServiceManagement";
+import IncidentDashboard from "../../Dashboards/IncidentDashboard";
 import UserManagmentMainPanel from "../userManagement/UserManagementMainPanel";
-import GroupManagmentMainPanel from "../../Components/groupCreation/GroupManagmentMainPanel";
-import CreateGroupForm from "../../Components/groupCreation/CreateGroupForm";
+import { LeftPanel } from "../../presentation/components/panel/Leftpanel";
+import MyIncidentList from "../endUser/MyIncidentList";
+import ServiceCategoryForm from "../../Components/Request Management/Main Component/ServiceCategoryForm";
+import RequestItemDetails from "../../Components/Request Management/Helper Components/RequestItemDetails";
+import RequestItem from "../../Components/Request Management/Main Component/RequestItem";
+import UpdatedRequestForm from "../request/UpdatedRequestForm";
+import MyRequestList from "../../Components/Request Management/MyRequestList";
+import RequestForm from "../../Components/Request Management/Helper Components/RequestForm";
+import CreateNewCatelogue from "../../Components/Request Management/CreateNewCatelogue";
+import GeneralService from "../../Components/Request Management/Main Component/GeneralService";
+import CreateRequestDetailsForm from "../request/CreateRequestDetailsForm";
+import CreateKnowledge from "../../Components/KnowledgeArticle/CreateKnowledge";
+import PreviewPage from "../../Components/KnowledgeArticle/HelperComponents/PreviewPage";
+import CI from "../../Components/CMDBHelperComponents/CI";
+import ClassManagementMain from "../../Components/cmdb/classmanagement/ClassManagementMain";
+import CMDB from "../CMDB";
+import NewClassCreationPanel from "../../Components/cmdb/classmanagement/NewClassCreationPanel";
+import UserDetailsAndEdit from "../userManagement/UserDetailsAndEdit";
 import UserManagmentTable from "../userManagement/UserManagmentTable";
-import CMDBManagementMainPanel from "../../Components/cmdb/CMDBManagementMainPanel";
-import RequestManagementMainPanel from "../../Components/Request Management/RequestManagementMainPanel";
-import MyRequestTable from "../../Components/Request Management/Main Component/MyRequestTable";
-import BasicSelect from "../../Components/HelperComponents/SelectField";
-import ContentDevider from "../../Components/HelperComponents/ContentDevider";
-import OrganizationManagementMainPanel from "../organizationmanagement/OrganizationManagementMainPanel";
-// import UserDetailsAndEdit from "../../Components/User Management/UserDetailsAndEdit";
+import GroupManagementDetailsTable from "../../Components/groupCreation/GroupManagementDetailsTable";
+import ShowSingleGroupDetailsAndEdit from "../../Components/groupCreation/ShowSingleGroupDetailsAndEdit";
+import CreateGroupForm from "../../Components/groupCreation/CreateGroupForm";
+import MyRequestTable from "../request/MyRequestTable";
+import { SwitchBanner } from "../../presentation/shared/bread-crumb";
 
 export const RequestContext = createContext(null);
-export const ChangeContext = createContext(null);
 
 function SuperAdminLandingPage() {
   const { toggleDrawer, state } = useDrawer();
-  const userName = UserInfo.getUsername();
-  const role = UserInfo.getRole();
-  const navigate = useHistory();
-  console.log(userName, role, 'userNamespr');
+  const { pathname } = useLocation();
+
+  const pathConfig = 'superadmin';
+
+  const activeTab = useMemo(() => {
+    let tab = pathname.toLowerCase();
+    tab = tab.split('/').filter((key) => key && key.toLowerCase() !== pathConfig);
+    tab = tab.length ? tab : ['dashboard'];
+    tab = tab.map((key) =>
+      key.split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ')
+    ).join('/');
+    return tab;
+  }, [pathname]);
+
+  console.log('active tab-->', activeTab);
+
   const navbarOptions = [
-    { label: "Dashboards", icon: "Dashboards" },
-    { label: "Incident Management", icon: "Incident Management" },
-    // { label: "CMDB", icon: "CMDB" },
-    { label: "Request Management", icon: "Request Management" },
-    { label: "Change Management", icon: "Change Management" },
-    { label: "Knowledge Article", icon: "Knowledge Article" },
-    // { label: "Generate Token", icon: "Generate Token" },
-    { label: "Organization Management", icon: "Organization Management" },
-    { label: "User Management", icon: "User Management" },
-    { label: "Group Management", icon: "Group Management" },
-    { label: "Form Generator", icon: "Form Generator" },
-    { label: "CMDB Management", icon: "CMDB Management" },
+    {
+      label: "Dashboards",
+      icon: HomeOutlinedIcon,
+      href: '/dashboards',
+      sub_options: [],
+    },
+    {
+      label: "Incident Management",
+      icon: NetworkPingIcon,
+      href: '/incident-management',
+      sub_options: [
+        { label: 'Create Incident', href: '/create-incident' },
+        { label: 'Open Incidents', href: '/incident-list?state=open' },
+        { label: 'Assigned Incidents', href: '/incident-list?state=assign_to_me' },
+        { label: 'All Incidents', href: '/incident-list' },
+      ],
+    },
+    {
+      label: "Request Management",
+      icon: RepeatIcon,
+      href: '/request-management',
+      sub_options: [
+        { label: 'My Requests', href: '/my-requests' },
+        { label: 'Request Service', href: '/request-service' },
+      ],
+    },
+    {
+      label: "Knowledge Article",
+      icon: MenuBookIcon,
+      href: '/knowledge-article',
+      sub_options: [],
+    },
+    // {
+    //   label: "",
+    //   icon: MenuBookIcon,
+    //   href: '/knowledge-article',
+    //   sub_options: [],
+    // },
+    {
+      label: "User Management",
+      icon: PersonIcon,
+      href: '/user-management',
+      sub_options: [],
+    },
+    {
+      label: "Group Management",
+      icon: GroupIcon,
+      href: '/group-management',
+      sub_options: [],
+    },
+    {
+      label: "CMDB Management",
+      icon: StorageIcon,
+      href: '/cmdb-management',
+      sub_options: [
+        { label: 'Create Configuration', href: '/create-config' },
+        { label: 'Class Management', href: '/class_manage' },
+      ],
+    },
   ];
 
-  const [drawer, setDrawer] = useState(true);
-  const [activeTab, setActiveTab] = useState('');
   const { theme } = useTheme();
+
   const [requestDetails, setRequestDetails] = useState([]);
   const [requestService, setRequestService] = useState({});
   const [requestGeneralService, setRequestGeneralService] = useState({});
   const [knowledgeData, setKnowledgeData] = useState({});
   const [title, setTitle] = useState("");
-  const [changeRequest, setChangeRequest] = useState({
-    changeNumber: "",
-    changeModel: "",
-    requestedBy: "",
-    changeState: "",
-    configurationItem: "",
-    conflictStatus: "",
-    assignmentTo: "",
-    assignmentGroup: "",
-    changePriority: "",
-    changeRisk: "",
-    changeImpact: "",
-    shortDescription: "",
-    Description: "",
-    implementationPlan: "",
-    backoutPlan: "",
-    testPlan: "",
-    planningStartDate: "",
-    planningEndDate: "",
-    actualStartDate: "",
-    actualEnddate: ""
-  })
-
-  useEffect(() => {
-    setActiveTab(localStorage.getItem('activeTab') || activeTab);
-  }, []);
-
-  const tabClickHandler = (tabIndex, secondaryOption) => {
-    if (secondaryOption) {
-      setActiveTab(secondaryOption);
-    } else {
-      localStorage.setItem('activeTab', navbarOptions[tabIndex].label)
-      setActiveTab(navbarOptions[tabIndex].label);
-    }
-  };
-
-  const getRightPanelContent = () => {
-    console.log(activeTab, 'activeTabsp');
-    switch (activeTab) {
-      case "Dashboards":
-        return <IncidentDashboard />;
-      case "create_incident":
-        return <CreateNewIncident />;
-      case "open_incident":
-        return <IncidentTable state='Open' />;
-      case "new_change":
-        return <>
-          <ChangeContext.Provider value={{ changeRequest, setChangeRequest }}>
-            <CreateChange />
-          </ChangeContext.Provider>
-        </>;
-      case "all_change":
-        return <>
-          <ChangeContext.Provider value={{ changeRequest, setChangeRequest }}>
-            <AllChanges />
-          </ChangeContext.Provider>
-        </>;
-      case "my_request":
-        return <RequestStatusManagement />
-      case "request_service":
-        return <RequestManagementMainPanel />;
-      case "assign_to_me":
-        return <IncidentTable state="assignedToMe" />;
-      case "all_incidents":
-        return <IncidentTable state="" />;
-      case "Change Management":
-        return <RequestCategory />;
-      case "Knowledge Article":
-        return <div><KnowledgeContainer /></div>;
-      case "Form Generator":
-        return <div><FormMenu /></div>;
-      case "Organization Management":
-        return <OrganizationManagementMainPanel />;
-      case "User Management":
-        return <div><UserManagmentMainPanel /></div>;
-      case "Group Management":
-        return <div><GroupManagmentMainPanel /></div>;
-      case "create_config":
-        return <div><CI /></div>;
-      case "class_manage":
-        return <div><CMDBManagementMainPanel /></div>;
-
-      default:
-        return <IncidentDashboard />;
-    }
-  };
-  const userDetails = UserInfo.getUserDetail();
-  console.log('User Details:', userDetails);
 
   return (
-    <div>
-      {/* <DefaultHeader 8ucbvx0 c6c3------2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdrawer={drawer} toggleDrawer={toggleDrawer} state={state} /> */}
-      <UserProfileDetails toggleDrawer={toggleDrawer} state={state} />
+    <div className="p-[4vh]">
       <RequestContext.Provider
         value={{
           requestDetails,
@@ -177,72 +153,196 @@ function SuperAdminLandingPage() {
           setTitle,
         }}
       >
-        <Grid container>
-          <Grid item xs={drawer ? 3 : 1} style={{
-            margin: '0 0 0 1m',
-            // background: theme.outerBodyColor
-            // backgroundImage: 'url(/sidebarImg.jpeg)',
-            // width: '100%',
-            // height: '100%'
-          }}>
-            <div style={{ overflowY: 'scroll', width: '92%', height: 600, marginTop: 8, }}>
-              <SuperAdminPortalLeftPanel
-                toggleDrawer={toggleDrawer}
-                state={state}
-                bgcolur={theme.outerBodyColor}
-                activeTab={activeTab}
+        <div className="flex justify-between">
+          <div
+            className="h-[92vh] rounded-lg w-[22.5%] flex flex-col justify-between"
+            style={{ background: theme.outerBodyColor }}
+          >
+            <div className="h-[85%] overflow-auto">
+              <Link href="/">
+                <img
+                  alt="logo"
+                  src="/indexlogo.png"
+                  className="w-[120px] m-auto"
+                />
+              </Link>
+              <LeftPanel
                 navbarOptions={navbarOptions}
-                tabClickHandler={tabClickHandler}
-                drawer={drawer}
+                drawer
+                pathConfig={pathConfig}
               />
             </div>
-            <div>
-              {drawer ? (
-                <ArrowBackIosNewIcon
-                  onClick={() => setDrawer(false)}
-                  style={{
-                    fontSize: 25,
-                    backgroundColor: theme.outerBodyColor,
-                    position: "absolute",
-                    left: 350,
-                    top: 360,
-                    color: "white",
-                    height: 60,
-                    borderTopRightRadius: 7,
-                    borderBottomRightRadius: 7,
-                    cursor: "pointer",
-                  }}
-                />
-              ) : (
-                <ArrowForwardIosIcon
-                  onClick={() => setDrawer(true)}
-                  style={{
-                    fontSize: 25,
-                    backgroundColor: theme.outerBodyColor,
-                    position: "absolute",
-                    left: 116,
-                    top: 350,
-                    color: "white",
-                    height: 60,
-                    borderTopRightRadius: 7,
-                    borderBottomRightRadius: 7,
-                    cursor: "pointer",
-                  }}
-                />
-              )}
-            </div>
-          </Grid>
-
-          <Grid
-            item
-            xs={drawer ? 9 : 11}
-            style={{ padding: '0.5em', }}
+            <UserProfileDetails toggleDrawer={toggleDrawer} state={state} />
+          </div>
+          <div
+            style={{
+              backgroundColor: theme.mainBodyColor,
+            }}
+            className="h-[92vh] overflow-auto rounded-lg w-[76%]"
           >
-            <div style={{ borderRadius: '1em', overflowY: 'scroll', backgroundColor: theme.mainBodyColor, height: 600 }}>
-              {getRightPanelContent()}
-            </div>
-          </Grid>
-        </Grid>
+            <SwitchBanner pathConfig={pathConfig}/>
+            <Switch>
+              <Route
+                path={`/${pathConfig}/incident-management/update_incident/:incident_id`}
+                render={(props) =>
+                  pathConfig === "enduser" ? (
+                    <UserIncidentForm {...props} isEdit={true} />
+                  ) : (
+                    <CreateIncidentForm isEdit={true} {...props} />
+                  )
+                }
+              />
+              <Route
+                path={`/${pathConfig}/incident-management/incident-list`}
+                render={(props) => <IncidentTable />}
+              />
+              <Route
+                path={`/${pathConfig}/incident-management/my-incident`}
+                render={(props) => (
+                  <MyIncidentList user={pathConfig === "enduser"} {...props} />
+                )}
+              />
+              <Route
+                path={`/${pathConfig}/incident-management/create-incident`}
+                render={(props) =>
+                  pathConfig === "enduser" ? (
+                    <UserIncidentForm {...props} />
+                  ) : (
+                    <CreateIncidentForm isEdit={false} {...props} />
+                  )
+                }
+              />
+              <Route
+                path={`/${pathConfig}/create_class`}
+                component={(props) => <NewClassCreationPanel {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/show_class`}
+                component={(props) => <CMDB {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/cmdb-management/create-config`}
+                component={(props) => <CI {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/cmdb-management/class_manage`}
+                component={(props) => <ClassManagementMain {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/request-service/general-service/:id`}
+                element={<ServiceCategoryForm />}
+              />
+              <Route
+                path={`/${pathConfig}/my-requests`}
+                component={() => <MyRequestList />}
+              />
+              <Route
+                path={`/${pathConfig}/update-request/:request_id`}
+                component={() => <UpdatedRequestForm />}
+              />
+              <Route
+                path={`/${pathConfig}/request-management/request-service/hardware/:id`}
+                element={<RequestItemDetails />}
+              />
+              <Route
+                path={`/${pathConfig}/request-management/request-service/request_item/:item_id`}
+                component={() => <RequestItem />}
+              />
+              <Route
+                path={`/${pathConfig}/request-management/request-service/general-service`}
+                component={() => <GeneralService />}
+              />
+              <Route
+                path={`/${pathConfig}/server-request/create-request/:catelogueId/:categotyId`}
+                component={() => <CreateRequestDetailsForm />}
+              />
+              <Route
+                path={`/${pathConfig}/request-management/request-service/hardware`}
+                component={() => <RequestForm />}
+              />
+              <Route
+                path={`/${pathConfig}/request-management/create-catelogue`}
+                component={() => <CreateNewCatelogue />}
+              />
+              <Route
+                path={`/${pathConfig}/request-management/request-service`}
+                component={(props) => <RequestServiceManagement {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/request-managements/update-request/:request_id`}
+                component={(props) => <UpdatedRequestForm {...props} />}
+              />
+              {/* <Route path={`/${pathConfig}/request-management/my-request`} component={(props) =>
+                  <div>
+                  <ContentDevider title={"All Requests"} />
+                  <MyRequestTable selectedRequest={'Hardware requests'} />
+                  </div>}
+                  /> */}
+              {/* <Route path={`/${pathConfig}/request-management/update-request/:request_id`} component={(props) =><UpdatedRequestForm />} /> */}
+              <Route
+                path={`/${pathConfig}/request-management/my-requests`}
+                component={(props) => <MyRequestTable {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/knowledge-article/created-knowledge-preview`}
+                component={(props) => <PreviewPage {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/knowledge-article/knowledge-creation`}
+                component={(props) => <CreateKnowledge {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/knowledge-article`}
+                component={(props) => <KnowledgeContainer {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/group-management/createDep/:orgId`}
+                component={(props) => <CreateGroupForm {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/group-management/update_dep/:group_id/:orgId`}
+                component={(props) => <CreateGroupForm {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/group-management/show_group/:group_id/:orgId`}
+                component={(props) => (
+                  <ShowSingleGroupDetailsAndEdit {...props} />
+                )}
+              />
+              <Route
+                path={`/${pathConfig}/group-management`}
+                component={(props) => (
+                  <GroupManagementDetailsTable {...props} />
+                )}
+              />
+              <Route
+                path={`/${pathConfig}/user-management`}
+                component={(props) => <UserManagmentMainPanel {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/user-management/createUser`}
+                component={(props) => <UserDetailsAndEdit {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/user-management/userUpdate/:user_id`}
+                component={(props) => <UserDetailsAndEdit {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/user-management`}
+                component={(props) => <UserManagmentTable {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/user-management`}
+                component={(props) => <UserManagmentTable {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/dashboard`}
+                component={IncidentDashboard}
+              />
+              <Route path={`/${pathConfig}`} component={IncidentDashboard} />
+            </Switch>
+          </div>
+        </div>
       </RequestContext.Provider>
     </div>
   );

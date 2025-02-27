@@ -317,7 +317,7 @@ export default function ServiceCategoryForm(props) {
         <Button variant="contained" color="primary" style={{ width: 200 }} onClick={() => {
           // !update ? createRequest() : updateRequest(); dispatch(setActiveStep(activeStep + 2));
 
-          if (localStorage.getItem("userEmail") == "user@teksiblegroup.com") { navigate("/") }
+          if (localStorage.getItem("userEmail") === "user@teksiblegroup.com") { navigate("/") }
         }}>{!update ? "Create request" : "Update request"}</Button>
       </Stack>
 

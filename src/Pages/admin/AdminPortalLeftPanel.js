@@ -21,25 +21,15 @@ import RepeatIcon from "@mui/icons-material/Repeat";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import Typography from "@mui/material/Typography";
 import Popover from "@mui/material/Popover";
-import BusinessIcon from '@mui/icons-material/Business';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
-import UserInfo from "../../models/UserInfo";
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import styles from "../../Pages/endUser/scss/UserPortalLeftPanel.module.scss";
-import { useHistory } from "react-router-dom";
-// import _ from "lodash";
 import GroupIcon from '@mui/icons-material/Group';
 import PersonIcon from '@mui/icons-material/Person';
-// import { AiOutlineForm } from "react-icons/ai";
-// import styless from './scss/SuperAdmin.module.scss';
 
 function AdminPortalLeftPanel(props) {
   const { navbarOptions, tabClickHandler, drawer, t, bgcolur } = props;
-  const history = useHistory
   const [expanded, setExpanded] = useState(false);
   const [superAdmin, setSuperAdmin] = useState(false);
-  // const userName = UserInfo.getUsername();
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -63,7 +53,6 @@ function AdminPortalLeftPanel(props) {
 
   useEffect(() => {
     let authAdmin = localStorage.getItem("role");
-    // let endUser = localStorage.getItem("User");
     if (authAdmin === "Super Admin") {
       setSuperAdmin(true);
     }

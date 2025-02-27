@@ -1,37 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import SearchBar from './HelperComponents/SearchBar';
 import CmdbSelectField from '../HelperComponents/SelectField';
-// import ContentDevider from '../HelperComponents/ContentDevider';
 import { Button } from '@mui/material';
-// import { useLocation } from 'react-router-dom';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { setCategory } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
+import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom';
+import { useTheme } from '../../global/commonComponents/ThemeContext';
 
-export default function KnowledgeNavbar(props) {
-  const { setCreateKnowledge } = props;
-  // const navigate = useNavigate();
-  // const { pathname } = useLocation();
-  // console.log(pathname, 'pathName');
+export default function KnowledgeNavbar() {
+  const { theme } = useTheme();
+  const history = useHistory();
+  const { path } = useRouteMatch();
   const [localCategory, setLocalCategory] = useState();
-  // const dispatch = useDispatch();
-  // const category = useSelector((state) => state.knowledgeReducers.category);
 
-  useEffect(() => {
-    // dispatch(setCategory(localCategory))
-  }, [localCategory])
   return (
-    <>
-      <div className="knowledge-navbar">
-        <div style={{ marginTop: 15 }}>
-          <SearchBar />
-        </div>
-        <div>
-          <CmdbSelectField MenuItems={[{ value: "My articles" }, { value: "IT Support" }, { value: "CMDB Queries" }, { value: "ITSM Articles" }]} label={"Choose Category"} setSelectValue={setLocalCategory} SelectedValue={localCategory} style={{ width: 250 }} />
-        </div>
-        <div>
-          <Button variant="contained" color="primary" style={{ width: 200, fontSize: 12, height: 52, marginTop: 13 }} onClick={() => setCreateKnowledge(true)}>Create New</Button>
-        </div>
-      </div>
-    </>
+    <div className="flex justify-between px-3 py-6 items-center">
+      <SearchBar />
+      <CmdbSelectField
+        MenuItems={[{ value: "My articles" }, { value: "IT Support" }, { value: "CMDB Queries" }, { value: "ITSM Articles" }]} label={"Choose Category"}
+        setSelectValue={setLocalCategory}
+        SelectedValue={localCategory}
+        style={{ width: '30%' }}
+      />
+      <Button
+        variant="contained"
+        sx={{
+          height: 52,
+          background: `${theme.outerBodyColor}`,
+          color: `${theme.outerBodyfontColor}`,
+          "&:hover": {
+            backgroundColor: `${theme.btnHoverColor}`,
+          },
+        }}
+        onClick={() => history.push(`${path}/knowledge-creation`)}
+      >
+        Create New
+      </Button>
+    </div>
   )
 }

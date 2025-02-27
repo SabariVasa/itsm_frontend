@@ -9,9 +9,10 @@ import GlobalService from "../../services/GlobalService";
 import Switch from '@mui/material/Switch';
 import { resturls } from "../../global/utils/apiurls";
 import UserDetailsAndEdit from "./UserDetailsAndEdit";
+import { useTheme } from "../../global/commonComponents/ThemeContext";
 
 export default function ManagementUserList(props) {
-  const { userData, setSelectedUserRows } = props;
+  const { userData, setRequesterEmail, assignToModal, setAssignToMember, setSelectedCaller = {}, caller } = props;
   const history = useHistory();
   const { path } = useRouteMatch();
   const [users, setUsers] = useState([]);
@@ -21,7 +22,7 @@ export default function ManagementUserList(props) {
   const [selectedRowIds, setSelectedRowIds] = useState([]); // Store selected IDs
   const [selectedRows, setSelectedRows] = useState([]);
   const [checkboxSelection, setCheckboxSelection] = useState(true);
-
+const { theme } = useTheme();
   const headerData = [
     {
       field: 'firstName', headerName: 'First Name', width: 150,
@@ -108,6 +109,7 @@ export default function ManagementUserList(props) {
     // Debugging
     console.log("Updated Selected Row IDs:", selectedRowIds);
     console.log("Updated Selected Rows:", selectedRows);
+    // setSelectedCaller(selectedRows[0])
   };
 
 
@@ -121,13 +123,13 @@ export default function ManagementUserList(props) {
             <UserDetailsAndEdit isCreateUserOpen={setIsCreateUserOpen} />
           ) : (
             <>
-              {(!userData || userData === null) &&
+              {/* {(!userData || userData === null || !caller) &&
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
                   <Button variant="contained" color="primary" sx={{ background: 'linear-gradient(270deg, #F51275 0%, #622098 100%) !important' }} onClick={() => history.push(`${path}/createUser`)}>
                     Create User
                   </Button>
                 </Box>
-              }
+              } */}
               {/* <Box sx={{ mb: 1 }}>
                 <FormControlLabel
                   label="checkboxSelection"
@@ -150,20 +152,28 @@ export default function ManagementUserList(props) {
                 checkboxSelection={!userData && checkboxSelection}
                 // onSelectionModelChange={(newSelection, data) => console.log(newSelection, data, 'newSelection1')}
                 selectionModel={selectedRowIds}
-                onCellClick={(ele) => handleSelectionModelChange(ele)}
+                onCellClick={(ele) => {
+                  if (assignToModal) {
+                    setAssignToMember(ele.row.emailAddress)
+                  } else {
+                    setSelectedCaller(ele.row);
+                    setRequesterEmail(ele.row.emailAddress)
+                    handleSelectionModelChange(ele);
+                  }
+                }}
                 initialState={{
                   pagination: { paginationModel: { page: 0, pageSize: 10 } },
                 }}
                 sx={{
                   '& .MuiDataGrid-columnHeaders': {
                     '& .MuiDataGrid-row--borderBottom': {
-                      background: 'linear-gradient(270deg, #F51275 0%, #622098 100%) !important',
-                      color: 'white'
+                     background: `${theme.outerBodyColor}`,
+                     color: "white"
                     }
                   },
                   '& .MuiDataGrid-rowHeader': {
-                    background: 'linear-gradient(270deg, #F51275 0%, #622098 100%)',
-                    color: 'white',
+                    background: `${theme.outerBodyColor}`,
+                    color: `${theme.fontColor}`
                   },
                   '& .MuiDataGrid-row--borderBottom': {
                     borderBottom: '2px solid #cccccc',

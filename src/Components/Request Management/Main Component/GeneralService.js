@@ -4,7 +4,7 @@ import ContentDevider from '../../HelperComponents/ContentDevider';
 import { OrgOptions } from '../../../Utils/CMDB-Data/CIData';
 // import { userBase } from '../../../Utils/CMDB-Data/serviceData';
 import { serviceRequestType } from '../../../Utils/Request Data/RequestItemData';
-import { Stack, Button } from '@mui/material';
+import { Stack, Button, MenuItem, FormControl, InputLabel } from '@mui/material';
 // import { RequestContext } from '../../../Routes/HomeRouter';
 // import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -19,6 +19,8 @@ import DraggableModal from '../../User Management/DraggableModal';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import GlobalService from '../../../services/GlobalService';
 import { resturls } from '../../../global/utils/apiurls';
+import { Formik, Form, Field } from "formik";
+import { CustomSelect, CustomTextField, StyledFormContainer, StyledIcon, StyledPatternL, StyledPatternR } from '../../../commonComponents/StyledComponents';
 
 export default function GeneralService() {
 
@@ -38,7 +40,7 @@ export default function GeneralService() {
   const approvedData = ["Approved", "Denied", "Pending"];
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [serviceType, setServiceType] = useState("");
-  const [requesterEmail, setRequesterEmail] = useState("user@teksiblegroup.com");
+  const [requesterEmail, setRequesterEmail] = useState();
 
 
   const [openedDate, setOpenedDate] = useState("");
@@ -65,6 +67,8 @@ export default function GeneralService() {
       'GET'
     );
   }
+
+  console.log(OrgOptions, 'OrgOptions');
 
   function storeRequestData() {
     // dispatch(setRequestGeneralService({
@@ -111,17 +115,86 @@ export default function GeneralService() {
       <StepperComponent steps={["General Information", "Technical Information", "Submit Request"]} />
 
       <ContentDevider title="General Service Request" />
-      <CmdbGridContainer show={[true, true, false, false]} dropdown={[false, true]} name={["Request Number", "Request service type"]} Name1={requestNumber} setName1={setRequestNumber} SelectedValue2={serviceType} setSelectValue2={setServiceType} label={["Requested Date", ""]} MenuItems={[OrgOptions, serviceRequestType]} />
+      {/* <CmdbGridContainer show={[true, true, false, false]} dropdown={[false, true]} name={["Request Number", "Request service type"]} Name1={requestNumber} setName1={setRequestNumber} SelectedValue2={serviceType} setSelectValue2={setServiceType} label={["Requested Date", ""]} MenuItems={[OrgOptions, serviceRequestType]} /> */}
 
-      <div style={{ width: 400, marginTop: 20, marginLeft: 80 }} >
-        <SearchTextField search={true} fieldValue={requesterName} setFieldValue={setRequesterName} handleClickOpen={handleClickOpen} style={{ width: "100%" }} placeholder="Requested For" />
+      <div style={{ width: '100%', marginTop: 20, }} >
+        <Formik
+          initialValues={{
+            requestname: localStorage.getItem("userName"),
+            requestType: "",
+            requestedFor: requesterEmail,
+          }}
+          // validationSchema={validationSchema}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+        >
+          {({ errors, touched, setFieldValue, values }) => (
+            <Form>
+              {/* <HeaderContainer>
+                <GradientHeader>Create Incident</GradientHeader>
+                <StyledButton type="submit">Create New Incident</StyledButton>
+              </HeaderContainer> */}
+              <StyledFormContainer>
+                <div style={{ position: "relative" }}>
+                  <Field
+                    name="requestname"
+                    as={CustomTextField}
+                    label="Request Name"
+                    error={touched.requestname && !!errors.requestname}
+                    helperText={touched.requestname && errors.requestname}
+                    disabled={true}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <StyledPatternL style={{ opacity: 1 }} />
+                </div>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="requestType-label">Request Type</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="requestType"
+                    labelId="requestType-label"
+                  // disabled
+                  >
+                    {serviceRequestType.map((ele) => (
+                      <MenuItem value={ele.value}>{ele.value}</MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternL style={{ opacity: 1 }} />
+                </FormControl>
+                <div style={{ position: "relative" }}>
+                  <Field
+                    name="requestedFor"
+                    as={CustomTextField}
+                    label="Requested For"
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    value={requesterEmail}
+                    InputLabelProps={{ shrink: true }} // Ensures the label does not overlap
+                  />
+                  <StyledIcon
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                    alt="AI Icon"
+                    onClick={() => {
+                      setItemOpen(true);;
+                    }}
+                    style={{ opacity: 1, width: 35, height: 35 }}
+                  />
+                  <StyledPatternR style={{ opacity: 1 }} />
+                </div>
+              </StyledFormContainer>
+            </Form>
+          )}
+        </Formik>
+        {/* <SearchTextField search={true} fieldValue={requesterName} setFieldValue={setRequesterName} handleClickOpen={handleClickOpen} style={{ width: "100%" }} placeholder="Requested For" /> */}
         {/* SelectedValue2={requesterName} setSelectValue2={setRequesterName} */}
       </div>
 
       {/* <CmdbGridContainer show={[false,true,false,false]}  dropdown={[false,true ]} name={["Requester Email Id","Request service type"]} Name1={requesterEmail} setName1={setRequesterEmail} Name2={requesterName} setName2={setRequesterName}    label={["Requested Date",""]} MenuItems={[OrgOptions,serviceRequestType]}/> */}
 
       {/* <CmdbGridContainer show={[false,false,true,false]}  dropdown={[false,false ]} name={["Requester Email Id","Request service type"]} Name1={requesterEmail} setName1={setRequesterEmail} Name2={requesterName} setName2={setRequesterName}  SelectedValue2={serviceType} setSelectValue2={setServiceType}  label={["Opened Date",""]} MenuItems={[OrgOptions,serviceRequestType]} Date1={openedDate} setDate1={setOpenedDate}/> */}
-      <DraggableModal open={itemOpen} setOpen={setItemOpen} handleClickOpen={handleClickOpen} handleClose={handleItemClose} />
+      <DraggableModal open={itemOpen} setRequesterEmail={setRequesterEmail} setOpen={setItemOpen} handleClickOpen={handleClickOpen} handleClose={handleItemClose} />
 
       <Stack style={{ display: 'flex', alignItems: "center", justifyContent: "space-around", paddingRight: 20, paddingTop: 50 }} direction="row">
         <Button variant="outlined" disabled={!serviceType ? true : false} color="warning" style={{ width: 100 }} onClick={() => { Navigate(-1); }}>Back</Button>

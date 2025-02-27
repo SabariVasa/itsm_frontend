@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import { useTheme } from "../../global/commonComponents/ThemeContext";
 
 export default function GroupAdminList(props) {
     const { userData, isKeywordPresent } = props;
     const [users, setUsers] = useState([]);
     const [headers, setHeaders] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const {theme} = useTheme();
 
     const getDynamicHeaders = () => {
         if (!userData || userData.length === 0) return [];
@@ -82,7 +85,7 @@ export default function GroupAdminList(props) {
                     sx={{
                         '& .MuiDataGrid-columnHeaders': {
                             '& .MuiDataGrid-row--borderBottom': {
-                                background: 'linear-gradient(270deg, #F51275 0%, #622098 100%) !important',
+                                background: `${theme.outerBodyColor}`,
                                 color: 'white'
                             }
                         },

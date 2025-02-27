@@ -10,7 +10,7 @@ import { approvedData } from '../../Utils/Request Data/RequestItemData';
 import { serverAPI } from '../../Utils/Server';
 import NotifyBar from '../Notification Components/NotifyBar';
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
+// import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setRequestDetails, setRequestServiceData } from '../../Redux state management/Redux Slices/RequestSlice';
 import { useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ import { TextareaAutosize, Box } from '@mui/material';
 function UserRequestForm(props) {
   // const[quantity,setQuantity]=useState();
   const [update, setUpdate] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useState();
   // const{setRequestDetails,requestService,setRequestService}=useContext(RequestContext);
   const [itemData, setItemData] = useState();
   const [requestNumber, setRequestNumber] = useState();

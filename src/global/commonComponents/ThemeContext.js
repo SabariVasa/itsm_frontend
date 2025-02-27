@@ -7,9 +7,18 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState({
     mainBodyColor: '#ffffff',
-    outerBodyColor: 'linear-gradient(270deg, #F51275 0%, #622098 100%)',
-    fontColor: "#ffffff",
-    btnColor: 'linear-gradient(270deg, #F51275 0%, #622098 100%)'
+    outerBodyColor: '#540c00',
+    InnerBodyfontColor: '#540c00',
+    outerBodyfontColor: '#ffffff',
+    typeTextColor: 'gray',
+    headerFontColor: "#540c00f",
+    subHeaderFontColor: "#540c00f",
+    btnColor: '#540c00',
+    btnHoverColor: '#A17D34',
+    borderColor: '#540c00',
+    valueFontColor : '#540c00',
+    tableFontColor:"white"
+    // headerFontColor: ''
   });
 
   const updateTheme = (newTheme) => {

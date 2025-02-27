@@ -6,16 +6,10 @@ import { OperatingSystem } from '../../Utils/CMDB-Data/CIData';
 import IncrementContainer from '../HelperComponents/IncrementContainer';
 import { OrgOptions, storageType } from '../../Utils/CMDB-Data/CIData';
 import CmdbGridContainer from '../HelperComponents/GridContainer';
-// import CmdbTextField from '../HelperComponents/TextField';
 import { CPUList, basicDesktopApps } from '../../Utils/CMDB-Data/DesktopData';
 import MultiComponent from '../HelperComponents/MultiComponent';
 
 export default function DesktopCI(props) {
-  // const [Interface, setInterface] = useState();
-  // const [FileSystem, setFileSystem] = useState();
-  // const [partition, setPartition] = useState();
-  // const[Processor,setProcessor]=useState();
-
   return (
     <>
       <ContentDevider title={`Hardware Parameters`} />
@@ -61,7 +55,6 @@ export default function DesktopCI(props) {
           </Box>
         </Grid>
       </Grid>
-
     </>
   )
 }

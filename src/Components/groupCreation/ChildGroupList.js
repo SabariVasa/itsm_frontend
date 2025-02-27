@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Modal } from "@mui/material";
+import {  useTheme } from '../../global/commonComponents/ThemeContext'
 import CreateGroupForm from "./CreateGroupForm";
 
 export default function ChildGroupList(props) {
@@ -9,6 +10,8 @@ export default function ChildGroupList(props) {
     const [headers, setHeaders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedChildGroup, setSelectedChildGroup] = React.useState({});
+
+    const {theme} = useTheme();
 
     const getDynamicHeaders = () => {
         if (!userData || userData.length === 0) return [];
@@ -98,7 +101,7 @@ export default function ChildGroupList(props) {
                     sx={{
                         '& .MuiDataGrid-columnHeaders': {
                             '& .MuiDataGrid-row--borderBottom': {
-                                background: 'linear-gradient(270deg, #F51275 0%, #622098 100%) !important',
+                                background: `${theme.outerBodyColor}`,
                                 color: 'white'
                             }
                         },

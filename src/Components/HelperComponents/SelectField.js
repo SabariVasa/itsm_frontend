@@ -1,38 +1,47 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { sharedStyles } from '../../commonComponents/StyledComponents';
+import { TextField } from '@mui/material';
+import { useTheme } from '../../global/commonComponents/ThemeContext';
 
 
 
 export default function BasicSelect(props) {
-  const [Value, setValue] = React.useState('');
-
+  const { theme } = useTheme();
   const handleChange = (event) => {
     props.setSelectValue(event.target.value);
   };
 
   return (
-    <Box sx={{ minWidth:80,maxWidth:'80%',marginLeft:10,marginTop:2,...props.style}}>
+    <Box
+      sx={{
+        ...props.style,
+      }}
+    >
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
-        <Select
+        <TextField
+          select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={props.SelectedValue}
           label={props.label}
-          onChange={(e)=>{handleChange(e)}}
-          defaultValue={props.defaultValue?props.defaultValue:null}
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          defaultValue={props.defaultValue ? props.defaultValue : null}
+          sx={sharedStyles}
         >
-           <MenuItem value="">
+          <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="">
             <em>Select Service</em>
           </MenuItem>
-         {props.MenuItems.map((item,index)=>{
-            return <MenuItem value={item.value} key={index} >{item.value}</MenuItem>
-         })}
-        </Select>
+          {props.MenuItems.map((item, index) => (
+            <MenuItem sx={{ color: `${theme.valueFontColor}` }} value={item.value} key={index}>
+              {item.value}
+            </MenuItem>
+          ))}
+        </TextField>
       </FormControl>
     </Box>
   );

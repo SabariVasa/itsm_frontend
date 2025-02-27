@@ -1,1484 +1,939 @@
-// // import React, { useState, useEffect } from 'react';
-// // import { Select, MenuItem, Grid, Box, TextField, Button, Container, InputLabel } from "@mui/material";
-// // // import VisibilityIcon from '@mui/icons-material/Visibility';
-// // // import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-// // import axios from 'axios';
-// // import { serverAPI } from '../../Utils/Server';
-// // import Snackbar from '@mui/material/Snackbar';
-// // // import { useNavigate } from 'react-router-dom';
-// // import SearchTextField from '../HelperComponents/SearchTextField';
-// // import DraggableModal from '../User Management/DraggableModal';
-// // import { resturls } from '../../global/utils/apiurls';
-// // import GlobalService from '../../services/GlobalService';
-// // import { Description } from '@mui/icons-material';
-// // import { Formik, Form, Field } from 'formik';
-// // import * as Yup from 'yup';
-// // import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-// // // import { useSearch } from 'rsuite/esm/internals/Picker';
-// // // import { useSelector } from 'react-redux';
-
-
-
-// // function CreateNewIncident() {
-
-// //   const [Number, setNumber] = useState();
-// //   const [channel, setChannel] = useState();
-// //   const [State, setState] = useState();
-// //   const [Caller, setCaller] = useState();
-// //   const [Category, setCategory] = useState();
-// //   const [Impact, setImapact] = useState();
-// //   const [subCategory, setSubCategory] = useState();
-// //   const [urgency, setUrgency] = useState();
-// //   const [service, setService] = useState();
-// //   const [Priority, setPriority] = useState();
-// //   const [Assignment, setAssignment] = useState();
-// //   const [ServiceCategory, setServiceCategory] = useState();
-// //   const [CI, setCI] = useState();
-// //   const [AssigmentTo, setAssignmentTo] = useState();
-// //   const [shortDescription, setShortDescription] = useState("");
-// //   const [itemOpen, setItemOpen] = React.useState(false);
-// //   const [warningMessage, setWarningMessage] = useState('');  // Warning message state
-// //   const [openWarning, setOpenWarning] = useState(false);
-// //   const handleClickOpen = () => {
-// //     setItemOpen(true);
-// //   };
-
-// //   // const endUserIncident = useSelector((state)=>state.incidentReducers.endUserIncident)
-// //   useEffect(() => {
-// //     // setCaller(endUserIncident.Email);
-// //   }, []);
-
-// //   const handleItemClose = () => {
-// //     setItemOpen(false);
-// //   };
-
-// //   useEffect(() => {
-// //     setCaller(localStorage.getItem("userEmail"));
-// //   }, []);
-// //   // const handleChange = (event) => {
-// //   //     setState(event.target.value);
-// //   //   };
-
-// //   const [Message, setMessage] = useState({
-// //     open: false,
-// //     vertical: 'bottom',
-// //     horizontal: 'center',
-// //   });
-// //   const { vertical, horizontal, open } = Message;
-// //   //   const [isVisible, setisVisible] = useState(true);
-// //   const [ErrorMessage, setErrorMessage] = useState();
-// //   const [Success, setSuccess] = useState(false);
-
-// //   const fetchDocumentCount = async () => {
-
-// //     // await axios.get(`${serverAPI}/allIncidentsCount`).then((res) => {
-// //     //   let TempNum = parseInt(res.data.responseData) + 1;
-// //     //   setNumber("INC000000" + TempNum)
-// //     // }).catch((err) => {
-// //     //   setMessage({ ...Message, open: true });
-// //     //   setErrorMessage("Sorry something went wrong")
-// //     // })
-// //     GlobalService.generalSelect(
-// //       (response) => {
-// //         const { statusCode, statusMessage } = response;
-// //         console.log(response, 'responseData');
-// //         if (statusCode === 200) {
-// //           let TempNum = parseInt(response.responseData) + 1;
-// //           setNumber(response.responseData)
-// //           console.log(response, 200);
-// //         } else {
-// //           setMessage({ ...Message, open: true });
-// //           setErrorMessage("Sorry something went wrong")
-// //         }
-// //       },
-// //       resturls.allIncidentCount,
-// //       {},
-// //       'GET'
-// //     );
-// //   }
-
-// //   useEffect(() => {
-// //     fetchDocumentCount();
-// //   }, [])
-// //   const navigate = useHistory();
-
-// //   const Submit = (values) => {
-// //     console.log(values, 'GlobalService');
-// //     GlobalService.generalSelect(
-// //       (response) => {
-// //         const { statusCode, statusMessage, } = response;
-// //         console.log(response, 'responseData');
-// //         if (statusCode === 200) {
-// //           // setCategoryTypeList(responseData)
-// //           setSuccess(true);
-// //           setMessage({ ...Message, open: true })
-// //           setErrorMessage(statusMessage);
-// //           // navigate(-1);
-// //         } else {
-// //           setMessage({ ...Message, open: true })
-// //           setErrorMessage("Something went wrong");
-// //         }
-// //       },
-// //       resturls.createNewIncident,
-// //       { ...values, incidentId: Number },
-// //       'POST'
-// //     );
-// //   }
-
-// //   const handleClose = () => {
-// //     setMessage({ ...Message, open: false })
-// //   }
-// //   const validationSchema = Yup.object({
-// //     channel: Yup.string().required('Required'),
-// //     state: Yup.string().required('Required'),
-// //     caller: Yup.string().required('Required'),
-// //     category: Yup.string().required('Required'),
-// //     impact: Yup.string().required('Required'),
-// //     subCategory: Yup.string().required('Required'),
-// //     urgency: Yup.string().required('Required'),
-// //     service: Yup.string().required('Required'),
-// //     priority: Yup.string().required('Required'),
-// //     assignment: Yup.string().required('Required'),
-// //     serviceCategory: Yup.string().required('Required'),
-// //     CI: Yup.string().required('Required'),
-// //     assignmentTo: Yup.string().required('Required'),
-// //     shortDescription: Yup.string().required('Required'),
-// //     description: Yup.string().required('Required'),
-// //   });
-
-// //   const categories = ['Software', 'Hardware', 'Network'];
-// //   const impacts = ['Low', 'Medium', 'High'];
-// //   const urgencies = ['Low', 'Medium', 'High'];
-// //   const priorities = ['Low', 'Medium', 'High'];
-
-// //   const handleIncidentIdClick = () => {
-// //     setWarningMessage('Incident ID cannot be modified!');
-// //     setOpenWarning(true);
-
-// //     // Clear the message after 3 seconds (3000 milliseconds)
-// //     setTimeout(() => {
-// //       setOpenWarning(false);
-// //     }, 3000);
-// //   };
-
-// //   return (
-// //     <Container style={{
-// //       marginBottom: 60, display: "flex", alignItems: "center", justifyContent: "center", overflowX
-// //         : "hidden"
-// //     }}>
-// //       <DraggableModal open={itemOpen} setOpen={setItemOpen} handleClickOpen={handleClickOpen} handleClose={handleItemClose} />
-// //       <Container component="main" style={{ marginLeft: 80, width: "100%" }} maxWidth="lg">
-// //         <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-around" }}>
-// //           {/* <h2 style={{ fontSize: 30, fontWeight: "bold", marginLeft: -10 }}>Create Incident</h2> */}
-// //           {/* <Button
-// //             // fullWidth
-// //             variant="contained"
-// //             sx={{ mt: 3, mb: 2 }}
-// //             onClick={() => { Submit() }}
-
-// //           >
-// //             Create New Incident
-// //           </Button> */}
-// //         </div>
-// //         <Formik
-// //           initialValues={{
-// //             channel: '',
-// //             state: '',
-// //             caller: '',
-// //             category: '',
-// //             impact: '',
-// //             subCategory: '',
-// //             urgency: '',
-// //             service: '',
-// //             priority: '',
-// //             assignment: '',
-// //             serviceCategory: '',
-// //             CI: '',
-// //             assignmentTo: '',
-// //             shortDescription: '',
-// //             description: '',
-// //             incidentId: Number,
-// //           }}
-// //           validationSchema={validationSchema}
-// //           onSubmit={(values) => {
-// //             console.log(values, 'statusCode');
-// //             Submit(values);
-// //           }}
-// //         >
-// //           {({ values, handleChange, handleBlur, errors, touched }) => (
-// //             <Form>
-// //               <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-// //                 <h2 style={{ fontSize: 30, fontWeight: "bold", marginLeft: -10 }}>Create Incident</h2>
-// //                 <Button
-// //                   type="submit"
-// //                   variant="contained"
-// //                   sx={{ mt: 3, mb: 4, }}
-// //                   color="primary"
-// //                 >
-// //                   Create New Incident
-// //                 </Button>
-// //               </Grid>
-// //               <Grid container spacing={2}>
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     // label="Incident ID"
-// //                     // value={values.incidentId} 
-// //                     // fullWidth
-// //                     // InputProps={{
-// //                     //   readOnly: true, 
-// //                     // }}
-// //                     onClick={handleIncidentIdClick}
-// //                     // label="Incident ID"
-// //                     name="incidentId"
-// //                     value={Number}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.incidentId && Boolean(errors.incidentId)}
-// //                     helperText={touched.incidentId && errors.incidentId}
-// //                   />
-// //                   <Field
-// //                     type="hidden"
-// //                     name="incidentId"
-// //                     value={Number}
-// //                   />
-// //                 </Grid>
-// //                 <Grid item xs={4} sm={6}>
-// //                   <TextField
-// //                     label="Channel"
-// //                     name="channel"
-// //                     value={values.channel}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.channel && Boolean(errors.channel)}
-// //                     helperText={touched.channel && errors.channel}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="State"
-// //                     name="state"
-// //                     value={values.state}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.state && Boolean(errors.state)}
-// //                     helperText={touched.state && errors.state}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="Caller"
-// //                     name="caller"
-// //                     value={values.caller}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.caller && Boolean(errors.caller)}
-// //                     helperText={touched.caller && errors.caller}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     select
-// //                     label="Category"
-// //                     name="category"
-// //                     value={values.category}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.category && Boolean(errors.category)}
-// //                     helperText={touched.category && errors.category}
-// //                   >
-// //                     {categories.map((category) => (
-// //                       <MenuItem key={category} value={category}>
-// //                         {category}
-// //                       </MenuItem>
-// //                     ))}
-// //                   </TextField>
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     select
-// //                     label="Impact"
-// //                     name="impact"
-// //                     value={values.impact}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.impact && Boolean(errors.impact)}
-// //                     helperText={touched.impact && errors.impact}
-// //                   >
-// //                     {impacts.map((impact) => (
-// //                       <MenuItem key={impact} value={impact}>
-// //                         {impact}
-// //                       </MenuItem>
-// //                     ))}
-// //                   </TextField>
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="SubCategory"
-// //                     name="subCategory"
-// //                     value={values.subCategory}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.subCategory && Boolean(errors.subCategory)}
-// //                     helperText={touched.subCategory && errors.subCategory}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     select
-// //                     label="Urgency"
-// //                     name="urgency"
-// //                     value={values.urgency}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.urgency && Boolean(errors.urgency)}
-// //                     helperText={touched.urgency && errors.urgency}
-// //                   >
-// //                     {urgencies.map((urgency) => (
-// //                       <MenuItem key={urgency} value={urgency}>
-// //                         {urgency}
-// //                       </MenuItem>
-// //                     ))}
-// //                   </TextField>
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="Service"
-// //                     name="service"
-// //                     value={values.service}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.service && Boolean(errors.service)}
-// //                     helperText={touched.service && errors.service}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     select
-// //                     label="Priority"
-// //                     name="priority"
-// //                     value={values.priority}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.priority && Boolean(errors.priority)}
-// //                     helperText={touched.priority && errors.priority}
-// //                   >
-// //                     {priorities.map((priority) => (
-// //                       <MenuItem key={priority} value={priority}>
-// //                         {priority}
-// //                       </MenuItem>
-// //                     ))}
-// //                   </TextField>
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="Assignment"
-// //                     name="assignment"
-// //                     value={values.assignment}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.assignment && Boolean(errors.assignment)}
-// //                     helperText={touched.assignment && errors.assignment}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="Service Category"
-// //                     name="serviceCategory"
-// //                     value={values.serviceCategory}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.serviceCategory && Boolean(errors.serviceCategory)}
-// //                     helperText={touched.serviceCategory && errors.serviceCategory}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="CI"
-// //                     name="CI"
-// //                     value={values.CI}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.CI && Boolean(errors.CI)}
-// //                     helperText={touched.CI && errors.CI}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12} sm={6}>
-// //                   <TextField
-// //                     label="Assignment To"
-// //                     name="assignmentTo"
-// //                     value={values.assignmentTo}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.assignmentTo && Boolean(errors.assignmentTo)}
-// //                     helperText={touched.assignmentTo && errors.assignmentTo}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12}>
-// //                   <TextField
-// //                     label="Short Description"
-// //                     name="shortDescription"
-// //                     value={values.shortDescription}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     error={touched.shortDescription && Boolean(errors.shortDescription)}
-// //                     helperText={touched.shortDescription && errors.shortDescription}
-// //                   />
-// //                 </Grid>
-
-// //                 <Grid item xs={12}>
-// //                   <TextField
-// //                     label="Description"
-// //                     name="description"
-// //                     value={values.description}
-// //                     onChange={handleChange}
-// //                     onBlur={handleBlur}
-// //                     fullWidth
-// //                     multiline
-// //                     rows={4}
-// //                     error={touched.description && Boolean(errors.description)}
-// //                     helperText={touched.description && errors.description}
-// //                   />
-// //                 </Grid>
-// //               </Grid>
-// //               <Snackbar
-// //                 open={openWarning}
-// //                 message={warningMessage}
-// //                 autoHideDuration={3000}
-// //                 onClose={() => setOpenWarning(false)}
-// //                 ContentProps={{
-// //                   sx: {
-// //                     background: '#ff3333'
-// //                   }
-// //                 }}
-// //               />
-// //             </Form>
-// //           )}
-// //         </Formik>
-// //       </Container>
-// //       <Snackbar
-// //         anchorOrigin={{ vertical, horizontal }}
-// //         open={open}
-// //         onClose={handleClose}
-// //         message={ErrorMessage}
-// //         key={vertical + horizontal}
-// //         ContentProps={{
-// //           sx: {
-// //             background: Success ? "green" : "#ff3333"
-// //           }
-// //         }
-// //         }
-// //       />
-
-// //     </Container>
-// //   )
-// // }
-
-// // export default CreateNewIncident;
-// import React from 'react';
-// import { Container, TextField, Button, MenuItem } from '@mui/material';
-// import { Formik, Form } from 'formik';
-// import * as Yup from 'yup';
-// import styles from './CreateIncident.module.scss';
-
-// const validationSchema = Yup.object({
-//   channel: Yup.string().required('Channel is required'),
-//   state: Yup.string().required('State is required'),
-//   caller: Yup.string().required('Caller is required'),
-//   category: Yup.string().required('Category is required'),
-//   subCategory: Yup.string().required('Sub-category is required'),
-//   urgency: Yup.string().required('Urgency is required'),
-//   priority: Yup.string().required('Priority is required'),
-//   assignment: Yup.string().required('Assignment is required'),
-//   shortDescription: Yup.string().required('Short description is required'),
-//   description: Yup.string().required('Description is required'),
-// });
-
-// const CreateIncident = () => {
-//   const initialValues = {
-//     channel: '',
-//     state: '',
-//     caller: '',
-//     category: '',
-//     subCategory: '',
-//     urgency: '',
-//     priority: '',
-//     assignment: '',
-//     shortDescription: '',
-//     description: '',
-//   };
-
-//   const handleSubmit = (values) => {
-//     console.log('Form Data', values);
-//   };
-
-//   return (
-//     <Container className={styles.container}>
-//       <div className={styles.header}>
-//         <h2>Create Incident</h2>
-//         <Button type="submit" variant="contained" className={styles['submit-btn']}>
-//           Create New Incident
-//         </Button>
-//               </div>
-//       <Formik
-//         initialValues={initialValues}
-//         validationSchema={validationSchema}
-//         onSubmit={handleSubmit}
-//       >
-//         {({ values, handleChange, handleBlur, errors, touched }) => (
-//           <Form>
-//             <div className={styles['form-grid']}>
-//               <TextField
-//                 name="channel"
-//                 value={values.channel}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Channel"
-//                 error={touched.channel && Boolean(errors.channel)}
-//                 helperText={touched.channel && errors.channel}
-//               />
-//               <TextField
-//                 name="state"
-//                 value={values.state}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="State"
-//                 error={touched.state && Boolean(errors.state)}
-//                 helperText={touched.state && errors.state}
-//               />
-//               <TextField
-//                 name="caller"
-//                 value={values.caller}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Caller"
-//                 error={touched.caller && Boolean(errors.caller)}
-//                 helperText={touched.caller && errors.caller}
-//               />
-//               <TextField
-//                 name="category"
-//                 value={values.category}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Category"
-//                 error={touched.category && Boolean(errors.category)}
-//                 helperText={touched.category && errors.category}
-//               />
-//               <TextField
-//                 name="subCategory"
-//                 value={values.subCategory}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Sub-category"
-//                 error={touched.subCategory && Boolean(errors.subCategory)}
-//                 helperText={touched.subCategory && errors.subCategory}
-//               />
-//               <TextField
-//                 name="urgency"
-//                 value={values.urgency}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Urgency"
-//                 error={touched.urgency && Boolean(errors.urgency)}
-//                 helperText={touched.urgency && errors.urgency}
-//               />
-//               <TextField
-//                 name="priority"
-//                 value={values.priority}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Priority"
-//                 error={touched.priority && Boolean(errors.priority)}
-//                 helperText={touched.priority && errors.priority}
-//               />
-//               <TextField
-//                 name="assignment"
-//                 value={values.assignment}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Assignment"
-//                 error={touched.assignment && Boolean(errors.assignment)}
-//                 helperText={touched.assignment && errors.assignment}
-//               />
-//               <TextField
-//                 name="shortDescription"
-//                 value={values.shortDescription}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Short Description"
-//                 error={touched.shortDescription && Boolean(errors.shortDescription)}
-//                 helperText={touched.shortDescription && errors.shortDescription}
-//                 className={styles['long-field']}
-//               />
-//               <TextField
-//                 name="description"
-//                 value={values.description}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Description"
-//                 error={touched.description && Boolean(errors.description)}
-//                 helperText={touched.description && errors.description}
-//                 multiline
-//                 rows={4}
-//                 className={styles['long-field']}
-//               />
-//             </div>
-//             <Button type="submit" variant="contained" className={styles['submit-btn']}>
-//               Submit
-//             </Button>
-//           </Form>
-//         )}
-//       </Formik>
-//     </Container>
-//   );
-// };
-
-// export default CreateIncident;
-
-// import React from 'react';
-// import { Container, TextField, Button, MenuItem } from '@mui/material';
-// import { Formik, Form } from 'formik';
-// import * as Yup from 'yup';
-// import styles from './CreateIncident.module.scss';
-// import CustomTextField from '../HelperComponents/TextField';
-
-// const validationSchema = Yup.object({
-//   channel: Yup.string().required('Channel is required'),
-//   state: Yup.string().required('State is required'),
-//   caller: Yup.string().required('Caller is required'),
-//   category: Yup.string().required('Category is required'),
-//   subCategory: Yup.string().required('Sub-category is required'),
-//   urgency: Yup.string().required('Urgency is required'),
-//   priority: Yup.string().required('Priority is required'),
-//   assignment: Yup.string().required('Assignment is required'),
-//   shortDescription: Yup.string().required('Short description is required'),
-//   description: Yup.string().required('Description is required'),
-// });
-
-// const CreateIncident = () => {
-//   const initialValues = {
-//     channel: '',
-//     state: '',
-//     caller: '',
-//     category: '',
-//     subCategory: '',
-//     urgency: '',
-//     priority: '',
-//     assignment: '',
-//     shortDescription: '',
-//     description: '',
-//   };
-
-//   const handleSubmit = (values) => {
-//     console.log('Form Data', values);
-//   };
-
-//   return (
-//     <Container className={styles.container}>
-//       <div className={styles.header}>
-//         <h2>Create Incident</h2>
-//         <Button type="submit" variant="contained" className={styles['submit-btn']}>
-//           Create New Incident
-//         </Button>
-//               </div>
-//       <Formik
-//         initialValues={initialValues}
-//         validationSchema={validationSchema}
-//         onSubmit={handleSubmit}
-//       >
-//         {({ values, handleChange, handleBlur, errors, touched }) => (
-//           <Form>
-//             <div className={styles['form-grid']}>
-//               <CustomTextField
-//                 name="channel"
-//                 value={values.channel}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Channel"
-//                 error={touched.channel && Boolean(errors.channel)}
-//                 helperText={touched.channel && errors.channel}
-//               />
-//               <CustomTextField
-//                 name="state"
-//                 value={values.state}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="State"
-//                 error={touched.state && Boolean(errors.state)}
-//                 helperText={touched.state && errors.state}
-//               />
-//               <CustomTextField
-//                 name="caller"
-//                 value={values.caller}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Caller"
-//                 error={touched.caller && Boolean(errors.caller)}
-//                 helperText={touched.caller && errors.caller}
-//               />
-//               <CustomTextField
-//                 name="category"
-//                 value={values.category}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Category"
-//                 error={touched.category && Boolean(errors.category)}
-//                 helperText={touched.category && errors.category}
-//               />
-//               <CustomTextField
-//                 name="subCategory"
-//                 value={values.subCategory}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Sub-category"
-//                 error={touched.subCategory && Boolean(errors.subCategory)}
-//                 helperText={touched.subCategory && errors.subCategory}
-//               />
-//               <CustomTextField
-//                 name="urgency"
-//                 value={values.urgency}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Urgency"
-//                 error={touched.urgency && Boolean(errors.urgency)}
-//                 helperText={touched.urgency && errors.urgency}
-//               />
-//               <CustomTextField
-//                 name="priority"
-//                 value={values.priority}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Priority"
-//                 error={touched.priority && Boolean(errors.priority)}
-//                 helperText={touched.priority && errors.priority}
-//               />
-//               <CustomTextField
-//                 name="assignment"
-//                 value={values.assignment}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Assignment"
-//                 error={touched.assignment && Boolean(errors.assignment)}
-//                 helperText={touched.assignment && errors.assignment}
-//               />
-//               <CustomTextField
-//                 name="shortDescription"
-//                 value={values.shortDescription}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Short Description"
-//                 error={touched.shortDescription && Boolean(errors.shortDescription)}
-//                 helperText={touched.shortDescription && errors.shortDescription}
-//                 className={styles['long-field']}
-//               />
-//               <CustomTextField
-//                 name="description"
-//                 value={values.description}
-//                 onChange={handleChange}
-//                 onBlur={handleBlur}
-//                 label="Description"
-//                 error={touched.description && Boolean(errors.description)}
-//                 helperText={touched.description && errors.description}
-//                 multiline
-//                 rows={4}
-//                 className={styles['long-field']}
-//               />
-//             </div>
-//             <Button type="submit" variant="contained" className={styles['submit-btn']}>
-//               Submit
-//             </Button>
-//           </Form>
-//         )}
-//       </Formik>
-//     </Container>
-//   );
-// };
-
-// export default CreateIncident;
-
-// import React from "react";
-// import { Formik, Form, Field } from "formik";
-// import * as Yup from "yup";
-// import {
-//   TextField,
-//   Select,
-//   MenuItem,
-//   Button,
-//   FormControl,
-//   InputLabel,
-//   Box,
-// } from "@mui/material";
-// import { styled } from "@mui/material/styles";
-
-// const StyledFormContainer = styled(Box)({
-//   display: "grid",
-//   gridTemplateColumns: "1fr 1fr",
-//   gap: "24px",
-//   maxWidth: "800px",
-//   margin: "auto",
-//   padding: "20px",
-// });
-
-// const CustomTextField = styled(TextField)({
-//   "& .MuiInputBase-root": {
-//     borderBottom: "2px solid linear-gradient(90deg, #F51275 0%, #622098 100%)", // Bottom border color
-//     fontSize: "14px", // Font size
-//   },
-//   "& .MuiInputBase-root:focus": {
-//     borderBottom: "2px solid #aa00ff", // Focused color
-//   },
-//   "& .MuiOutlinedInput-notchedOutline": {
-//     border: "none", // Remove outer border
-//   },
-//   "& .MuiInputLabel-root": {
-//     color: "#d500f9", // Label color
-//     fontWeight: "bold",
-//   },
-// });
-
-// const CustomSelect = styled(Select)({
-//   "& .MuiOutlinedInput-root": {
-//     borderBottom: "2px solid #d500f9", // Bottom border
-//     border: "none",
-//   },
-//   "&:focus": {
-//     borderBottom: "2px solid #aa00ff",
-//   },
-// });
-
-// const StyledButton = styled(Button)({
-//   backgroundColor: "#aa00ff",
-//   color: "#fff",
-//   fontWeight: "bold",
-//   textTransform: "none",
-//   marginTop: "20px",
-//   ":hover": {
-//     backgroundColor: "#d500f9",
-//   },
-// });
-
-// const validationSchema = Yup.object({
-//   state: Yup.string().required("Required"),
-//   category: Yup.string().required("Required"),
-//   subCategory: Yup.string().required("Required"),
-//   priority: Yup.string().required("Required"),
-// });
-
-// const CreateIncidentForm = () => {
-//   return (
-//     <Formik
-//       initialValues={{
-//         state: "",
-//         category: "",
-//         subCategory: "",
-//         service: "",
-//         priority: "",
-//         caller: "",
-//         impact: "",
-//         urgent: "",
-//       }}
-//       validationSchema={validationSchema}
-//       onSubmit={(values) => {
-//         console.log("Form Submitted", values);
-//       }}
-//     >
-//       {({ errors, touched }) => (
-//         <Form>
-//           <StyledFormContainer>
-//             <Field
-//               name="state"
-//               as={CustomTextField}
-//               label="State"
-//               error={touched.state && !!errors.state}
-//               helperText={touched.state && errors.state}
-//             />
-//             <Field
-//               name="caller"
-//               as={CustomTextField}
-//               label="Caller"
-//               error={touched.caller && !!errors.caller}
-//               helperText={touched.caller && errors.caller}
-//             />
-//             <Field
-//               name="category"
-//               as={CustomTextField}
-//               label="Category"
-//               error={touched.category && !!errors.category}
-//               helperText={touched.category && errors.category}
-//             />
-//             <Field
-//               name="subCategory"
-//               as={CustomTextField}
-//               label="Sub-Category"
-//               error={touched.subCategory && !!errors.subCategory}
-//               helperText={touched.subCategory && errors.subCategory}
-//             />
-//             <FormControl>
-//               <InputLabel id="priority-label">Priority</InputLabel>
-//               <Field
-//                 as={CustomSelect}
-//                 name="priority"
-//                 labelId="priority-label"
-//               >
-//                 <MenuItem value="High">High</MenuItem>
-//                 <MenuItem value="Medium">Medium</MenuItem>
-//                 <MenuItem value="Low">Low</MenuItem>
-//               </Field>
-//             </FormControl>
-//             <Field
-//               name="service"
-//               as={CustomTextField}
-//               label="Service"
-//               error={touched.service && !!errors.service}
-//               helperText={touched.service && errors.service}
-//             />
-//           </StyledFormContainer>
-//           <Box textAlign="center">
-//             <StyledButton type="submit">Create New Incident</StyledButton>
-//           </Box>
-//         </Form>
-//       )}
-//     </Formik>
-//   );
-// };
-
-// export default CreateIncidentForm;
-// import React from "react";
-// import { Formik, Form, Field } from "formik";
-// import * as Yup from "yup";
-// import {
-//   TextField,
-//   Select,
-//   MenuItem,
-//   Button,
-//   FormControl,
-//   InputLabel,
-//   Box,
-// } from "@mui/material";
-// import { styled } from "@mui/material/styles";
-
-// const StyledFormContainer = styled(Box)({
-//   display: "grid",
-//   gridTemplateColumns: "1fr 1fr",
-//   gap: "24px",
-//   maxWidth: "800px",
-//   margin: "auto",
-//   padding: "20px",
-// });
-
-// const CustomTextField = styled(TextField)({
-//   position: "relative",
-//   "& .MuiInputBase-root": {
-//     fontSize: "14px", // Font size
-//     position: "relative",
-//     background: "transparent",
-//     "&:before": {
-//       content: '""',
-//       position: "absolute",
-//       bottom: 0,
-//       left: 0,
-//       width: "100%",
-//       height: "2px",
-//       background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", // Gradient color
-//       zIndex: 1,
-//     },
-//     "&:after": {
-//       content: '""',
-//       position: "absolute",
-//       bottom: 0,
-//       left: 0,
-//       width: "0%",
-//       height: "2px",
-//       background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", // Gradient color on focus
-//       zIndex: 2,
-//       transition: "width 0.3s ease-in-out",
-//     },
-//     "&:hover:after, &:focus-within:after": {
-//       width: "100%", // Expand gradient on hover/focus
-//     },
-//   },
-//   "& .MuiOutlinedInput-notchedOutline": {
-//     border: "none", // Remove default Material-UI border
-//   },
-//   "& .MuiInputLabel-root": {
-//     color: "#d500f9", // Label color
-//     fontWeight: "bold",
-//   },
-// });
-
-// const CustomSelect = styled(Select)({
-//   position: "relative",
-//   "& .MuiOutlinedInput-root": {
-//     "&:before": {
-//       content: '""',
-//       position: "absolute",
-//       bottom: 0,
-//       left: 0,
-//       width: "100%",
-//       height: "2px",
-//       background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", // Gradient color
-//       zIndex: 1,
-//     },
-//     "&:after": {
-//       content: '""',
-//       position: "absolute",
-//       bottom: 0,
-//       left: 0,
-//       width: "0%",
-//       height: "2px",
-//       background: "linear-gradient(90deg, #F51275 0%, #622098 100%)", // Gradient color on focus
-//       zIndex: 2,
-//       transition: "width 0.3s ease-in-out",
-//     },
-//     "&:hover:after, &:focus-within:after": {
-//       width: "100%", // Expand gradient on hover/focus
-//     },
-//   },
-// });
-
-// const StyledButton = styled(Button)({
-//   backgroundColor: "#aa00ff",
-//   color: "#fff",
-//   fontWeight: "bold",
-//   textTransform: "none",
-//   marginTop: "20px",
-//   ":hover": {
-//     backgroundColor: "#d500f9",
-//   },
-// });
-
-// const validationSchema = Yup.object({
-//   state: Yup.string().required("Required"),
-//   category: Yup.string().required("Required"),
-//   subCategory: Yup.string().required("Required"),
-//   priority: Yup.string().required("Required"),
-// });
-
-// const CreateIncidentForm = () => {
-//   return (
-//     <Formik
-//       initialValues={{
-//         state: "",
-//         category: "",
-//         subCategory: "",
-//         service: "",
-//         priority: "",
-//         caller: "",
-//         impact: "",
-//         urgent: "",
-//       }}
-//       validationSchema={validationSchema}
-//       onSubmit={(values) => {
-//         console.log("Form Submitted", values);
-//       }}
-//     >
-//       {({ errors, touched }) => (
-//         <Form>
-//           <StyledFormContainer>
-//             <Field
-//               name="state"
-//               as={CustomTextField}
-//               label="State"
-//               error={touched.state && !!errors.state}
-//               helperText={touched.state && errors.state}
-//             />
-//             <Field
-//               name="caller"
-//               as={CustomTextField}
-//               label="Caller"
-//               error={touched.caller && !!errors.caller}
-//               helperText={touched.caller && errors.caller}
-//             />
-//             <Field
-//               name="category"
-//               as={CustomTextField}
-//               label="Category"
-//               error={touched.category && !!errors.category}
-//               helperText={touched.category && errors.category}
-//             />
-//             <Field
-//               name="subCategory"
-//               as={CustomTextField}
-//               label="Sub-Category"
-//               error={touched.subCategory && !!errors.subCategory}
-//               helperText={touched.subCategory && errors.subCategory}
-//             />
-//             <FormControl>
-//               <InputLabel id="priority-label">Priority</InputLabel>
-//               <Field
-//                 as={CustomSelect}
-//                 name="priority"
-//                 labelId="priority-label"
-//               >
-//                 <MenuItem value="High">High</MenuItem>
-//                 <MenuItem value="Medium">Medium</MenuItem>
-//                 <MenuItem value="Low">Low</MenuItem>
-//               </Field>
-//             </FormControl>
-//             <Field
-//               name="service"
-//               as={CustomTextField}
-//               label="Service"
-//               error={touched.service && !!errors.service}
-//               helperText={touched.service && errors.service}
-//             />
-//           </StyledFormContainer>
-//           <Box textAlign="center">
-//             <StyledButton type="submit">Create New Incident</StyledButton>
-//           </Box>
-//         </Form>
-//       )}
-//     </Formik>
-//   );
-// };
-
-// export default CreateIncidentForm;
-import React, { useEffect, useState } from "react";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
+import React, { useEffect, useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import {
-  TextField,
-  Select,
   MenuItem,
   Button,
   FormControl,
   InputLabel,
-  Box,
+  TextareaAutosize,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import styles from './CreateIncident.module.scss';
 import { resturls } from "../../global/utils/apiurls";
 import GlobalService from "../../services/GlobalService";
-import axios from "axios";
-import { CustomSelect, CustomTextField, GradientHeader, HeaderContainer, StyledButton, StyledFormContainer, StyledIcon, StyledPatternL, StyledPatternR } from "../../commonComponents/StyledComponents";
+import toast from "react-hot-toast";
+import {
+  CustomSelect,
+  CustomTextField,
+  GradientHeader,
+  HeaderContainer,
+  StyledFormContainer,
+  StyledIcon,
+  StyledPatternL,
+  StyledPatternR,
+} from "../../commonComponents/StyledComponents";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Snackbar from "@mui/material/Snackbar";
+import { useParams } from "react-router-dom/cjs/react-router-dom";
+import DefaultLoader from "../../global/commonComponents/DefaultLoader";
+import IncidentTabActiveNotes from "./IncidentTabActiveNotes";
+import { UserListModal } from "../../presentation/components/users/UsersListModal";
+import { useAuth } from "../../application/modules/auth/hooks/useAuth";
+import { useTheme } from "../../global/commonComponents/ThemeContext";
 
-const CreateIncidentForm = () => {
+const CreateIncidentForm = (props) => {
+  const { isEdit } = props;
+  const {
+    user_auth: { userId, emailAddress },
+  } = useAuth();
+  const { incident_id } = useParams();
+  const history = useHistory();
+  const { theme } = useTheme();
+
   const [categoryType, setCategoryType] = useState();
-  const [serviceValue, setServiceValue] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [IncidentData, setIncidentData] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [Number, setNumber] = useState();
+  const [openWarning, setOpenWarning] = useState(false);
+  const [openedDate, setOpenedDate] = useState();
+  const [caller, setCaller] = useState();
+  const [selectedCaller, setSelectedCaller] = useState({
+    id: userId,
+    emailAddress,
+  });
+  const [assignToMember, setAssignToMember] = useState({
+    id: ``,
+    emailAddress: ``,
+  });
+  
+  const [selectedAssignTo, setSelectedAssignTo] = useState();
+  const [comment, setComment] = useState("");
+  const [value, setValue] = useState("1");
+  const [callerDepartmentList, setCallerDepartmentList] = useState();
+  const formatDateTime = () => {
+    const date = new Date();
+    const formattedDate = new Intl.DateTimeFormat("en-CA", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(date);
+
+    const formattedTime = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    }).format(date);
+
+    return `${formattedDate}, ${formattedTime}`;
+  };
+  const [intialValues, setIntialValues] = useState({
+    state: "New",
+    caller:
+      {
+        id: selectedCaller?.id,
+        name: selectedCaller?.emailAddress,
+      } || {},
+    assignGroup: {
+      id: "",
+      name: "",
+    },
+    assignedTo:
+      {
+        id: assignToMember?.id,
+        name: assignToMember?.emailAddress,
+      } || {},
+    category: "",
+    subCategory: "",
+    urgency: "",
+    priority: "",
+    callerDepartment: {
+      id: "",
+      name: "",
+    },
+    shortDescription: "",
+    description: "",
+    incidentId: Number,
+    service: "",
+    serviceCategory: "",
+    createdBy: userId,
+    impact: "",
+    updatedBy: {
+      id: userId,
+      name: emailAddress,
+    },
+    notesUpdateTime: formatDateTime(),
+  });
+  const [notes, setNotes] = useState(IncidentData?.notes || []);
 
   const validationSchema = Yup.object({
     state: Yup.string().required("Required"),
-    category: Yup.string().required("Required"),
-    subCategory: Yup.string().required("Required"),
-    priority: Yup.string().required("Required"),
-    channel: Yup.string().required("Required"),
-    urgency: Yup.string().required("Required"),
-    assignment: Yup.string().required("Required"),
-    shortDescription: Yup.string().required("Required"),
     description: Yup.string().required("Required"),
   });
 
+  const getPriority = (urgency, impact) => {
+    if (!urgency || !impact) return "Low";
+    const priorityLookup = {
+      "High-High": "Critical",
+      "High-Medium": "High",
+      "High-Low": "High",
+      "Medium-High": "High",
+      "Medium-Medium": "Medium",
+      "Medium-Low": "Medium",
+      "Low-High": "Medium",
+      "Low-Medium": "Low",
+      "Low-Low": "Low",
+    };
+    return priorityLookup[`${urgency}-${impact}`] || "";
+  };
+
+  const handleAddNote = () => {
+    if (comment.trim()) {
+      const noteObject = {
+        text: comment,
+        createdBy: emailAddress,
+        timeStamp: formatDateTime(),
+      };
+      GlobalService.generalSelect(
+        (response) => {
+          const { estatus, emessage } = response;
+          if (estatus) {
+            setLoader(true);
+            notifySuccess(emessage);
+            history.goBack();
+          } else {
+            notifyError(emessage);
+          }
+        },
+        `${resturls.addNotes}${incident_id}`,
+        { ...noteObject },
+        "PUT"
+      );
+      setNotes([noteObject, ...notes]);
+      setComment("");
+    } else {
+      alert("Please enter a note before adding.");
+    }
+  };
+
   const getCategory = (value) => {
-    console.log(value, 'value');
     GlobalService.generalSelect(
       (respdata) => {
         const { estatus, data } = respdata;
         if (estatus && data) {
-          setCategoryType(data.categoryList)
+          setCategoryType(data.categoryList);
         }
       },
       `${resturls.getCategory}/${value}`,
       {},
-      'GET'
+      "GET"
     );
   };
 
-  const fetchAIContent = async (category) => {
-    if (!category) {
-      alert("Please select a service category first!");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await axios.post(
-        "https://api.openai.com/v1/completions",
-        {
-          model: "gpt-3.5-turbo", // Replace with the newer model
-          messages: [
-            { role: "system", content: "You are a helpful assistant." },
-            { role: "user", content: `Provide a brief description for the category: ${category}` },
-          ],
-          max_tokens: 50,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`, // Use the environment variable
-          },
+  const fetchDocumentCount = async () => {
+    GlobalService.generalSelect(
+      (response) => {
+        const { estatus, data } = response;
+        if (estatus) {
+          setNumber(data);
+        } else {
+          notifyError("Sorry something went wrong");
         }
-      );
+      },
+      resturls.allIncidentCount,
+      {},
+      "GET"
+    );
+  };
 
-      const generatedContent = response.data.choices[0].text.trim();
-      setServiceValue(generatedContent);
-    } catch (error) {
-      console.error("Error fetching AI content:", error);
-      alert("Failed to fetch AI content. Please try again.");
-    } finally {
-      setLoading(false);
+  const obtainAssignGroup = () => {
+    GlobalService.generalSelect(
+      (response) => {
+        const { estatus, data } = response;
+        if (estatus) {
+          setSelectedAssignTo(data);
+        } else {
+          setSelectedAssignTo();
+        }
+      },
+      resturls.obtainAssignGroups,
+      {},
+      "GET"
+    );
+  };
+
+  const userFetchGroups = () => {
+    GlobalService.generalSelect(
+      (response) => {
+        const { estatus, data } = response;
+        if (estatus) {
+          setCallerDepartmentList(data);
+        } else {
+        }
+      },
+      `${resturls.userFetchGroups}/${userId}`,
+      {},
+      "GET"
+    );
+  };
+
+  const notifySuccess = (message) => {
+    toast.success(message, history.goBack(), {
+      duration: 4000,
+      position: "top-right",
+    });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, history.goBack(), {
+      duration: 4000,
+      position: "top-right",
+    });
+  };
+
+  const submitHandler = (values) => {
+    if (incident_id) {
+      GlobalService.generalSelect(
+        (response) => {
+          const { estatus, emessage } = response;
+          if (estatus) {
+            notifySuccess(emessage);
+          } else {
+            notifyError(emessage);
+          }
+        },
+        `${resturls.updateIncident}/${incident_id}`,
+        { ...values, Notes: notes },
+        "POST"
+      );
+    } else {
+      GlobalService.generalSelect(
+        (response) => {
+          const { estatus, emessage } = response;
+          if (estatus) {
+            notifySuccess(emessage);
+          } else {
+            notifyError(emessage);
+          }
+        },
+        resturls.createNewIncident,
+        { ...values, incidentId: Number, notes: notes },
+        "POST"
+      );
     }
   };
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const getIncidentData = () => {
+    GlobalService.generalSelect(
+      (respdata) => {
+        const { estatus, data } = respdata;
+
+        if (estatus) {
+          setIncidentData(data[0]);
+          const incidentValues = data[0];
+          setIntialValues({
+            state: incidentValues?.state,
+            caller: incidentValues?.caller,
+            assignGroup: incidentValues?.assignGroup,
+            assignedTo: incidentValues?.assignedTo,
+            category: incidentValues?.category,
+            subCategory: incidentValues?.subCategory,
+            urgency: incidentValues?.urgency,
+            priority: incidentValues?.priority,
+            callerDepartment: incidentValues?.callerDepartment,
+            shortDescription: incidentValues?.shortDescription,
+            description: incidentValues?.description,
+            incidentId: incidentValues?.incidentId,
+            service: incidentValues?.service,
+            serviceCategory: incidentValues?.serviceCategory,
+            impact: incidentValues?.impact,
+            updatedBy: {
+              id: userId,
+              name: emailAddress,
+            },
+            notesUpdateTime: formatDateTime(),
+          });
+          setNotes([...incidentValues?.notes].reverse());
+          getCategory(incidentValues?.category);
+          setOpenedDate(incidentValues?.openedDate);
+          setCaller(incidentValues?.caller);
+          setLoader(false);
+        }
+      },
+      `${resturls.getIncidentById}/${incident_id}`,
+      {},
+      "GET"
+    );
+  };
 
   useEffect(() => {
-    // getCategory();
-  });
+    fetchDocumentCount();
+    obtainAssignGroup();
+    userFetchGroups();
+    if (incident_id) {
+      setLoader(true);
+      getIncidentData();
+    }
+    setSelectedCaller({
+      id: userId,
+      emailAddress,
+    });
+    setIntialValues({
+      state: "New",
+      caller:
+        {
+          id: selectedCaller?.id,
+          name: selectedCaller?.emailAddress,
+        } || {},
+      assignGroup: {
+        id: "",
+        name: "",
+      },
+      assignedTo:
+        {
+          id: assignToMember?.id,
+          name: assignToMember?.emailAddress,
+        } || {},
+      category: "",
+      subCategory: "",
+      urgency: "",
+      priority: "",
+      callerDepartment: {
+        id: "",
+        name: "",
+      },
+      shortDescription: "",
+      description: "",
+      incidentId: Number || "",
+      service: "",
+      serviceCategory: "",
+      impact: "",
+    });
+  }, [isEdit]);
+
+  useEffect(() => {
+    if (selectedCaller) {
+      userFetchGroups(selectedCaller?.id);
+      setIntialValues((prev) => ({
+        ...prev,
+        caller: {
+          id: selectedCaller?.id,
+          name: selectedCaller?.emailAddress || "",
+        },
+      }));
+    }
+
+    if (assignToMember) {
+      setIntialValues((prev) => ({
+        ...prev,
+        assignedTo: {
+          id: assignToMember?.id,
+          name: assignToMember?.emailAddress || "",
+        },
+      }));
+    }
+  }, [selectedCaller, assignToMember]);
 
   return (
-    <div style={{ margin: '2em' }}>
-      <Formik
-        initialValues={{
-          channel: "",
-          state: "",
-          caller: "",
-          category: "",
-          subCategory: "",
-          urgency: "",
-          priority: "",
-          assignment: "",
-          shortDescription: "",
-          description: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
-          console.log("Form Submitted", values);
-        }}
-      >
-        {({ errors, touched, setFieldValue, values }) => (
-          <Form>
-            <HeaderContainer>
-              <GradientHeader>Create Incident</GradientHeader>
-              <StyledButton type="submit">Create New Incident</StyledButton>
-            </HeaderContainer>
-            <StyledFormContainer>
-              <div style={{ position: "relative" }}>
-                <Field
-                  name="channel"
-                  as={CustomTextField}
-                  label="channel"
-                  error={touched.channel && !!errors.channel}
-                  helperText={touched.state && errors.channel}
-                />
-                <StyledPatternR
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </div>
-              {/* <div style={{ position: "relative" }}> */}
-              <FormControl style={{ position: "relative" }}>
-                <InputLabel id="state-label">State</InputLabel>
-                <Field
-                  as={CustomSelect}
-                  name="state"
-                  labelId="state-label"
+    <div style={{ margin: "2em" }}>
+      {loader ? (
+        <DefaultLoader />
+      ) : (
+        <Formik
+          enableReinitialize={true}
+          initialValues={intialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitHandler}
+        >
+          {({ errors, touched, setFieldValue, values }) => (
+            <Form>
+              <HeaderContainer>
+                <GradientHeader>
+                  {incident_id ? "Update Incident" : "Create Incident"}
+                </GradientHeader>
+                <Button
+                  sx={{
+                    background: `${theme.btnColor}`,
+                    color: `${theme.outerBodyfontColor}`,
+                    "&:hover": {
+                      backgroundColor: `${theme.btnHoverColor}`,
+                    },
+                  }}
+                  type="submit"
                 >
-                  <MenuItem sx={{ color: "#E81885" }} value="High">Open</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }}>Inprogress</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }}>Hold</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }}>Completed</MenuItem>
-                </Field>
-                <StyledPatternL style={{ opacity: loading ? 0.5 : 1 }} />
-              </FormControl>
-              {/* </div> */}
-              <div style={{ position: "relative" }}>
-                <Field
-                  name="caller"
-                  as={CustomTextField}
-                  label="Caller"
-                  error={touched.caller && !!errors.caller}
-                  helperText={touched.caller && errors.caller}
-                />
-                <StyledPatternL style={{ opacity: loading ? 0.5 : 1 }} />
-              </div>
-              {/* <Field
-                name="caller"
-                as={CustomTextField}
-                label="Caller"
-                error={touched.caller && !!errors.caller}
-                helperText={touched.caller && errors.caller}
-              /> */}
-              {/* <Field
-                name="category"
-                as={CustomTextField}
-                label="Category"
-                error={touched.category && !!errors.category}
-                helperText={touched.category && errors.category}
-              /> */}
+                  {isEdit ? "Update Incident" : "Create New Incident"}
+                </Button>
+              </HeaderContainer>
+              <StyledFormContainer>
+                <div style={{ position: "relative" }}>
+                  <Field
+                    name="incidentId"
+                    label="Incident Id"
+                    as={CustomTextField}
+                    InputLabelProps={{ shrink: true }}
+                    disabled={true}
+                    value={values?.incidentId || Number}
+                  />
+                  {console.log(values?.incidentId, "values?.incidentId")}
+                  <StyledPatternR style={{ opacity: 1 }} />
+                </div>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="state-label">State</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="state"
+                    labelId="state-label"
+                    value={values.state}
+                  >
+                    <MenuItem value="New">New</MenuItem>
+                    <MenuItem value="Open">Open</MenuItem>
+                    <MenuItem value="In-Progress">In Progress</MenuItem>
+                    <MenuItem value="onHold">On Hold</MenuItem>
+                    <MenuItem value="Resolved">Resolved</MenuItem>
+                  </Field>
+                  <StyledPatternL style={{ opacity: 1 }} />
+                </FormControl>
+                <div style={{ position: "relative" }}>
+                  <Field
+                    name="caller"
+                    as={CustomTextField}
+                    label="Caller"
+                    error={touched.caller && !!errors.caller}
+                    helperText={touched.caller && errors.caller}
+                    disabled={true}
+                    value={values?.caller?.name}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <UserListModal
+                    onSelect={(selectedItem, { onClose }) => {
+                      setSelectedCaller(selectedItem);
+                      onClose();
+                    }}
+                    TriggerElement={({ onClick }) => (
+                      <StyledIcon
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                        alt="AI Icon"
+                        onClick={onClick}
+                        style={{
+                          opacity:  1,
+                          width: 35,
+                          height: 35,
+                        }}
+                      />
+                    )}
+                  />
+                  <StyledPatternL style={{ opacity:  1 }} />
+                </div>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="callerDepartment-label">
+                    Caller Group
+                  </InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="callerDepartment"
+                    label="Caller Department"
+                    labelId="callerDepartment-label"
+                    onChange={(event) => {
+                      const selectedValue = event.target.value;
+                      setFieldValue("callerDepartment", {
+                        id: selectedValue.id,
+                        name: selectedValue?.groupName,
+                      });
+                    }}
+                    value={callerDepartmentList?.find(
+                      (ele) => ele.id === values.callerDepartment?.id
+                    )}
+                  >
+                    {callerDepartmentList?.map((ele) => (
+                      <MenuItem
+                        sx={{ color: `${theme.valueFontColor}` }}
+                        key={ele.id}
+                        value={ele}
+                      >
+                        {ele.groupName}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternR style={{ opacity:  1 }} />
+                </FormControl>
+                <div style={{ position: "relative" }}>
+                  <Field
+                    name="assignedTo"
+                    as={CustomTextField}
+                    label="Assigned To"
+                    error={touched.assignedTo && !!errors.assignedTo}
+                    helperText={touched.assignedTo && errors.assignedTo}
+                    disabled={true}
+                    value={values?.assignedTo?.name}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <UserListModal
+                    onSelect={(selectedItem, { onClose }) => {
+                      setAssignToMember(selectedItem);
+                      onClose();
+                    }}
+                    TriggerElement={({ onClick }) => (
+                      <StyledIcon
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9DY1tjGc0WbPmAFUTZRtS0YTRq4m7Q6Dpdw&s"
+                        alt="AI Icon"
+                        onClick={onClick}
+                        style={{
+                          opacity:  1,
+                          width: 35,
+                          height: 35,
+                        }}
+                      />
+                    )}
+                  />
 
-              <FormControl style={{ position: "relative" }}>
-                <InputLabel id="category-label">Category</InputLabel>
-                <Field
-                  as={CustomSelect}
-                  name="category"
-                  labelId="category-label"
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    setFieldValue("category", value);
-                    getCategory(value)
-                  }}
-                >
-                  <MenuItem sx={{ color: "#E81885" }} value="Software">Software</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Hardware">Hardware</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Server">Server</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Non-Tech">Non-Tech</MenuItem>
-                </Field>
-                <StyledPatternR
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </FormControl>
-              <FormControl style={{ position: "relative" }}>
-                <InputLabel id="subCategory-label">Sub Category</InputLabel>
-                <Field
-                  as={CustomSelect}
-                  name="subCategory"
-                  labelId="subCategory-label"
-                >
-                  {categoryType?.map((ele) => (
-                    <MenuItem sx={{ color: "#E81885" }} value={ele}>{ele}</MenuItem>
-                  ))}
-                </Field>
-                <StyledPatternR
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </FormControl>
-              <div style={{ position: "relative" }}>
-                <Field
-                  name="urgency"
-                  as={CustomTextField}
-                  label="Urgency"
-                  error={touched.urgency && !!errors.urgency}
-                  helperText={touched.urgency && errors.urgency}
-                />
-                <StyledPatternL
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </div>
-              <div style={{ position: "relative" }}>
-                <Field
-                  name="assignment"
-                  as={CustomTextField}
-                  label="Assignment"
-                  error={touched.assignment && !!errors.assignment}
-                  helperText={touched.assignment && errors.assignment}
-                />
-                <StyledPatternL
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </div>
-              <FormControl style={{ position: "relative" }}>
-                <InputLabel id="priority-label">Priority</InputLabel>
-                <Field
-                  as={CustomSelect}
-                  name="priority"
-                  labelId="priority-label"
-                >
-                  <MenuItem sx={{ color: "#E81885" }} value="High">High</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Medium">Medium</MenuItem>
-                  <MenuItem sx={{ color: "#E81885" }} value="Low">Low</MenuItem>
-                </Field>
-                <StyledPatternR
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </FormControl>
-              <div style={{ position: "relative" }}>
-                <Field
-                  as={CustomTextField}
-                  name="service"
-                  label="Service"
-                  value={serviceValue}
-                  style={{ width: '100% !important' }}
-                  onChange={(e) => {
-                    setServiceValue(e.target.value);
-                    setFieldValue("service", e.target.value);
-                  }}
-                  error={touched.service && !!errors.service}
-                  helperText={touched.service && errors.service}
-                />
-                <StyledPatternR
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-                <StyledIcon
-                  src="https://cdn-icons-png.flaticon.com/512/4712/4712106.png" // Example icon (replace with your icon)
-                  alt="AI Icon"
-                  onClick={() => fetchAIContent(values.category)}
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </div>
-              {/* <Field
-                name="service"
-                as={CustomTextField}
-                label="Service"
-                error={touched.service && !!errors.service}
-                helperText={touched.service && errors.service}
-              /> */}
-              <div style={{ position: "relative" }}>
-                <Field
-                  name="serviceCategory"
-                  as={CustomTextField}
-                  label="Service Category"
-                  error={touched.serviceCategory && !!errors.serviceCategory}
-                  helperText={touched.serviceCategory && errors.serviceCategory}
-                />
-                <StyledPatternL
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
-              </div>
+                  <StyledPatternR style={{ opacity:  1 }} />
+                </div>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="assignGroup-label">Assign Group</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="assignGroup"
+                    labelId="assignGroup-label"
+                    onChange={(event) => {
+                      const selectedValue = event.target.value;
+                      setFieldValue("assignGroup", {
+                        id: selectedValue.id,
+                        name: selectedValue.groupName,
+                      });
+                      // setGropMemberList(selectedValue.groupMembers);
+                    }}
+                    value={
+                      selectedAssignTo?.find(
+                        (ele) => ele.id === values.assignGroup?.id
+                      ) || "" // Match value by ID
+                    }
+                  >
+                    {selectedAssignTo?.map((ele) => (
+                      <MenuItem
+                        key={ele.id}
+                        value={ele}
+                        sx={{ color: `${theme.valueFontColor}` }}
+                      >
+                        {ele.groupName}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternL style={{ opacity:  1 }} />
+                </FormControl>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="urgency-label">Urgency</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="urgency"
+                    labelId="urgency-label"
+                    onChange={(e) => {
+                      const selectedUrgency = e.target.value;
+                      setFieldValue("urgency", selectedUrgency);
+                      const updatedPriority = getPriority(
+                        selectedUrgency,
+                        values.impact
+                      );
+                      setFieldValue("priority", updatedPriority);
+                    }}
+                  >
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="High"
+                    >
+                      High
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Medium"
+                    >
+                      Medium
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Low"
+                    >
+                      Low
+                    </MenuItem>
+                  </Field>
+                  <StyledPatternL style={{ opacity:  1 }} />
+                </FormControl>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="priority-label">Impact</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="impact"
+                    labelId="priority-label"
+                    onChange={(e) => {
+                      const selectedImpact = e.target.value;
+                      setFieldValue("impact", selectedImpact);
+                      const updatedPriority = getPriority(
+                        values.urgency,
+                        selectedImpact
+                      );
+                      setFieldValue("priority", updatedPriority);
+                    }}
+                  >
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="High"
+                    >
+                      High
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Medium"
+                    >
+                      Medium
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Low"
+                    >
+                      Low
+                    </MenuItem>
+                  </Field>
+                  <StyledPatternR style={{ opacity:  1 }} />
+                </FormControl>
+                {incident_id ? (
+                  <FormControl style={{ position: "relative" }}>
+                    <InputLabel id="priority-label">Priority</InputLabel>
+                    <Field
+                      as={CustomSelect}
+                      name="priority"
+                      labelId="priority-label"
+                      onChange={(e) => {
+                        const selectedPriority = e.target.value;
+                        setFieldValue("priority", selectedPriority);
+                      }}
+                    >
+                      <MenuItem
+                        sx={{ color: `${theme.valueFontColor}` }}
+                        value="Critical"
+                      >
+                        P1 - Critical
+                      </MenuItem>
+                      <MenuItem
+                        sx={{ color: `${theme.valueFontColor}` }}
+                        value="High"
+                      >
+                        P2 - High
+                      </MenuItem>
+                      <MenuItem
+                        sx={{ color: `${theme.valueFontColor}` }}
+                        value="Medium"
+                      >
+                        P3 - Medium
+                      </MenuItem>
+                      <MenuItem
+                        sx={{ color: `${theme.valueFontColor}` }}
+                        value="Low"
+                      >
+                        P4 - Low
+                      </MenuItem>
+                    </Field>
+                    <StyledPatternR style={{ opacity:  1 }} />
+                  </FormControl>
+                ) : null}
+                {console.log(values, "valuesss")}
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="category-label">Category</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="category"
+                    labelId="category-label"
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setFieldValue("category", value);
+                      getCategory(value);
+                    }}
+                    // value={values?.category}
+                  >
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Software"
+                    >
+                      Software
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Hardware"
+                    >
+                      Hardware
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Server"
+                    >
+                      Server
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Non-Tech"
+                    >
+                      Non-Tech
+                    </MenuItem>
+                  </Field>
+                  <StyledPatternL style={{ opacity:  1 }} />
+                </FormControl>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="subCategory-label">Sub Category</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="subCategory"
+                    labelId="subCategory-label"
+                    // value={values?.subCategory}
+                    value={
+                      categoryType?.find((ele) => ele === values.subCategory) ||
+                      "" // Match value by ID
+                    }
+                  >
+                    {categoryType?.map((ele) => (
+                      <MenuItem
+                        sx={{ color: `${theme.valueFontColor}` }}
+                        key={ele}
+                        value={ele}
+                      >
+                        {ele}
+                      </MenuItem>
+                    ))}
+                  </Field>
+                  <StyledPatternL style={{ opacity:  1 }} />
+                </FormControl>
+
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="service-label">Service</InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="service"
+                    labelId="service-label"
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setFieldValue("service", value);
+                    }}
+                  >
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Email Service"
+                    >
+                      Email Service
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Network Service"
+                    >
+                      Network Service
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Database Service"
+                    >
+                      Database Service
+                    </MenuItem>
+                    <MenuItem
+                      sx={{ color: `${theme.valueFontColor}` }}
+                      value="Helpdesk"
+                    >
+                      Helpdesk
+                    </MenuItem>
+                  </Field>
+                  <StyledPatternR style={{ opacity:  1 }} />
+                </FormControl>
+                <FormControl style={{ position: "relative" }}>
+                  <InputLabel id="serviceCategory-label">
+                    Service Category
+                  </InputLabel>
+                  <Field
+                    as={CustomSelect}
+                    name="serviceCategory"
+                    label="Service Category"
+                    error={touched.serviceCategory && !!errors.serviceCategory}
+                    helperText={
+                      touched.serviceCategory && errors.serviceCategory
+                    }
+                    value={values.serviceCategory}
+                    InputLabelProps={{ shrink: true }}
+                  >
+                    <MenuItem value="Software">Software</MenuItem>
+                    <MenuItem value="Connectivity Issue">
+                      Connectivity Issue
+                    </MenuItem>
+                    <MenuItem value="Data Corruption">Data Corruption</MenuItem>
+                    <MenuItem value="Authentication Issue">
+                      Authentication Issue
+                    </MenuItem>
+                  </Field>
+                  <StyledPatternR style={{ opacity:  1 }} />
+                </FormControl>
+              </StyledFormContainer>
               <div style={{ position: "relative" }}>
                 <Field
                   name="shortDescription"
-                  as={CustomTextField}
-                  label="Short Description"
-                  className="fullWidth" // Add this class
-                  error={touched.shortDescription && !!errors.shortDescription}
-                  helperText={touched.shortDescription && errors.shortDescription}
+                  render={({ field, form }) => (
+                    <>
+                      <label
+                        style={{
+                          display: "block",
+                          color: "grey",
+                          marginLeft: "1.5em",
+                          marginBottom: 10,
+                          fontWeight: "normal",
+                        }}
+                        htmlFor="shortDescription"
+                      >
+                        Short Description:
+                      </label>
+                      <TextareaAutosize
+                        {...field}
+                        placeholder="Enter short description"
+                        minRows={1}
+                        style={{
+                          marginLeft: "1.5em",
+                          width: "93%",
+                          padding: 20,
+                          border: `2px solid ${theme.valueFontColor}`,
+                          borderRadius: 4,
+                          outline: "none",
+                        }}
+                        onChange={(e) =>
+                          form.setFieldValue("shortDescription", e.target.value)
+                        } // Manually set Formik value on change
+                      />
+                    </>
+                  )}
                 />
-                <StyledPatternL
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
+                {touched.shortDescription && errors.shortDescription && (
+                  <div
+                    style={{ color: "red", fontSize: "12px", marginTop: "5px" }}
+                  >
+                    {errors.shortDescription}
+                  </div>
+                )}
               </div>
-              <div style={{ position: "relative" }}>
+
+              <div style={{ position: "relative", marginTop: "15px" }}>
                 <Field
                   name="description"
-                  as={CustomTextField}
-                  label="Description"
-                  className="fullWidth" // Add this class
-                  error={touched.description && !!errors.description}
-                  helperText={touched.description && errors.description}
+                  render={({ field, form }) => (
+                    <>
+                      <label
+                        style={{
+                          display: "block",
+                          color: "grey",
+                          marginLeft: "1.5em",
+                          marginBottom: 10,
+                          fontWeight: "normal",
+                        }}
+                        htmlFor="description"
+                      >
+                        Description:
+                      </label>
+                      <TextareaAutosize
+                        {...field}
+                        placeholder="Enter description"
+                        minRows={5}
+                        style={{
+                          marginLeft: "1.5em",
+                          width: "93%",
+                          padding: 20,
+                          border: `2px solid ${theme.valueFontColor}`,
+                          borderRadius: 4,
+                          outline: "none",
+                        }}
+                        onChange={(e) =>
+                          form.setFieldValue("description", e.target.value)
+                        }
+                      />
+                    </>
+                  )}
                 />
-                <StyledPatternR
-                  style={{ opacity: loading ? 0.5 : 1 }}
-                />
+                {touched.description && errors.description && (
+                  <div
+                    style={{ color: "red", fontSize: "12px", marginTop: "5px" }}
+                  >
+                    {errors.description}
+                  </div>
+                )}
               </div>
-            </StyledFormContainer>
-          </Form>
-        )}
-      </Formik>
+              <Snackbar
+                open={openWarning}
+                message=""
+                autoHideDuration={3000}
+                onClose={() => setOpenWarning(false)}
+                ContentProps={{
+                  sx: {
+                    background: "#ff3333",
+                  },
+                }}
+              />
+            </Form>
+          )}
+        </Formik>
+      )}
+      {incident_id ? (
+        <IncidentTabActiveNotes
+          value={value}
+          handleChange={handleChange}
+          handleAddNote={handleAddNote}
+          notes={notes}
+          comment={comment}
+          selectedCaller={caller}
+          setComment={setComment}
+          currentdate={openedDate}
+        />
+      ) : null}
     </div>
   );
 };

@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import { BsClipboardPlus } from "react-icons/bs";
 import { AiOutlineForm } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import ReactFormGenerate from './ReactFormGenerate';
+// import ReactFormGenerate from './ReactFormGenerate';
 
 
 export default function FormMenu() {
   const [activeForm, setActiveForm] = useState('')
-  const componentObj = {
-    generate_form: ReactFormGenerate,
-    // hardware: RequestForm,
-    // ongoing: Products,e
-    // resolved: OnlineServices,
-  };
+  // const componentObj = {
+  //   generate_form: ReactFormGenerate,
+  //   // hardware: RequestForm,
+  //   // ongoing: Products,e
+  //   // resolved: OnlineServices,
+  // };
 
-  let Component = null;
-  Component = componentObj[activeForm];
+  // let Component = null;
+  // Component = componentObj[activeForm];
   return (
     <>
       {activeForm ? (
-        <Component />
+        <></>
       ) : (
         <>
           <div style={{ width: "100%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", paddingTop: 150 }}>

@@ -6,9 +6,12 @@ import CreateNewClassFormCreation from "./CreateNewClassFormCreation";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import styles from './ClassManagement.module.scss';
 import { useHistory } from "react-router-dom";
+import { sharedStyles } from "../../../commonComponents/StyledComponents";
+import { useTheme } from "../../../global/commonComponents/ThemeContext";
 
 function NewClassCreationPanel(props) {
   const { t, setActiveTab } = props;
+   const {theme} = useTheme();
   const history = useHistory();
   const [selectCategoryType, setSelectCategoryType] = useState('');
   const [fileName, setFileName] = useState('');
@@ -41,16 +44,21 @@ function NewClassCreationPanel(props) {
 
   return (
     <div>
-      {!createMainClassForm && <ArrowBackIcon onClick={() => history.goBack()} />}
+      {!createMainClassForm && (
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '0.5em', marginBottom: '2em', alignItems: 'center' }}>
+          <ArrowBackIcon sx={{ color: `${theme.valueFontColor}` }} onClick={() => history.goBack()} />
+          <ContentDevider title="Create Class" />
+        </div>
+      )}
       {!createMainClassForm ? (
         <>
-          <h3>{t('create_class')}</h3>
-          <ContentDevider title="Create Class" />
           <Grid container >
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">{'Select Category Type'}</InputLabel>
-                <Select
+                {/* <InputLabel id="demo-simple-select-label">{'Select Category Type'}</InputLabel> */}
+                <TextField
+                  select
+                  sx={sharedStyles}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={selectCategoryType}
@@ -65,18 +73,16 @@ function NewClassCreationPanel(props) {
                       {item}
                     </MenuItem>
                   ))}
-                </Select>
+                </TextField>
               </FormControl>
             </Grid>
             <Grid item xs={5} sx={{ marginLeft: '1em' }}>
               <TextField
                 label="Class Name"
+                sx={sharedStyles}
                 name="header"
                 fullWidth
                 onChange={handleHeaderChange}
-              // value={header}
-              // // helperText={header === '' ? t('header_required') : ''}
-              // error={header}
               />
             </Grid>
           </Grid>
@@ -86,6 +92,7 @@ function NewClassCreationPanel(props) {
               <Button
                 variant="contained"
                 component="label"
+                sx={{ background: `${theme.outerBodyColor}` }}
               >
                 {t('class_logo')}
                 <input
@@ -95,12 +102,6 @@ function NewClassCreationPanel(props) {
                   onChange={handleLogoUpload}
                 />
               </Button>
-              {logo && (
-                <div>
-                  <div>{fileName}</div>
-                  <img src={logo} alt="Uploaded Logo" style={{ maxWidth: '100px', marginTop: '10px' }} />
-                </div>
-              )}
             </Grid>
           </Grid>
 
@@ -108,7 +109,7 @@ function NewClassCreationPanel(props) {
             <Button
               onClick={() => setCreateMainClassForm(true)}
               variant="outlined"
-              disabled={!selectCategoryType || header === '' || logo === ''}
+              disabled={!selectCategoryType || header === ''}
               color="warning"
               style={{ width: 100 }}
             >

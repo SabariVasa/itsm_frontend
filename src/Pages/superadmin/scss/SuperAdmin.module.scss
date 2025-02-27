@@ -160,11 +160,13 @@
 .accordionContainer {
   display: flex;
   flex-direction: column;
+  // align-items: cente;
   justify-content: center;
+  // padding: 15px !important;
   // height: auto;
   // height: 4vh;
   // margin: 0.8em;s
-  width: 20vw;
+  width: 100%;
   border: none !important;
   background: transparent !important;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2) !important;
@@ -179,7 +181,7 @@
   display: flex;
   justify-content: flex-end;
   /* Align items to the right */
-  align-items: center;
+  // align-items: center;
   padding: 15px;
   background-color: #ffffff;
   /* White background for header */

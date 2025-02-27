@@ -13,10 +13,8 @@ import {
   Avatar,
   Typography,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import { serverAPI } from '../../Utils/Server';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import GroupIcon from '@mui/icons-material/Group';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import GroupIcon from "@mui/icons-material/Group";
 import * as Yup from "yup";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -24,16 +22,13 @@ import { resturls } from "../../global/utils/apiurls";
 import GlobalService from "../../services/GlobalService";
 import DefaultLoader from "../../global/commonComponents/DefaultLoader";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 
 const UserDetailsAndEdit = (props) => {
   const history = useHistory();
-  const {
-    match: { params: { user_id } }, DefaultLoaderComp
-  } = props;
+  const { match: { params: { user_id } = {} } = {} } = props;
 
   const [showPassword, setShowPassword] = useState(false);
-  const [photoFile, setPhotoFile] = useState(null);
+  // const [photoFile, setPhotoFile] = useState(null);
   const [defaultLoader, setDefaultLoader] = useState(false);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
@@ -46,21 +41,25 @@ const UserDetailsAndEdit = (props) => {
   const roleOptions = ["Super Admin", "Admin", "End User"];
 
   const validationSchema = Yup.object({
-    // userId: Yup.string().required("User ID is required"),  
     firstName: Yup.string().required("First Name is required"),
     lastName: Yup.string().required("Last Name is required"),
     company: Yup.string().required("Company is required"),
     department: Yup.string().required("Department is required"),
     userBranch: Yup.string().required("Location is required"),
     active: Yup.boolean().required("Active status is required"),
-    emailAddress: Yup.string().email("Invalid email format").required("Email is required"),
+    emailAddress: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
     language: Yup.array().min(1, "At least one language must be selected"),
     manager: Yup.string().required("Manager is required"),
     mobileNumber: Yup.string()
       .matches(/^[0-9]{10}$/, "Must be a valid 10-digit phone number")
       .required("Mobile Number is required"),
     password: Yup.string()
-      .matches(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, "Password must contain letters, numbers, and special characters")
+      .matches(
+        /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+        "Password must contain letters, numbers, and special characters"
+      )
       .required("Password is required"),
     userRole: Yup.string().required("Role is required"),
   });
@@ -82,16 +81,14 @@ const UserDetailsAndEdit = (props) => {
     const file = event.target.files[0];
     if (file) {
       const base64File = await convertToBase64(file);
-      console.log(base64File, 'base64File');
-      setPhotoFile(file);
+      // console.log(base64File, 'base64File');
+      // setPhotoFile(file);
       setPhotoPreview(URL.createObjectURL(file));
-      setFieldValue("ProfilePicture",
-        {
-          base64File,
-          name: file.name,
-          type: file.type,
-        }
-      );
+      setFieldValue("ProfilePicture", {
+        base64File,
+        name: file.name,
+        type: file.type,
+      });
     }
   };
 
@@ -198,37 +195,29 @@ const UserDetailsAndEdit = (props) => {
   }, [user_id]);
 
   return (
-    <>{defaultLoader ? <DefaultLoader /> : (
-      <>
-      </>
-    )}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
-        <ArrowBackIcon sx={{ marginRight: 2 }} onClick={() => history.goBack()} />
+    <>
+      {defaultLoader ? <DefaultLoader /> : <></>}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 2,
+        }}
+      >
+        <ArrowBackIcon
+          sx={{ marginRight: 2 }}
+          onClick={() => history.goBack()}
+        />
         <GroupIcon />
-        <h3>{user_id ? 'Edit User' : 'Create User'}</h3>
+        <h3>{user_id ? "Edit User" : "Create User"}</h3>
       </div>
       {!getUserDetailObject && (
         <Grid container justifyContent="flex-end" sx={{ mt: 2, mb: 2 }}>
-          <Grid item style={{ display: "flex", flexDirection: 'row', gap: '0.5em' }}>
-            {/* <div>
-              <input
-                accept=".xlsx, .xls"
-                style={{ display: "none" }}
-                id="excel-upload"
-                type="file"
-                onChange={handleExcelUpload}
-              />
-              <label htmlFor="excel-upload">
-                <Button variant="contained" color="secondary" component="span">
-                  Bulk Upload Users
-                </Button>
-              </label>
-              {excelFile && (
-                <Typography variant="body2" sx={{ mt: 1 }}>
-                  Uploaded: {excelFile.name}
-                </Typography>
-              )}
-            </div> */}
+          <Grid
+            item
+            style={{ display: "flex", flexDirection: "row", gap: "0.5em" }}
+          >
             <div>
               <input
                 accept=".xlsx, .xls"
@@ -242,9 +231,6 @@ const UserDetailsAndEdit = (props) => {
                   Bulk Upload Users
                 </Button>
               </label>
-              {/* <Button variant="contained" color="secondary" onClick={xlfileUpload}>
-                Upload Users
-              </Button> */}
               {excelFile && (
                 <Typography variant="body2" sx={{ mt: 1 }}>
                   Uploaded: {excelFile.name}
@@ -252,31 +238,33 @@ const UserDetailsAndEdit = (props) => {
               )}
             </div>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              <a href="/userBulkUploadSampleTemplate.xlsx" target="_blank" rel="noopener noreferrer">
+              <a
+                href="/userBulkUploadSampleTemplate.xlsx"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Download Sample Excel
               </a>
             </Typography>
           </Grid>
         </Grid>
       )}
-      {console.log(getUserDetailObject?.lastName, 'getUserDetailObject?.lastName')}
       <Formik
         initialValues={{
-          // userId: getUserDetailObject?.id || '',
-          firstName: getUserDetailObject?.firstName || '',
-          lastName: getUserDetailObject?.lastName || '',
-          company: getUserDetailObject?.company || '',
+          firstName: getUserDetailObject?.firstName || "",
+          lastName: getUserDetailObject?.lastName || "",
+          company: getUserDetailObject?.company || "",
           department: getUserDetailObject?.department || "",
-          userBranch: getUserDetailObject?.userBranch || '',
+          userBranch: getUserDetailObject?.userBranch || "",
           active: getUserDetailObject?.active || false,
-          emailAddress: getUserDetailObject?.emailAddress || '',
+          emailAddress: getUserDetailObject?.emailAddress || "",
           language: getUserDetailObject?.language || [],
-          manager: getUserDetailObject?.manager || '',
-          businessNumber: getUserDetailObject?.businessNumber || '',
-          mobileNumber: getUserDetailObject?.mobileNumber || '',
-          ProfilePicture: getUserDetailObject?.profilePicture || '',
-          password: getUserDetailObject?.password || '',
-          userRole: getUserDetailObject?.userRole || '',
+          manager: getUserDetailObject?.manager || "",
+          businessNumber: getUserDetailObject?.businessNumber || "",
+          mobileNumber: getUserDetailObject?.mobileNumber || "",
+          ProfilePicture: getUserDetailObject?.profilePicture || "",
+          password: getUserDetailObject?.password || "",
+          userRole: getUserDetailObject?.userRole || "",
         }}
         enableReinitialize={true}
         validationSchema={validationSchema}
@@ -324,7 +312,11 @@ const UserDetailsAndEdit = (props) => {
                         endAdornment: (
                           <InputAdornment position="end">
                             <IconButton onClick={handlePasswordToggle}>
-                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                              {showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -334,7 +326,9 @@ const UserDetailsAndEdit = (props) => {
                   <Autocomplete
                     options={companyOptions}
                     getOptionLabel={(option) => option}
-                    isOptionEqualToValue={(option, value) => option === value || value === ""}
+                    isOptionEqualToValue={(option, value) =>
+                      option === value || value === ""
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -345,12 +339,14 @@ const UserDetailsAndEdit = (props) => {
                       />
                     )}
                     value={values.company}
-                    onChange={(event, value) => setFieldValue('company', value)}
+                    onChange={(event, value) => setFieldValue("company", value)}
                   />
                   <Autocomplete
                     options={locationOptions}
                     getOptionLabel={(option) => option}
-                    isOptionEqualToValue={(option, value) => option === value || value === ""}
+                    isOptionEqualToValue={(option, value) =>
+                      option === value || value === ""
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -361,13 +357,17 @@ const UserDetailsAndEdit = (props) => {
                       />
                     )}
                     value={values.userBranch}
-                    onChange={(event, value) => setFieldValue('userBranch', value)}
+                    onChange={(event, value) =>
+                      setFieldValue("userBranch", value)
+                    }
                   />
                   <Autocomplete
                     multiple
                     options={languageOptions}
                     getOptionLabel={(option) => option}
-                    isOptionEqualToValue={(option, value) => option === value || value === ""}
+                    isOptionEqualToValue={(option, value) =>
+                      option === value || value === ""
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -378,7 +378,9 @@ const UserDetailsAndEdit = (props) => {
                       />
                     )}
                     value={values.language}
-                    onChange={(event, value) => setFieldValue('language', value)}
+                    onChange={(event, value) =>
+                      setFieldValue("language", value)
+                    }
                   />
                 </Stack>
               </Grid>
@@ -392,8 +394,6 @@ const UserDetailsAndEdit = (props) => {
                     fullWidth
                     onChange={handleChange}
                     value={values.businessNumber}
-                  // error={touched.businessNumber && Boolean(errors.businessNumber)}
-                  // helperText={touched.busin+essNumber && errors.businessNumber}
                   />
                   <Field
                     name="mobileNumber"
@@ -428,7 +428,9 @@ const UserDetailsAndEdit = (props) => {
                   <Autocomplete
                     options={departments}
                     getOptionLabel={(option) => option}
-                    isOptionEqualToValue={(option, value) => option === value || value === ""}
+                    isOptionEqualToValue={(option, value) =>
+                      option === value || value === ""
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -439,12 +441,16 @@ const UserDetailsAndEdit = (props) => {
                       />
                     )}
                     value={values.department}
-                    onChange={(event, value) => setFieldValue('department', value)}
+                    onChange={(event, value) =>
+                      setFieldValue("department", value)
+                    }
                   />
                   <Autocomplete
                     options={roleOptions}
                     getOptionLabel={(option) => option}
-                    isOptionEqualToValue={(option, value) => option === value || value === ""}
+                    isOptionEqualToValue={(option, value) =>
+                      option === value || value === ""
+                    }
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -455,13 +461,17 @@ const UserDetailsAndEdit = (props) => {
                       />
                     )}
                     value={values.userRole}
-                    onChange={(event, value) => setFieldValue('userRole', value)}
+                    onChange={(event, value) =>
+                      setFieldValue("userRole", value)
+                    }
                   />
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={values.active}
-                        onChange={(event) => setFieldValue('active', event.target.checked)}
+                        onChange={(event) =>
+                          setFieldValue("active", event.target.checked)
+                        }
                       />
                     }
                     label="Active"
@@ -473,7 +483,9 @@ const UserDetailsAndEdit = (props) => {
                       style={{ display: "none" }}
                       type="file"
                       accept="image/*"
-                      onChange={(event) => handleFileChange(event, setFieldValue)}
+                      onChange={(event) =>
+                        handleFileChange(event, setFieldValue)
+                      }
                     />
                     <Button variant="contained" component="span">
                       Upload Photo
@@ -491,10 +503,15 @@ const UserDetailsAndEdit = (props) => {
 
               <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">
-                  {user_id ? 'Update' : 'Submit'}
+                  {user_id ? "Update" : "Submit"}
                 </Button>
                 {user_id && (
-                  <Button variant="contained" component="span" sx={{ marginLeft: 2 }} onClick={removeUser}>
+                  <Button
+                    variant="contained"
+                    component="span"
+                    sx={{ marginLeft: 2 }}
+                    onClick={removeUser}
+                  >
                     Remove
                   </Button>
                 )}

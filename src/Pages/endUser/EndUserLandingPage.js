@@ -1,30 +1,68 @@
-import React, { createContext, useState, useEffect } from "react";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import UserPortalLeftPanel from "./UserPortalLeftPanel";
-import DefaultHeader from "../../global/commonComponents/DefaultHeader";
-import { Grid } from "@mui/material";
+import React, { createContext, useMemo, useState } from "react";
+import { LeftPanel } from "../../presentation/components/panel/Leftpanel";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
 import UserOverview from "../../Dashboards/UserOverview";
-import KnowledgeContainer from "../../Components/KnowledgeArticle/KnowledgeContainer";
-import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
-import { useDrawer } from "../../global/commonComponents/drawer/DrawerContext";
-import RequestCategory from "../../Components/Request Management/Main Component/RequestCategory";
 import UserProfileDetails from "../UserProfileDetails";
+import { Route, Switch } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  HomeOutlined,
+  NetworkPing,
+  Repeat,
+  MenuBook,
+} from '@mui/icons-material';
+import IncidentManagementLandingPage from "../../Components/IncidentHelperComponents/IncidentManagementLandingPage";
+import RequestManagementMainPanel from "../../Components/Request Management/RequestManagementMainPanel";
+import ContentDevider from "../../Components/HelperComponents/ContentDevider";
+import KnowledgeArticleMainPanel from "../../Components/KnowledgeArticle/KnowledgeArticleMainPanel";
+import { Link } from "@mui/material";
+import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
+import MyIncidentList from "./MyIncidentList";
+import { SwitchBanner } from "../../presentation/shared/bread-crumb";
 
 export const RequestContext = createContext(null);
 
 function EndUserLandingPage() {
-  const { toggleDrawer, state } = useDrawer();
+  const pathConfig = 'enduser';
+
   const navbarOptions = [
-    { label: "Dashboards", icon: "Dashboards" },
-    { label: "Report an issue", icon: "Report an issue" },
-    { label: "Request Something", icon: "Request Something" },
-    { label: "Knowledge Base", icon: "Knowledge Base" },
+    {
+      label: "Dashboard",
+      icon: HomeOutlined,
+      href: '/dashboard',
+      sub_options: [],
+    },
+    {
+      label: "Service Request",
+      icon: Repeat,
+      href: '/server-request',
+      sub_options: [
+        {
+          label: 'My Requests', href: '/my-requests'
+        }, {
+          label: 'Request Service', href: '/request-service'
+        }
+      ]
+    },
+    {
+      label: "Report an issue",
+      icon: NetworkPing,
+      href: '/report-issue',
+      sub_options: [
+        {
+          label: 'My Incident', href: '/my-incident'
+        }, {
+          label: 'Create Incident', href: '/create-incident?noBanner=true'
+        }
+      ]
+    },
+    {
+      label: "Knowledge Base",
+      icon: MenuBook,
+      href: '/knowledge-base',
+      sub_options: []
+    },
   ];
 
-  const [drawer, setDrawer] = useState(false);
-  const [activeTab, setActiveTab] = useState(navbarOptions[0].label);
   const { theme } = useTheme();
 
   const [requestDetails, setRequestDetails] = useState([]);
@@ -33,44 +71,8 @@ function EndUserLandingPage() {
   const [knowledgeData, setKnowledgeData] = useState({});
   const [title, setTitle] = useState("");
 
-  useEffect(() => {
-    const savedTabIndex = localStorage.getItem("assessmentHomeActiveTabIndex");
-    if (savedTabIndex) {
-      setActiveTab(navbarOptions[parseInt(savedTabIndex)].label);
-    }
-  }, [activeTab]);
-
-  const tabClickHandler = (tabIndex, secondaryOption) => {
-    if (secondaryOption) {
-      setActiveTab(secondaryOption);
-    } else {
-      setActiveTab(navbarOptions[tabIndex]?.label);
-    }
-  };
-
-  const getRightPanelContent = () => {
-    switch (activeTab) {
-      case "Dashboards":
-        return <UserOverview />;
-      case "Knowledge Base":
-        return <KnowledgeContainer />;
-      case "create_incident":
-        return <UserIncidentForm />;
-      case "incident_status":
-        return <div>Incident Status Content</div>;
-      case "request_service":
-        return <RequestCategory />;
-      case "request_status":
-        return <div>Request Status Content</div>;
-      default:
-        return <UserOverview />;
-    }
-  };
-
   return (
-    <div style={{ background: theme.outerBodyColor, height: "110vh" }}>
-      <DefaultHeader drawer={drawer} toggleDrawer={toggleDrawer} state={state} />
-      <UserProfileDetails toggleDrawer={toggleDrawer} state={state} />
+    <div className="p-[4vh]">
       <RequestContext.Provider
         value={{
           requestDetails,
@@ -85,63 +87,57 @@ function EndUserLandingPage() {
           setTitle,
         }}
       >
-        <Grid container>
-          <Grid item xs={drawer ? 3 : 1} style={{ margin: '0 0 0 1m' }}>
-            <div style={{ overflowY: 'scroll', height: 520, }}>
-              <UserPortalLeftPanel
-                activeTab={activeTab}
+        <div className="flex justify-between">
+          <div
+            className="h-[92vh] rounded-lg w-[22.5%] flex flex-col justify-between"
+            style={{ background: theme.outerBodyColor }}
+          >
+            <div className="h-[85%] overflow-auto">
+              <Link href="/">
+                <img
+                  alt="logo"
+                  src="/indexlogo.png"
+                  className="w-[120px] m-auto"
+                />
+              </Link>
+              <LeftPanel
                 navbarOptions={navbarOptions}
-                tabClickHandler={tabClickHandler}
-                drawer={drawer}
+                drawer
+                pathConfig={pathConfig}
               />
             </div>
-            <div>
-              {drawer ? (
-                <ArrowBackIosNewIcon
-                  onClick={() => setDrawer(false)}
-                  style={{
-                    fontSize: 25,
-                    backgroundColor: "black",
-                    position: "absolute",
-                    left: 320.5,
-                    top: 360,
-                    color: "white",
-                    height: 60,
-                    borderTopRightRadius: 7,
-                    borderBottomRightRadius: 7,
-                    cursor: "pointer",
-                  }}
-                />
-              ) : (
-                <ArrowForwardIosIcon
-                  onClick={() => setDrawer(true)}
-                  style={{
-                    fontSize: 25,
-                    backgroundColor: "black",
-                    position: "absolute",
-                    left: 100,
-                    top: 350,
-                    color: "white",
-                    height: 60,
-                    borderTopRightRadius: 7,
-                    borderBottomRightRadius: 7,
-                    cursor: "pointer",
-                  }}
-                />
-              )}
-            </div>
-          </Grid>
-
-          <Grid
-            item
-            xs={drawer ? 9 : 11}
-            style={{ backgroundColor: theme.mainBodyColor, height: "110vh" }}
+            <UserProfileDetails />
+          </div>
+          <div
+            style={{
+              backgroundColor: theme.mainBodyColor,
+            }}
+            className="h-[92vh] overflow-auto rounded-lg w-[76%]"
           >
-            {getRightPanelContent()}
-          </Grid>
-        </Grid>
-      </RequestContext.Provider>
-    </div>
+            <SwitchBanner pathConfig={pathConfig}/>
+            <Switch>
+              <Route
+                path={`/${pathConfig}/report-issue/my-incident/update_incident/:incident_id`}
+                render={(props) => <UserIncidentForm {...props} isEdit={true} />}
+              />
+              <Route
+                path={`/${pathConfig}/report-issue/my-incident`}
+                render={(props) => <MyIncidentList user={pathConfig === 'enduser'} {...props} />}
+              />
+              <Route
+                path={`/${pathConfig}/report-issue/create-incident`}
+                component={UserIncidentForm}
+              />
+              <Route path={`/${pathConfig}/dashboard`} component={UserOverview} />
+              <Route path={`/${pathConfig}/server-request`} component={() => <RequestManagementMainPanel fromUser="enduser" />} />
+              <Route path={`/${pathConfig}/knowledge-base`} component={KnowledgeArticleMainPanel} />
+              <Route path={`/${pathConfig}/report-issue`} component={IncidentManagementLandingPage} />
+              <Route path={`/${pathConfig}`} component={UserOverview} />
+            </Switch>
+          </div>
+        </div>
+      </RequestContext.Provider >
+    </div >
   );
 }
 

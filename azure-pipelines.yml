@@ -1,0 +1,47 @@
+trigger:
+- main
+
+pool: Teksible_pilot_desk
+
+steps:
+# Step 1: Install Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+# Step 2: Install specific npm version (optional)
+- script: |
+    npm install -g npm@9.8.0
+  displayName: 'Install specific npm version'
+
+# Step 3: Install dependencies and build the React app
+- script: |
+    npm install --legacy-peer-deps
+    npm run build
+  displayName: 'Install dependencies and build React app'
+  
+# Step 4: Copy the React build files into the running Nginx container
+- script: |
+    if [ "$(docker ps -q -f name=react-nginx)" ]; then
+        docker cp build/. react-nginx:/usr/share/nginx/html
+    else
+        echo "Container is not running. Please start the container first."
+        exit 1
+    fi
+  displayName: 'Copy React build files into Nginx container'
+
+# Step 5: Reload Nginx to apply the new build
+- script: |
+    if [ "$(docker ps -q -f name=react-nginx)" ]; then
+        docker exec react-nginx nginx -s reload
+    else
+        echo "Container is not running. Please start the container first."
+        exit 1
+    fi
+  displayName: 'Reload Nginx to apply new React build'
+
+# Step 6: Validate if the container is running and the React app is deployed
+- script: |
+    docker ps
+  displayName: 'Check running Docker containers'

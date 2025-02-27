@@ -1,104 +1,126 @@
-import React, { useContext, useEffect, useState } from 'react'
-import KnowledgeCard from './KnowledgeCard';
-import { Grid } from '@mui/material';
-// import { knowledgeData } from './HelperComponents/KnowledgeData';
-import ReactLoading from 'react-loading';
-import { styled } from '@mui/material/styles';
-import { KnowledgeContext } from './KnowledgeContainer';
-import axios from 'axios';
-import { serverAPI } from '../../Utils/Server';
-// import NotifyBar from '../Notification Components/NotifyBar';
-// import { Link } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setKnowledgeContent } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  Typography,
+  Rating,
+  Button,
+  Skeleton,
+} from "@mui/material";
+import parse from "html-react-parser";
+import axios from "axios";
+import { KnowledgeContext } from "./KnowledgeContainer";
+import { serverAPI } from "../../Utils/Server";
+import { useTheme } from "../../global/commonComponents/ThemeContext";
 
 export default function KnowledgeList() {
-  const [loading, setLoading] = useState(false);
-  function spinnerLoading(message) {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000)
-  }
-  const { searchTerm, setSearchTerm } = useContext(KnowledgeContext);
-
-
+  const [loading, setLoading] = useState(true);
   const [knowledgeData, setKnowledgeData] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { searchTerm } = useContext(KnowledgeContext);
+  const { theme } = useTheme();
+
   async function loadKnowledgeArticles() {
-    await axios.get(`${serverAPI}/knowledge_article_service/all_articles`, {
-      auth: {
-        username: 'admin',
-        password: 'admin@123'
-      }
-    }).then((res) => {
-      console.log(res);
-      setKnowledgeData(res.data)
-    }).catch((err) => { console.log(err) })
+    try {
+      const res = await axios.get(`${serverAPI}/knowledge_article_service/all_articles`, {
+        auth: {
+          username: "admin",
+          password: "admin@123",
+        },
+      });
+      setKnowledgeData(res.data);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  const filteredArticles = knowledgeData.filter(article =>
+  useEffect(() => {
+    loadKnowledgeArticles();
+  }, []);
+
+  // Filter Articles based on Search Term
+  const filteredArticles = knowledgeData.filter((article) =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     article.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    article.articleContent.toLowerCase().includes(searchTerm.toLowerCase()));
+    article.articleContent.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  useEffect(() => {
-    spinnerLoading();
-    loadKnowledgeArticles();
-  }, [searchTerm])
-
-  const category = "My articles";
-  // const category = useSelector((state) => state.knowledgeReducers.category);
-  // const knowledgeContent = useSelector((state) => state.knowledgeReducers.knowledgeContent);
-  // const dispatch = useDispatch();
-
-  async function fetchMyArticles() {
-    await axios.get(`${serverAPI}/get-knowledge-articles-by-author/${"Mahathir Mohamed"}`).then((res) => {
-      console.log(res.data);
-      setKnowledgeData(res.data)
-    }).catch((err) => { console.log(err) })
-  }
-
-  const [myArticle, setMyArticle] = useState(false);
-  useEffect(() => {
-    if (category === "My articles") {
-      spinnerLoading();
-      fetchMyArticles();
-      setMyArticle(true);
-    } else {
-      spinnerLoading();
-      loadKnowledgeArticles();
-      setMyArticle(false);
+  // Function to trim content
+  const trimContent = (content, isExpanded) => {
+    const lines = content.split("\n");
+    if (lines.length > 250 && !isExpanded) {
+      return {
+        trimmed: lines.slice(0, 250).join("\n") + " ...",
+        isTrimmable: true,
+      };
     }
-  }, [category])
-  return (
-    <>
-      <Grid container style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-around", overflowX: "hidden" }}>
-        {loading ? <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "60vh" }}>
-          <ReactLoading type={"bars"} color={"#ff751a"} />
-        </div> : null}
-        {knowledgeData.length > 0 || loading ? !loading && filteredArticles.map((item, index) => {
-          return (
-            // <Link to={`/article-details/${item.articleNumber}`} style={{textDecoration:"none",color:"black"}}>
-            <Grid item xs={12} md={5} style={{ cursor: "pointer", marginRight: 35 }}>
-              <KnowledgeCard key={index} title={item.title} articleNumber={item.articleNumber} articleContent={item.shortDescription} img={item.imageData} date={item.date} myArticle={myArticle} />
-            </Grid>
-            // </Link>
+    return { trimmed: content, isTrimmable: false };
+  };
 
-          )
-        }) : <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>No Knowledge articles found</div>}
+  return (
+    <div style={{ display: "flex", marginTop: "2em" }}>
+      <Grid item xs={12} style={{ padding: "1em 0 1em 1em" }}>
+        <Box>
+          {loading ? (
+            <Skeleton variant="rectangular" height={600} />
+          ) : filteredArticles && filteredArticles.length > 0 ? (
+            filteredArticles.map((item, index) => {
+              const { trimmed, isTrimmable } = trimContent(item.articleContent, isExpanded);
+              return (
+                <Card key={index} variant="outlined" sx={{ marginBottom: 2, borderRadius: 2 }}>
+                  <CardContent>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <Typography variant="h6" sx={{ color: `${theme.valueFontColor}`, cursor: "pointer" }}>
+                          {item.title}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" color="textSecondary">
+                          {parse(trimmed)}
+                        </Typography>
+                        {isTrimmable && (
+                          <Button
+                            variant="text"
+                            size="small"
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            sx={{ marginTop: 1 }}
+                          >
+                            {isExpanded ? "Show Less" : "Show Full Content"}
+                          </Button>
+                        )}
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Divider />
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        container
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography variant="body2" color="textSecondary">
+                          Authored By: {item.date}
+                        </Typography>
+                        <Rating value={item.rating} readOnly precision={0.1} />
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              );
+            })
+          ) : (
+            <Typography variant="body2" sx={{ color: "#FF0000", fontSize: "20px" }}>
+              No articles found
+            </Typography>
+          )}
+        </Box>
       </Grid>
-    </>
-  )
+    </div>
+  );
 }

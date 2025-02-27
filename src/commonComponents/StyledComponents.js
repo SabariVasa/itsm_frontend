@@ -1,10 +1,14 @@
-// StyledComponents.js
 import { styled } from "@mui/system";
-import { TextField, Box, Button, Select } from "@mui/material";
-// import { useTheme } from "../global/commonComponents/ThemeContext";
-
-// eslint-disable-next-line react-hooks/rules-of-hooks
-// const { theme } = useTheme();
+import {
+  TextField,
+  Box,
+  Button,
+  Select,
+  Typography,
+  Card,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useTheme } from "../global/commonComponents/ThemeContext";
 
 export const StyledIcon = styled("img")({
   position: "absolute",
@@ -16,141 +20,293 @@ export const StyledIcon = styled("img")({
   cursor: "pointer",
 });
 
-export const StyledPatternR = styled("img")({
-  position: "absolute",
-  right: "130px",
-  borderRadius: "2em 2em 0 0",
-  top: "93%",
-  background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-  transform: "translateY(-50%)",
-  width: "70px",
-  height: "6px",
-  cursor: "pointer",
-});
-
-export const StyledPatternL = styled("img")({
-  position: "absolute",
-  right: "50px",
-  borderRadius: "2em 2em 0 0",
-  top: "93%",
-  background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-  transform: "translateY(-50%)",
-  width: "70px",
-  height: "6px",
-  cursor: "pointer",
-});
-
-export const StyledFormContainer = styled(Box)({
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)", // Two equal columns
-  gap: "24px", // Space between fields
-  maxWidth: "100%",
-  padding: "20px",
-  "& .fullWidth": {
-    gridColumn: "1 / -1", // Span across both columns
-  },
-});
-
-export const GradientHeader = styled("h2")({
-  fontSize: "24px",
-  background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  margin: 0,
-});
-
-export const CustomTextField = styled(TextField)({
-  position: "relative",
-  width: "100%",
-  "& .MuiInputBase-root": {
-    fontSize: "14px", // Font size
-    color: "#E81885", // Active field value color
-    background: "transparent",
-    "&::placeholder": {
-      color: "#7F7F7F", // Placeholder color
-      opacity: 1,
-    },
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    border: "none", // Remove default Material-UI border
-  },
-  "& .MuiInputLabel-root": {
-    color: "#7F7F7F", // Label color for idle state
-    fontWeight: "bold",
-    "&.Mui-focused": {
-      color: "#7F7F7F", // Label color for active state
-    },
-  },
-  "&:before": {
-    content: '""',
+export const StyledPatternR = styled("img")(() => {
+  const { theme } = useTheme(); // Use `useTheme` inside the function
+  return {
     position: "absolute",
-    bottom: 0,
-    left: 0,
+    right: "130px",
+    borderRadius: "2em 2em 0 0",
+    top: "93%",
+    background: `${theme.outerBodyColor}`,
+    transform: "translateY(-50%)",
+    width: "70px",
+    height: "6px",
+    cursor: "pointer",
+  };
+});
+
+export const StyledPatternL = styled("img")(() => {
+  const { theme } = useTheme();
+  return {
+    position: "absolute",
+    right: "50px",
+    borderRadius: "2em 2em 0 0",
+    top: "93%",
+    background: `${theme.outerBodyColor}`,
+    transform: "translateY(-50%)",
+    width: "70px",
+    height: "6px",
+    cursor: "pointer",
+  };
+});
+
+export const StyledFormContainer = styled(Box)(() => {
+  return {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "24px",
+    maxWidth: "100%",
+    padding: "20px",
+    "& .fullWidth": {
+      gridColumn: "1 / -1",
+    },
+  };
+});
+
+export const GradientHeader = styled("h2")(() => {
+  const { theme } = useTheme();
+  return {
+    fontSize: "24px",
+    background: `${theme.outerBodyColor}`,
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    margin: 0,
+  };
+});
+
+// Styled DatePicker
+export const CustomDatePicker = styled(DatePicker)(() => {
+  const { theme } = useTheme();
+  return {
     width: "100%",
-    height: "2px",
-    background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-    zIndex: 1,
-  },
-  "&:after": {
-    content: '""',
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "0%",
-    height: "2px",
-    background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-    zIndex: 2,
-    transition: "width 0.3s ease-in-out",
-  },
-  "&:hover:after, &:focus-within:after": {
-    width: "100%", // Expand gradient border on hover/focus
-  },
+    "& .MuiInputBase-root": {
+      fontSize: "14px",
+      color: `${theme.InnerBodyfontColor}`,
+      background: "transparent",
+      "&::placeholder": {
+        color: "#7F7F7F",
+        opacity: 1,
+      },
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#7F7F7F",
+      fontWeight: "bold",
+      "&.Mui-focused": {
+        color: `${theme.InnerBodyfontColor}`, // Active field label color
+      },
+    },
+    "&:before": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "100%",
+      height: "2px",
+      background: `${theme.outerBodyColor}`,
+      zIndex: 1,
+    },
+    "&:after": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "0%",
+      height: "2px",
+      background: `${theme.outerBodyColor}`,
+      zIndex: 2,
+      transition: "width 0.3s ease-in-out",
+    },
+    "&:hover:after, &:focus-within:after": {
+      width: "100%",
+    },
+  };
+});
+
+export const CustomTextField = styled(TextField)(() => {
+  const { theme } = useTheme();
+  return {
+    color: `${theme.valueFontColor}`,
+    position: "relative",
+    width: "100%",
+    "& .MuiInputBase-root": {
+      fontSize: "14px",
+      color: `${theme.InnerBodyfontColor}`,
+      background: "transparent",
+      "&::placeholder": {
+        color: "#7F7F7F",
+        opacity: 1,
+      },
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#7F7F7F",
+      fontWeight: "bold",
+      "&.Mui-focused": {
+        color: `${theme.InnerBodyfontColor}`, // Active field label color
+      },
+    },
+    "&:before": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "100%",
+      height: "2px",
+      background: `${theme.outerBodyColor}`,
+      zIndex: 1,
+    },
+    "&:after": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "0%",
+      height: "2px",
+      background: `${theme.outerBodyColor}`,
+      zIndex: 2,
+      transition: "width 0.3s ease-in-out",
+    },
+    "&:hover:after, &:focus-within:after": {
+      width: "100%",
+    },
+  };
 });
 
 export const HeaderContainer = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginBottom: "20px",
+  // marginBottom: "20px",
+  padding: "20px",
 });
 
-export const CustomSelect = styled(Select)({
-  fontSize: "14px",
-  fontWeight: 300,
-  color: "#E81885",
-  "& .MuiOutlinedInput-notchedOutline": {
-    border: "none",
-  },
-  "&:before": {
-    content: '""',
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    height: "2px",
-    background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-    zIndex: 1,
-  },
-  "&:after": {
-    content: '""',
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    width: "0%",
-    height: "2px",
-    background: "linear-gradient(90deg, #F51275 0%, #622098 100%)",
-    zIndex: 2,
-    transition: "width 0.3s ease-in-out",
-  },
-  "&:hover:after, &:focus-within:after": {
-    width: "100%", // Expand gradient border on hover/focus
-  },
-  "& .MuiInputLabel-root": {
-    color: "#7F7F7F",
-    "&.Mui-focused": {
-      color: "#7F7F7F",
+// export const sharedStyles = {
+//   borderRadius: "1em",
+//   "& .MuiOutlinedInput-root": {
+//     borderRadius: "2em !important",
+//   },
+//   "& .MuiOutlinedInput-notchedOutline": {
+//     borderRadius: "1em",
+//     border: "2px solid",
+//     borderImageSlice: 1,
+//     borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
+//   },
+//   "&:hover .MuiOutlinedInput-notchedOutline": {
+//     borderRadius: "1em",
+//     border: "2px solid",
+//     borderImageSlice: 1,
+//     borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
+//   },
+//   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+//     border: "2px solid",
+//     borderRadius: "1em",
+//     borderImageSlice: 1,
+//     borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
+//   },
+//   "& .MuiInputLabel-root.Mui-focused": {
+//     color: "#E81885",
+//   },
+// };
+
+export const sharedStyles = {
+  width: "100%",
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "1em !important",
+    "& fieldset": {
+      borderRadius: "0.4em",
+      // borderRadius: "1em !important", // Ensures fieldset follows the radius
+      border: `2px solid #540c00`,
+      // borderImageSlice: 1,
+      // borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
+    },
+    "&:hover fieldset": {
+      border: "2px solid #540c00",
+      // borderImageSlice: 1,
+      // borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
+    },
+    "&.Mui-focused fieldset": {
+      border: "2px solid #540c00",
+      // borderImageSlice: 1,
+      // borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
     },
   },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: " #540c00",
+  },
+};
+
+export const CustomSelect = styled(Select)(() => {
+  const { theme } = useTheme();
+  // sharedStyles(theme)
+  return {
+    fontSize: "14px",
+    width: "100%",
+    fontWeight: 300,
+    color: `${theme.InnerBodyfontColor}`,
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&:before": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "100%",
+      height: "2px",
+      background: `${theme.outerBodyColor}`,
+      zIndex: 1,
+    },
+    "&:after": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      width: "0%",
+      height: "2px",
+      background: `${theme.outerBodyColor}`,
+      zIndex: 2,
+      transition: "width 0.3s ease-in-out",
+    },
+    "&:hover:after, &:focus-within:after": {
+      width: "100%",
+    },
+  };
+});
+
+export const StyledCard = styled(Card)(() => {
+  const { theme } = useTheme();
+  return {
+    position: "relative",
+    height: 150,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    cursor: "pointer",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    background: "#f2f2f2",
+    border: `3px solid ${theme.InnerBodyfontColor}`, // Additional border color
+    boxShadow:
+      "4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.5)", // 3D shadow effect
+    "&:hover": {
+      transform: "translateY(-5px)", // Hover effect to lift the card
+      boxShadow:
+        "8px 8px 20px rgba(0, 0, 0, 0.3), -8px -8px 20px rgba(255, 255, 255, 0.6)", // Enhanced shadow on hover
+    },
+  };
+});
+
+export const StyledTypography = styled(Typography)({
+  color: "black",
+  fontWeight: 500,
+  // fontStyle: '',
+  fontSize: "16px",
+  marginTop: "1em",
 });
 
 // export const StyledButton = styled(Button)({
@@ -169,17 +325,18 @@ export const CustomSelect = styled(Select)({
 // });
 // console.log(theme.outerBodyColor, 'outerBodyColor');
 export const StyledButton = styled(Button)({
-  backgroundColor: "#752B8D",
+  backgroundColor: "#A17D34",
   color: "#fff",
   fontWeight: "bold",
   borderRadius: "0.5em",
-  boxShadow: "4px 4px 0px #2c3e50, 8px 8px 0px #34495e, 12px 12px 0px #ecf0f1",
+  boxShadow:
+    "4px 4px 0px #9A7127, 8px 8px 0px rgb(154, 113, 39), 12px 12px 0px #ecf0f1",
   transition: "transform 0.3s ease, box-shadow 0.3s ease",
   textTransform: "none",
   marginTop: "20px",
 
   ":hover": {
-    backgroundColor: "#752B8D",
+    backgroundColor: "#A17D34",
   },
 
   ":active": {
@@ -188,7 +345,7 @@ export const StyledButton = styled(Button)({
   },
 });
 
-//left side panel 
+//left side panel
 
 export const styles = {
   menuContainer: {

@@ -372,30 +372,30 @@ export default function GroupManagementViewSettingsDetails(props) {
   };
 
   return (
-    <Box sx={{ width: '100%', marginTop: '2em', borderRadius: '0.3em', background: 'linear-gradient(89.34deg, #E41670 0.56%, #622098 99.44%)' }}>
+    <Box sx={{ width: '100%', marginTop: '2em', borderRadius: '0.3em' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs sx={{ color: 'white' }} value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab sx={{ color: 'white' }} label="Group Members" {...a11yProps(0)} />
-          <Tab sx={{ color: 'white' }} label="Group Admins" {...a11yProps(1)} />
-          {edit && <Tab sx={{ color: 'white' }} label="Add Child Group" {...a11yProps(2)} />}
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Group Members" {...a11yProps(0)} />
+          <Tab label="Group Admins" {...a11yProps(1)} />
+          {/* {edit && <Tab sx={{ color: 'white' }} label="Add Child Group" {...a11yProps(2)} />} */}
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
+      {/* <CustomTabPanel value={value} index={0}>
         <GroupMemberList
           edit={edit}
           userData={userData}
           setSelectedUserRows={setSelectedUserRows}
           isKeywordPresent={isKeywordPresent}
         />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      </CustomTabPanel> */}
+      {/* <CustomTabPanel value={value} index={1}>
         <GroupAdminList
           edit={edit}
           userData={groupAdminData}
           setSelectedUserRows={setSelectedUserRows}
           isKeywordPresent={isKeywordPresent}
         />
-      </CustomTabPanel>
+      </CustomTabPanel> */}
       <CustomTabPanel value={value} index={2}>
         {/* {(isKeywordPresent) ? (
           <div style={{ background: 'white', borderRadius: '0.4em' }} >

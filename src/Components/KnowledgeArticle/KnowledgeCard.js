@@ -8,6 +8,7 @@ import { serverAPI } from '../../Utils/Server';
 import { setKnowledgeContent } from '../../Redux state management/Redux Slices/KnowledgeDataSlice';
 import AlertComponent from '../HelperComponents/AlertComponent';
 import { Link, useHistory } from 'react-router-dom';
+import { StyledCard } from '../../commonComponents/StyledComponents';
 // import { Alert } from 'flowbite-react';
 
 
@@ -38,7 +39,7 @@ export default function KnowledgeCard(props) {
         console.log("Knowledge article successfully deleted:", response.data);
         setNotifyStatus(true);
         setNotifyMessage("Knowledge article successfully deleted")
-      // dispatch(setKnowledgeContent({}));??
+        // dispatch(setKnowledgeContent({}));??
         window.location.reload();
         setConfirm(false)  // Resetting knowledge content after deletion
       } else {
@@ -60,7 +61,26 @@ export default function KnowledgeCard(props) {
   }
   return (
     <>
-      {props.myArticle ? <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex !important", width: '100%', alignItems: "center", flexDirection: 'row' }}>
+        <div>
+          <img
+            src={props.img}
+            width={160}
+            height={150}
+            style={{ borderRadius: 10 }}
+            alt="Knowledge Article"
+          />
+        </div>
+      </div>
+      <StyledCard sx={{ border: 'none', width:'80%' }}>
+        <p style={{ fontSize: 17 }}>{props.title}</p>
+        <p style={{ fontWeight: "normal" }} className="text-wrapper-knowledge">
+          {props.articleContent}
+        </p>
+        <p style={{ fontWeight: "normal", fontSize: 13 }}>{props.date}</p>
+      </StyledCard>
+      <AlertComponent handleConfirm={handleConfirm} open={open} deleteArticle={deleteArticle} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+      {/* {props.myArticle ? <div style={{ display: "flex", justifyContent: "center" }}>
         <EditIcon
           style={{ cursor: "pointer", marginRight: 10, color: "blue" }}
           onClick={editArticle} // Optional handler for edit action
@@ -85,8 +105,6 @@ export default function KnowledgeCard(props) {
             />
           </div>
 
-          {/* Icons for edit and delete below the image */}
-
           <div style={{ marginLeft: 5, marginTop: 12 }}>
 
             <p style={{ fontSize: 17 }}>{props.title}</p>
@@ -98,7 +116,7 @@ export default function KnowledgeCard(props) {
 
         </div>
       </Link>
-      <AlertComponent handleConfirm={handleConfirm} open={open} deleteArticle={deleteArticle} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+      <AlertComponent handleConfirm={handleConfirm} open={open} deleteArticle={deleteArticle} handleClickOpen={handleClickOpen} handleClose={handleClose} /> */}
 
     </>
   );

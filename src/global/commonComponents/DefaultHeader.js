@@ -1,14 +1,8 @@
 import { Grid } from "@mui/material";
 import React from "react";
-// import { useDrawer } from "./drawer/DrawerContext";
-import UserInfo from '../../models/UserInfo';
-// import UserProfileDetails from "../../Pages/UserProfileDetails";
 
 function DefaultHeader(props) {
-  const { state, toggleDrawer } = props;
-  // const { toggleDrawer } = useDrawer();
-  const userName = UserInfo.getUsername();
-  let authAdmin = localStorage.getItem("Admin");
+  const { toggleDrawer } = props;
 
   return (
     <>

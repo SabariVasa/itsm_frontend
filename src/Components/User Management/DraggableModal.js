@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 import UserManagmentTable from '../../Pages/userManagement/UserManagmentTable';
 import SearchTextField from '../HelperComponents/SearchTextField';
+import ManagementUserList from '../../Pages/userManagement/ManagementUserList';
 
 function PaperComponent(props) {
   return (
@@ -21,7 +22,7 @@ function PaperComponent(props) {
   );
 }
 
-export default function DraggableModal({open,setOpen,handleClickOpen,handleClose}) {
+export default function DraggableModal({ open, setRequesterEmail, setOpen, handleClickOpen, handleClose }) {
 
 
   return (
@@ -34,9 +35,9 @@ export default function DraggableModal({open,setOpen,handleClickOpen,handleClose
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
-        <SearchTextField/>
+        <SearchTextField />
         <DialogContent>
-            <UserManagmentTable handleClose={handleClose}/>
+          <ManagementUserList setRequesterEmail={setRequesterEmail} handleClose={handleClose} />
         </DialogContent>
       </Dialog>
     </React.Fragment>

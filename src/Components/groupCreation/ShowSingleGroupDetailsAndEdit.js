@@ -676,7 +676,7 @@ function ShowSingleGroupDetailsAndEdit(props) {
         <GradientHeader >Group Info</GradientHeader>
         {/* <StyledButton type="submit">Create New Incident</StyledButton> */}
       </HeaderContainer>
-      <Card variant="outlined" sx={{ background: 'linear-gradient(89.34deg, #E41670 0.56%, #622098 99.44%)' }}>
+      <Card variant="outlined" >
         <CardContent>
           <Grid container justifyContent="space-between" alignItems="center">
             <Typography variant="h5" gutterBottom>
