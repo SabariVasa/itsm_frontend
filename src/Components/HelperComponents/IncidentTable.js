@@ -1,49 +1,43 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   useHistory,
-  useLocation,
   useRouteMatch,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { DataGrid } from "@mui/x-data-grid";
 import GlobalService from "../../services/GlobalService";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
 import { resturls } from "../../global/utils/apiurls";
-import DefaultLoader from "../../global/commonComponents/DefaultLoader";
+import { useAuth } from "../../application/modules/auth/hooks/useAuth";
+import { Skeleton } from "@mui/material";
 
-export default function     IncidentTable(props) {
+export default function IncidentTable() {
   const url = new URL(window.location.href);
-  const state = url.searchParams.get('state');
-  const location = useLocation();
+  const state = url.searchParams.get("state");
+
   const { path } = useRouteMatch();
   const navigate = useHistory();
+
   const { theme } = useTheme();
+
+  const {
+    user_auth: { userId, organizationId },
+  } = useAuth();
+
   const [headers, setHeaders] = useState([]);
   const [IncidentData, setIncidentData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getUrlSegment = () => {
-    const segments = location.pathname.split("/");
-    const segmentIndex = segments.indexOf("incident-list") + 1;
-    return segments[segmentIndex];
+  const handleCellClick = (params) => {
+    const updatedPath = path.replace("/incident-list", "");
+    navigate.push(`${updatedPath}/update_incident/${params.row.incidentId}`);
   };
-
-  console.log("Sliced URL Segment:", getUrlSegment());
-
-    const handleCellClick = (params) => {
-      const updatedPath = path.replace("/incident-list", "");
-      navigate.push(`${updatedPath}/update_incident/${params.row.incidentId}`);
-    };
 
   const fetchDocuments = async (url) => {
     setLoading(true);
     GlobalService.generalSelect(
       (respdata) => {
-        const { estatus, data } = respdata;
-        if (estatus) {
-          setIncidentData(data);
-        } else {
-          setIncidentData(data);
-        }
+        const { data } = respdata;
+        setIncidentData(data);
         setLoading(false);
       },
       url,
@@ -52,30 +46,37 @@ export default function     IncidentTable(props) {
     );
   };
 
-  useEffect(() => {
-    console.log(state, 'state');
-    if (state === "assign_to_me"){
-      console.log("assign_to_me");
-      fetchDocuments(
-        `${resturls.assignedIncidents}?userId=${localStorage.getItem("userId")}`
-      );
+  useLayoutEffect(() => {
+    if (state === "assign_to_me") {
+      fetchDocuments(`${resturls.assignedIncidents}?userId=${userId}`);
     } else if (state === "open") {
-      console.log("open");
-      fetchDocuments(
-        `${resturls.openIncidents}?groupId=${localStorage.getItem("groupId")}`
-      );
-    } else {
-      fetchDocuments(`${resturls.allIncident}`);
-    }
-  }, [state]);
+      fetchDocuments(`${resturls.openIncidents}?groupId=${organizationId}`);
+    } else fetchDocuments(resturls.allIncident);
+  }, [state, userId, organizationId]);
 
   useEffect(() => {
     if (IncidentData?.length > 0) {
-      const excludeFields = ["id","notes", "assignGroup","category","subCategory","service","serviceCategory","configurationItem","impactReason","urgencyReason","createdBy","shortDescription","description","updatedBy","notesUpdateTime"];
-  
+      const excludeFields = [
+        "id",
+        "notes",
+        "assignGroup",
+        "category",
+        "subCategory",
+        "service",
+        "serviceCategory",
+        "configurationItem",
+        "impactReason",
+        "urgencyReason",
+        "createdBy",
+        "shortDescription",
+        "description",
+        "updatedBy",
+        "notesUpdateTime",
+      ];
+
       const dynamicHeaders = Object.keys(IncidentData[0])
-        .filter((key) =>!excludeFields.includes(key)) // Exclude the 'notes' field
-        .map((key,index) => {
+        .filter((key) => !excludeFields.includes(key)) // Exclude the 'notes' field
+        .map((key, index) => {
           if (index === 0) {
             return {
               field: key,
@@ -89,10 +90,9 @@ export default function     IncidentTable(props) {
                 <span
                   onClick={() =>
                     navigate.push(
-                      `${path.replace(
-                        "/incident-list",
-                        ""
-                      )}/update_incident/${params.row.incidentId}`
+                      `${path.replace("/incident-list", "")}/update_incident/${
+                        params.row.incidentId
+                      }`
                     )
                   }
                   style={{
@@ -106,30 +106,30 @@ export default function     IncidentTable(props) {
               ),
             };
           }
-  
+
           switch (key) {
             case "caller":
             case "callerDepartment":
             case "assignGroup":
-              case "assignedTo":
-                return {
-                  field: key,
-                  headerName: key
-                    .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-                    .replace(/[_]/g, " ") // Replace underscores with spaces
-                    .toLowerCase() // Convert all to lowercase
-                    .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
-                  width: 200,
-                  renderCell: (params) => params.value?.name || "N/A",
-                };
+            case "assignedTo":
+              return {
+                field: key,
+                headerName: key
+                  .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
+                  .replace(/[_]/g, " ") // Replace underscores with spaces
+                  .toLowerCase() // Convert all to lowercase
+                  .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
+                width: 200,
+                renderCell: (params) => params.value?.name || "N/A",
+              };
             default:
               return {
                 field: key,
                 headerName: key
-                .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-                .replace(/[_]/g, " ") // Replace underscores with spaces
-                .toLowerCase() // Convert all to lowercase
-                .replace(/\b\w/g, (char) => char.toUpperCase()),
+                  .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
+                  .replace(/[_]/g, " ") // Replace underscores with spaces
+                  .toLowerCase() // Convert all to lowercase
+                  .replace(/\b\w/g, (char) => char.toUpperCase()),
                 width: 150,
               };
           }
@@ -141,7 +141,7 @@ export default function     IncidentTable(props) {
   return (
     <div style={{ margin: "2em" }}>
       {loading ? (
-        <DefaultLoader />
+        <Skeleton variant="rectangular" width="100%" height={140} />
       ) : (
         <DataGrid
           rows={IncidentData}
@@ -158,7 +158,7 @@ export default function     IncidentTable(props) {
             "& .MuiDataGrid-columnHeaders": {
               "& .MuiDataGrid-row--borderBottom": {
                 background: `${theme.outerBodyColor}`,
-                 color: "white"
+                color: "white",
               },
             },
             "& .MuiDataGrid-rowHeader": {

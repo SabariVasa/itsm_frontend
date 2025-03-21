@@ -54,7 +54,6 @@ const CreateGroupForm = (props) => {
   const location = useLocation();
   const { theme } = useTheme();
   const isKeywordPresent = location.pathname.includes("update_dep");
-  // console.log(isKeywordPresent, 'isKeywordPresent');
   const { group_id, orgId } = useParams();
   const { organizationId, groupId } = props;
 
@@ -71,7 +70,7 @@ const CreateGroupForm = (props) => {
     const url = group ? `${resturls.updateGroup}/${group.id}` : resturls.CreateNewGroup;
     GlobalService.generalSelect(
       (responseData) => {
-        const { data, estatus, emessage } = responseData;
+        const { estatus } = responseData;
         if (estatus) {
           history.goBack();
         }
@@ -82,7 +81,6 @@ const CreateGroupForm = (props) => {
     );
   };
 
-  console.log(selectedUserRows, 'selectedUserRows');
 
   useEffect(() => {
     if (effectiveGroupId) {

@@ -413,10 +413,11 @@ function GeneratedForm(props) {
                           )}
                           {field.fieldType === "Email" && (
                             <div style={{ position: "relative" }}>
-                              <Field
+                              <TextField
                                 label={field.fieldName}
-                                as={CustomTextField}
                                 name={field.fieldName}
+                                value={values[field.fieldName]}
+                                InputLabelProps={{ shrink: true }}
                                 type="email"
                                 sx={sharedStyles}
                                 placeholder={field.description || ""}
@@ -568,9 +569,11 @@ function GeneratedForm(props) {
                       </React.Fragment>
                     ))}
                   </Grid>
-                  {console.log(createBtn, 'createBtn')}
-                  {(createBtn || isEditMode || catelogueId || isUpdate !== null) 
-                  && (
+                  {console.log(createBtn,isEditMode,catelogueId,isUpdate, 'createBtn')}
+                  {(!createBtn ||
+                    !isEditMode ||
+                    !catelogueId ||
+                    isUpdate !== null) && (
                     <Box mt={2}>
                       <Button
                         type="submit"

@@ -20,7 +20,9 @@ steps:
     npm install --legacy-peer-deps
     npm run build
   displayName: 'Install dependencies and build React app'
-  
+  env:
+    NODE_OPTIONS: '--max_old_space_size=8192'  # Allocates 8 GB of memory to Node.js
+
 # Step 4: Copy the React build files into the running Nginx container
 - script: |
     if [ "$(docker ps -q -f name=react-nginx)" ]; then

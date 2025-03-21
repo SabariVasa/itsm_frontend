@@ -8,8 +8,16 @@ body {
   font-weight: bolder;
 }
 
+.MuiBreadcrumbs-separator{
+  margin: 0 !important;
+}
+
 iframe#webpack-dev-server-client-overlay {
   display: none !important;
+}
+.draggable {
+  top: auto !important;
+  left: auto !important;
 }
 
 .company-profile {
@@ -637,7 +645,7 @@ hr {
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   background: rgb(2, 0, 36);
   /* background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(90,35,149,1) 0%, rgba(255,0,65,1) 100%); */
-  background-image: linear-gradient(90deg, #f51275 0%, #622098 100%);
+  /* background-image: linear-gradient(90deg, #f51275 0%, #622098 100%); */
   border-radius: 10px;
   color: white;
   /* border: 1px solid rgba(209, 213, 219, 0.3); */

@@ -407,14 +407,11 @@ export default function CreateChange() {
                 rows={changeConflictData}
                 getRowId={(row) => row.itemName ? row.itemName : row.itemId}
                 columns={ChangeheaderData}
-                // isRowSelected: (id: GridRowId) => boolean
                 initialState={{
                   pagination: {
                     paginationModel: { page: 0, pageSize: 10 },
                   },
                 }}
-                // pageSizeOptions={[10]}
-                checkboxSelection
                 style={{ height: 200 }}
               />
             </TabPanel>

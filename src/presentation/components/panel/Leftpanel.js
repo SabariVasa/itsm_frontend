@@ -14,7 +14,7 @@ import {
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export const LeftPanel = (props) => {
-    const { navbarOptions, drawer, pathConfig } = props;
+    const { navbarOptions, pathConfig } = props;
     const navigate = useHistory();
 
     const directTo = (url) => navigate.push(`/${pathConfig}${url}`);
@@ -52,7 +52,7 @@ export const LeftPanel = (props) => {
                             <ListItemIcon sx={{ minWidth: "37px !important" }}>
                                 {Icon && <Icon sx={{ color: "white" }} />}
                             </ListItemIcon>
-                            {drawer && <ListItemText sx={{ color: "white" }} primary={label} />}
+                            <ListItemText sx={{ color: "white" }} primary={label} />
                         </AccordionSummary>
                         <AccordionDetails className="text-white !p-0.5">
                             <div className="pl-12">
@@ -81,7 +81,7 @@ export const LeftPanel = (props) => {
                         <div style={{ width: '100%', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", display: 'flex', }}>
                             <ListItemIcon sx={{ minWidth: "37px !important", display: 'flex', alignItems: 'flex-start' }}>
                                 {Icon && <Icon sx={{ color: 'white', marginRight: '0.6em' }} />}
-                                {drawer && <ListItemText primary={label} sx={{ color: 'white' }} />}
+                                <ListItemText primary={label} sx={{ color: 'white' }} />
                             </ListItemIcon>
                         </div>
                     </ListItem>

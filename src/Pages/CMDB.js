@@ -38,24 +38,18 @@ export default function CMDB() {
       {categoryType.category && <ArrowBackIcon onClick={() => setCategoryType({ category: '', core: '' })} />}
       {!categoryType.category && setLoader ? (
         <>
-          <div>
+          <div className='mb-5'>
             <ContentDevider title="Infrastructure" img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdV1ErgRrQcHORTgFsqwJTS7K8kBZYHo36mQ&s" />
           </div>
           <div>
             <CardContainer setCmdbData={setCmdbHardwareRequirements} categoryType={categoryType} setCategoryType={setCategoryType} CmdbData={cmdbHardwareRequirements} />
           </div>
-          <div>
+          <div className='mb-5'>
             <ContentDevider title="Software and Applications" img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpKNu9lkRPu5EHa6CEQS1QDl8TCg2swH0Jfw&s" />
           </div>
           <div>
             <CardContainer setCmdbData={setCmdbSofwareRequirements} categoryType={categoryType} setCategoryType={setCategoryType} CmdbData={cmdbSoftwareRequirements} />
           </div>
-          {/* <div>
-            <ContentDevider title="Miscellaneous" img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBp97dDdw_rPwEFsui431XRRv9ORUMUVoA2A&s"/>
-          </div> */}
-          {/* <div>
-             <CardContainer CmdbData={OtherData} Total={[3,4,7]} height={100} width={100} />
-          </div> */}
         </>
       ) : (
         <CmdbShowDetails category={categoryType.category} />

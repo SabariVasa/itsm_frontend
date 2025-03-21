@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ContentDevider from '../HelperComponents/ContentDevider';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import StepperComponent from '../HelperComponents/StepperComponent';
-import TechnicalInfo from './TechnicalInfo';
-import SoftwareInfo from './SoftwareInfo';
-import CMDBService from './update-CMDB-Component/CMDBService';
+import { Box, FormControl, Grid, MenuItem, TextField } from '@mui/material';
 import GlobalService from '../../services/GlobalService';
 import { resturls } from '../../global/utils/apiurls';
 import GeneratedForm from '../cmdb/classmanagement/GeneratedForm';
@@ -16,11 +12,8 @@ import { sharedStyles } from '../../commonComponents/StyledComponents';
 
 export default function CI() {
   const [callMethod, setCallMethod] = useState(false);
-  const [Name, setName] = useState("");
   const [ServiceValue, setServiceValue] = useState(0);
-  const [ServiceTypeValue, setServiceTypeValue] = useState(0);
-  // const [Description, setDescription] = useState("");
-  const [formData, setFormData] = useState([])
+  const [formData, setFormData] = useState([]);
   const [buttonDisabled, setbuttonDisabled] = useState(true);
   const [selectedClass, setSelectedClass] = useState('');
   const [categoryTypeList, setCategoryTypeList] = useState([])
@@ -29,27 +22,21 @@ export default function CI() {
 
   const handleChange = (event) => {
     setSelectedClass(event.target.value);
-    console.log(event.target.value);
   };
 
   useEffect(() => {
-    console.log(Name);
-    console.log(ServiceValue);
     if (ServiceValue) {
       setbuttonDisabled(false)
     } else {
       setbuttonDisabled(true);
     }
-
-  }, [Name, ServiceValue]);
+  }, [ServiceValue]);
 
   useEffect(() => {
-    console.log(selectedClass, 'selectedClass');
     if (ServiceValue) {
       GlobalService.generalSelect(
         (respdata) => {
           const { estatus, emessage, data } = respdata;
-          console.log(respdata, 'responseData');
           if (estatus && emessage && data) {
             setCategoryTypeList(data)
           }
@@ -63,7 +50,6 @@ export default function CI() {
       GlobalService.generalSelect(
         (respdata) => {
           const { estatus, emessage, data } = respdata;
-          console.log(respdata, 'responseData');
           if (estatus && emessage && data) {
             setFormData(data.attributes);
           }
@@ -78,7 +64,6 @@ export default function CI() {
   return (
     callMethod ? (
       <Box sx={{ minWidth: 80, maxWidth: '80%', marginLeft: 10, marginTop: 2 }}>
-
         <GeneratedForm formFields={formData}
           setFormFields={setFormData}
           selectCategoryType={'selectCategoryType'}
@@ -92,17 +77,11 @@ export default function CI() {
 
     ) : (
       <div>
-        {console.log(ServiceValue, 'ServiceValue')},
-        {/* {ServiceValue === "Hardware" ? <StepperComponent steps={["General Information", "Technical Information", "Create Item"]} /> : null}
-        {ServiceValue === "Software" ? <StepperComponent steps={["General Information", "Technical Information", "Create Item"]} /> : null}
-        {ServiceValue === "Services" ? <StepperComponent steps={["General Information", "Service General Info", "Service Details", "Technical Information"]} /> : null} */}
-
         <ContentDevider title="General Information" />
         <Grid container rowSpacing={1} sx={{ width: '120%', display: 'flex', alignItems: 'center' }} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12}>
             <Box sx={{ minWidth: 80, maxWidth: '80%', marginLeft: 10, marginTop: 2 }}>
               <FormControl fullWidth>
-                {/* <InputLabel id="class-select-label">CI Type</InputLabel> */}
                 <TextField
                   select
                   labelId="class-select-label"
@@ -128,7 +107,6 @@ export default function CI() {
             <Grid item xs={12}>
               <Box sx={{ minWidth: 80, maxWidth: '80%', marginLeft: 10, marginTop: 2 }}>
                 <FormControl fullWidth>
-                  {/* <InputLabel id="class-select-label">Select Class</InputLabel> */}
                   <TextField
                     select
                     sx={sharedStyles}

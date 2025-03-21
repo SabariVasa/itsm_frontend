@@ -27,13 +27,11 @@ export default function BasicSelect(props) {
           id="demo-simple-select"
           value={props.SelectedValue}
           label={props.label}
-          onChange={(e) => {
-            handleChange(e);
-          }}
+          onChange={handleChange}
           defaultValue={props.defaultValue ? props.defaultValue : null}
           sx={sharedStyles}
         >
-          <MenuItem sx={{ color: `${theme.valueFontColor}` }} value="">
+          <MenuItem sx={{ color: `${theme.valueFontColor}` }} disabled>
             <em>Select Service</em>
           </MenuItem>
           {props.MenuItems.map((item, index) => (

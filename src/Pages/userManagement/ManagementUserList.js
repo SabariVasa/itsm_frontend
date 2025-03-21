@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useMemo } from "react";
 import { DataGrid } from '@mui/x-data-grid';
 // import { useDemoData } from '@mui/x-data-grid-generator';
 import { useHistory, useRouteMatch } from "react-router-dom";
@@ -10,6 +10,8 @@ import Switch from '@mui/material/Switch';
 import { resturls } from "../../global/utils/apiurls";
 import UserDetailsAndEdit from "./UserDetailsAndEdit";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
+import { useRearrange } from "../../presentation/hooks/rearrange-header";
+// import { useRearrange } from "../../presentation/shared/rearrange-header";
 
 export default function ManagementUserList(props) {
   const { userData, setRequesterEmail, assignToModal, setAssignToMember, setSelectedCaller = {}, caller } = props;
@@ -21,30 +23,45 @@ export default function ManagementUserList(props) {
   // const [selectedRows, setSelectedRows] = useState([]);
   const [selectedRowIds, setSelectedRowIds] = useState([]); // Store selected IDs
   const [selectedRows, setSelectedRows] = useState([]);
-  const [checkboxSelection, setCheckboxSelection] = useState(true);
-const { theme } = useTheme();
-  const headerData = [
-    {
-      field: 'firstName', headerName: 'First Name', width: 150,
-      renderCell: (params) => (
-        <div
-          style={{ cursor: 'pointer', color: 'blue' }}
-          onClick={() => history.push(`${path}/userUpdate/${params.row.id}`)}
-        >
-          {params.row.firstName}
-        </div>
-      ),
-    },
-    { field: 'lastName', headerName: 'Last Name', width: 150 },
-    { field: 'emailAddress', headerName: 'Email', width: 250 },
-    { field: 'company', headerName: 'Company', width: 200 },
-    { field: 'department', headerName: 'Department', width: 200 },
-    { field: 'manager', headerName: 'Manager', width: 150 },
-    { field: 'userBranch', headerName: 'Location', width: 150 },
-    { field: 'userRole', headerName: 'Role', width: 120 },
-    { field: 'mobileNumber', headerName: 'Mobile Number', width: 150 },
-    { field: 'active', headerName: 'Status', width: 100, renderCell: (params) => (params.value ? 'Active' : 'Inactive') },
-  ];
+  const { theme } = useTheme();
+  const headers = useMemo(() => {
+      const excludeFields = ['id']
+      const keys = Object.keys(users[0] || {}).filter((key) =>!excludeFields.includes(key));
+      const headerkey = {
+        firstName: "First Name",
+        lastName: "Last Name",
+        emailAddress: "Email",
+      };
+  
+      return keys.map((key) => {
+        switch (key) {
+          case "firstName":
+          case "lastName":
+          case "emailAddress":
+            return {
+              field: key,
+              headerName: headerkey[key],
+              width: 150,
+            };
+          case "active":
+            return {
+              field: key,
+              headerName: "Status",
+              width: 100,
+              renderCell: (params) => (params.value ? "Active" : "Inactive"),
+            };
+          default:
+            return {
+              field: key,
+              headerName: key
+                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                .replace(/[_]/g, " ")
+                .toUpperCase(),
+              width: 150,
+            };
+        }
+      });
+    }, [users]);
 
   const processRowUpdate = (newRow) => ({ ...newRow, isNew: false });
 
@@ -65,55 +82,37 @@ const { theme } = useTheme();
     }
   };
 
-  // const { data } = useDemoData({
-  //   dataSet: 'Commodity',
-  //   rowLength: 10,
-  //   maxColumns: 5,
-  // });
-
-
   useEffect(() => {
     getAllUserDetails();
   }, []);
 
   const handleSelectionModelChange = (newSelection) => {
     console.log(newSelection, "newSelection");
-
-    // Update selectedRowIds: Add or remove ID based on its existence
     setSelectedRowIds((prevIds) => {
       const newId = newSelection.id;
       console.log(prevIds, "prevIds");
       if (prevIds.includes(newId)) {
-        // Remove the ID if it exists
         return prevIds.filter((id) => id !== newId);
       } else {
-        // Add the ID if it doesn't exist
         return [...prevIds, newId];
       }
     });
 
-    // Update selectedRows: Add or remove row based on its existence
     setSelectedRows((prevRows) => {
       const existingRowIndex = prevRows.findIndex(
         (row) => row.id === newSelection.id
       );
       if (existingRowIndex > -1) {
-        // Remove the row if it exists
         return prevRows.filter((row) => row.id !== newSelection.id);
       } else {
-        // Add the full row object if it doesn't exist
         return [...prevRows, newSelection.row];
       }
     });
-
-    // Debugging
     console.log("Updated Selected Row IDs:", selectedRowIds);
     console.log("Updated Selected Rows:", selectedRows);
-    // setSelectedCaller(selectedRows[0])
   };
 
-
-  console.log(selectedRows, 'selectedRows');
+  const {resultHeaders, ReArrangeController} = useRearrange({headers});
 
   return (
     <>
@@ -123,34 +122,15 @@ const { theme } = useTheme();
             <UserDetailsAndEdit isCreateUserOpen={setIsCreateUserOpen} />
           ) : (
             <>
-              {/* {(!userData || userData === null || !caller) &&
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
-                  <Button variant="contained" color="primary" sx={{ background: 'linear-gradient(270deg, #F51275 0%, #622098 100%) !important' }} onClick={() => history.push(`${path}/createUser`)}>
-                    Create User
-                  </Button>
-                </Box>
-              } */}
-              {/* <Box sx={{ mb: 1 }}>
-                <FormControlLabel
-                  label="checkboxSelection"
-                  control={
-                    <Switch
-                      checked={checkboxSelection}
-                      onChange={(event) => setCheckboxSelection(event.target.checked)}
-                    />
-                  }
-                />
-              </Box> */}
+              {ReArrangeController}
               <DataGrid
                 rows={users}
-                columns={headerData}
+                columns={resultHeaders}
                 getRowId={(row) => row.id}
                 pageSizeOptions={[10]}
                 editMode="row"
                 processRowUpdate={processRowUpdate}
                 disableRowSelectionOnClick
-                checkboxSelection={!userData && checkboxSelection}
-                // onSelectionModelChange={(newSelection, data) => console.log(newSelection, data, 'newSelection1')}
                 selectionModel={selectedRowIds}
                 onCellClick={(ele) => {
                   if (assignToModal) {

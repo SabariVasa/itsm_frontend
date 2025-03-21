@@ -5,7 +5,7 @@ import { Divider } from '@mui/material';
 export default function ContentDevider(props) {
   const { theme } = useTheme()
   return (
-    <div>
+    <div className='mb-4'>
       <h1
         style={{
           color: `${theme.InnerBodyfontColor}`,

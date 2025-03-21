@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Card, CardContent, CardMedia, Typography, IconButton, Skeleton } from '@mui/material';
@@ -8,7 +7,7 @@ import { resturls } from '../../global/utils/apiurls';
 import GlobalService from '../../services/GlobalService';
 
 export default function CardContainer(props) {
-  const { categoryType, setCategoryType, CmdbData, setCmdbData } = props;
+  const { setCategoryType, CmdbData, setCmdbData } = props;
   const [isLoading, setIsLoading] = React.useState(true);
   const [deletingId, setDeletingId] = React.useState(null);
   const keys = CmdbData ? Object.keys(CmdbData) : [];
@@ -54,7 +53,7 @@ export default function CardContainer(props) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginLeft: 10, marginBottom: 5 }}>
+    <Box className="p-4" sx={{ flexGrow: 1, marginBottom: 5 }}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {isLoading ? (
           Array.from(new Array(keys.length)).map((_, index) => (

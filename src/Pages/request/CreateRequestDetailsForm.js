@@ -33,9 +33,11 @@ export default function CreateRequestDetailsForm() {
       (respData) => {
         const { estatus, data } = respData;
         if (estatus) {
+          console.log(categoryId,catelogueId, 'categoryId');
           const foundObject = data?.find(
             (item) => item?.catalogItemId === categoryId
           );
+          console.log(foundObject, 'foundObject');
           setRequestFormFields(foundObject.generalInformation.attributes);
           setRequestCreatedFormDetails(foundObject);
         }

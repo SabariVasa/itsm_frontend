@@ -16,7 +16,8 @@ import {
   Skeleton,
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from "@mui/icons-material/Edit";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
 import GlobalService from "../../services/GlobalService";
 import { resturls } from "../../global/utils/apiurls";
@@ -214,30 +215,48 @@ export default function RequestServiceManagement({ fromUser = "superadmin" }) {
                         <CardContent>
                           <Grid container spacing={2}>
                             <Grid item xs={12}>
-                              <Box
+                            <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
                               >
                                 <span
                                   style={{
-                                    color: `${theme.subHeaderFontColor}`,
+                                    color: theme.subHeaderFontColor,
+                                    textDecoration: "underline", // Adds underline effect
+                                    cursor: "pointer", // Ensures it's clickable
                                   }}
+                                  onClick={() =>
+                                    history.push(
+                                      `/${fromUser}/server-request/create-request/${item.generalInformation.catelogueCatrgory.id}/${item.catalogItemId}?noBanner=true`
+                                    )
+                                  }
                                 >
                                   {item.generalInformation.serviceRequestName}
                                 </span>
+                                {console.log(item, 'item')}
                                 <Box>
                                   <IconButton
                                     onClick={() =>
                                       history.push(
-                                        `/${fromUser}/server-request/create-request/${item.generalInformation.catelogueCatrgory.id}/${item.catalogItemId}?noBanner=true`
+                                        `/${fromUser}/request-management/update-request/${item.catalogItemId}?noBanner=true`
                                       )
                                     }
                                   >
-                                    <AddCircleOutlineIcon />
+                                    <EditIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    // onClick={() =>
+                                    //   history.push(
+                                    //     `/${fromUser}/server-request/create-request/${item.generalInformation.catelogueCatrgory.id}/${item.catalogItemId}?noBanner=true`
+                                    //   )
+                                    // }
+                                  >
+                                    <DeleteOutlineIcon />
                                   </IconButton>
                                 </Box>
                               </Box>
+
                             </Grid>
                             <Grid item xs={12}>
                               <Typography variant="body2" color="textSecondary">

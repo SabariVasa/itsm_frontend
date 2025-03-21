@@ -53,11 +53,12 @@ export const SwitchBanner = ({ pathConfig }) => {
       >
         <HomeOutlined sx={{ mr: 0.5 }} fontSize="medium" />
       </Link>
-      {getTabs.map((tab, idx) => (
+      {getTabs.map((tab) => (
         <Link
           underline="hover"
           sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
+          key={tab}
           // href={getTabHrefs[idx]}
         >
           {getPathName(tab)}

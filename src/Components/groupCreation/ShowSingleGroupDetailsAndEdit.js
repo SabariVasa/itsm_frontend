@@ -672,17 +672,14 @@ function ShowSingleGroupDetailsAndEdit(props) {
 
   return (
     <>
-      <HeaderContainer sx={{ textAlign: 'center' }}>
-        <GradientHeader >Group Info</GradientHeader>
-        {/* <StyledButton type="submit">Create New Incident</StyledButton> */}
+      <HeaderContainer sx={{ textAlign: "center" }}>
+        <GradientHeader>Group Info</GradientHeader>
       </HeaderContainer>
-      <Card variant="outlined" >
+      <Card variant="outlined">
         <CardContent>
           <Grid container justifyContent="space-between" alignItems="center">
             <Typography variant="h5" gutterBottom>
-              {
-                group?.groupName
-              }
+              {group?.groupName}
             </Typography>
             <IconButton onClick={() => groupEditHandler()}>
               <Edit />
@@ -692,41 +689,65 @@ function ShowSingleGroupDetailsAndEdit(props) {
 
           <Grid container spacing={2} marginTop={2}>
             <Grid item xs={6}>
-              <Typography variant="subtitle1" color="textSecondary">Group Type:</Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Group Type:
+              </Typography>
               {
-                <Typography variant="body1" color="white">{group?.groupType}</Typography>
+                <Typography variant="body1" color="white">
+                  {group?.groupType}
+                </Typography>
               }
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle1" color="textSecondary">Scope:</Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Scope:
+              </Typography>
               {
-                <Typography variant="body1" color="white">{group?.groupScope}</Typography>
+                <Typography variant="body1" color="white">
+                  {group?.groupScope}
+                </Typography>
               }
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle1" color="textSecondary">Active Status:</Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Active Status:
+              </Typography>
               {
-                <Typography variant="body1" color="white">{group?.activeStatus}</Typography>
+                <Typography variant="body1" color="white">
+                  {group?.activeStatus}
+                </Typography>
               }
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle1" color="textSecondary">Permission:</Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Permission:
+              </Typography>
               {
-                <Typography variant="body1" color="white">{group?.userPermission}</Typography>
+                <Typography variant="body1" color="white">
+                  {group?.userPermission}
+                </Typography>
               }
             </Grid>
           </Grid>
 
           <Divider sx={{ my: 2 }} />
 
-          <Typography variant="subtitle1" color="textSecondary">Group Description:</Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Group Description:
+          </Typography>
           {
-            <Typography variant="body1" color="white" gutterBottom>{group?.groupDescription}</Typography>
+            <Typography variant="body1" color="white" gutterBottom>
+              {group?.groupDescription}
+            </Typography>
           }
 
-          <Typography variant="subtitle1" color="textSecondary">Group Manager:</Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            Group Manager:
+          </Typography>
           {
-            <Typography variant="body1" color="white" gutterBottom>{group?.groupManager}</Typography>
+            <Typography variant="body1" color="white" gutterBottom>
+              {group?.groupManager}
+            </Typography>
           }
         </CardContent>
       </Card>

@@ -1,221 +1,149 @@
-// import React from "react";
-// import ContentDevider from "../HelperComponents/ContentDevider";
-// import CraeteCatelogueGeneratedForm from "./CraeteCatelogueGeneratedForm";
-// import GeneratedForm from "../cmdb/classmanagement/GeneratedForm";
-
-// export default function PreviewSubmitFormDetails({ catelogueFlowDetails = {}, formFields }) {
-//   console.log(catelogueFlowDetails, '{ catelogueFlowDetails }');
-//   const {
-//     generalInformation = {},
-//     addRequiredItem = { requestItems: [] },
-//     catalogueFlow = { serviceRequestAccess: [] },
-//   } = catelogueFlowDetails;
-//   return (
-//     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-//       <h2>Submitted Form Preview</h2>
-
-//       {/* General Information Section */}
-//       <section>
-//         <ContentDevider title="General Information" />
-//         <p><strong>Service Request Name:</strong> {generalInformation.serviceRequestName}</p>
-//         <p><strong>Service Request Description:</strong> {generalInformation.serviceRequestDescription}</p>
-//         <p><strong>Turn Around Time:</strong> {generalInformation.turnAroundTime}</p>
-//         {formFields.length > 0 && (
-//           <>
-//             <ContentDevider title="Generated Form" />
-//             <GeneratedForm
-//               formFields={formFields}
-//               // setFormFields={setFormFields}
-//               // selectCategoryType={selectCategoryType}
-//               // logo={logo}
-//               // className={header}
-//               generatedForm={false}
-//             // catelogue={true}
-//             />
-//           </>)}
-//       </section>
-
-//       {/* Required Items Section */}
-//       <section>
-//         {/* <h3>Required Items</h3> */}
-//         <ContentDevider title="Required Items" />
-//         <table border="1" cellPadding="10" style={{ marginTop: '1.5em', width: "100%", borderCollapse: "collapse" }}>
-//           <thead>
-//             <tr>
-//               <th>Device Name</th>
-//               <th>Manufacturer Name</th>
-//               <th>Model Number</th>
-//               <th>Serial Number</th>
-//               <th>Management IP Address</th>
-//               <th>Operating System</th>
-//               <th>Routing Protocols</th>
-//               <th>Warranty Period</th>
-//               <th>Maintenance Schedule</th>
-//               <th>Contact Person</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {addRequiredItem.requestItems.map((item) => (
-//               <tr key={item.id}>
-//                 <td>{item["Device Name"]}</td>
-//                 <td>{item["Manufacturer Name"]}</td>
-//                 <td>{item["Model Number"]}</td>
-//                 <td>{item["Serial Number"]}</td>
-//                 <td>{item["Management IP Address"]}</td>
-//                 <td>{item["Operating System"]}</td>
-//                 <td>{item["Routing Protocols"]}</td>
-//                 <td>
-//                   {new Date(item["Warranty Start"]).toLocaleDateString()} -{" "}
-//                   {new Date(item["Warranty End"]).toLocaleDateString()}
-//                 </td>
-//                 <td>{item["Maintanence Schedule"]}</td>
-//                 <td>{item["Contact Person"]}</td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </section>
-
-//       {/* Catalogue Flow Section */}
-//       <section>
-//         {/* <h3>Catalogue Flow</h3> */}
-//         <ContentDevider title="Catalogue Flow" />
-//         {catalogueFlow.serviceRequestAccess.map((group) => (
-//           <div key={group.id} style={{ marginBottom: "20px", border: "1px solid #ccc", padding: "10px" }}>
-//             <h4>Group Name: {group.groupName}</h4>
-//             <p><strong>Description:</strong> {group.groupDescription}</p>
-//             <p><strong>Type:</strong> {group.groupType}</p>
-//             <h5>Group Members:</h5>
-//             <ul>
-//               {group.groupMembers.map((member) => (
-//                 <li key={member.id}>
-//                   <p><strong>Name:</strong> {member.firstName} {member.lastName}</p>
-//                   <p><strong>Email:</strong> {member.emailAddress}</p>
-//                   <p><strong>Role:</strong> {member.userRole}</p>
-//                 </li>
-//               ))}
-//             </ul>
-//           </div>
-//         ))}
-//       </section>
-//     </div>
-//   );
-// }
 import React from "react";
 import ContentDevider from "../HelperComponents/ContentDevider";
 import CraeteCatelogueGeneratedForm from "./CraeteCatelogueGeneratedForm";
 import GeneratedForm from "../cmdb/classmanagement/GeneratedForm";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function PreviewSubmitFormDetails({ catelogueFlowDetails = {}, formFields }) {
   console.log(catelogueFlowDetails, "{ catelogueFlowDetails }");
-  const { theme } = useTheme()
+  const { theme } = useTheme();
+
   const {
     generalInformation = {},
     addRequiredItem = { requestItems: [] },
     catalogueFlow = { serviceRequestAccess: [] },
   } = catelogueFlowDetails;
 
-  // Helper function to dynamically render labels and values
+  const requiredItemsColumns = [
+    { field: "deviceName", headerName: "Device Name", width: 150 },
+    { field: "manufacturerName", headerName: "Manufacturer", width: 150 },
+    { field: "modelNumber", headerName: "Model Number", width: 150 },
+    { field: "serialNumber", headerName: "Serial Number", width: 150 },
+    { field: "managementIP", headerName: "Management IP", width: 150 },
+    { field: "operatingSystem", headerName: "Operating System", width: 180 },
+    { field: "routingProtocols", headerName: "Routing Protocols", width: 180 },
+    { field: "warranty", headerName: "Warranty Period", width: 200 },
+    { field: "maintenanceSchedule", headerName: "Maintenance Schedule", width: 180 },
+    { field: "contactPerson", headerName: "Contact Person", width: 150 },
+  ];
+
+  const requiredItemsRows = addRequiredItem.requestItems.map((item, index) => ({
+    id: index + 1,
+    deviceName: item["Device Name"] || "N/A",
+    manufacturerName: item["Manufacturer Name"] || "N/A",
+    modelNumber: item["Model Number"] || "N/A",
+    serialNumber: item["Serial Number"] || "N/A",
+    managementIP: item["Management IP Address"] || "N/A",
+    operatingSystem: item["Operating System"] || "N/A",
+    routingProtocols: item["Routing Protocols"] || "N/A",
+    warranty:
+      item["Warranty Start"] && item["Warranty End"]
+        ? `${new Date(item["Warranty Start"]).toLocaleDateString()} - ${new Date(item["Warranty End"]).toLocaleDateString()}`
+        : "N/A",
+    maintenanceSchedule: item["Maintanence Schedule"] || "N/A",
+    contactPerson: item["Contact Person"] || "N/A",
+  }));
+
   const renderField = (label, value) => (
-    <p>
-      <strong>{label}:</strong>{" "}
+    <p className="flex gap-2 w-[50%]">
+      <h4>{label}:</h4>{" "}
       <span style={{ color: `${theme.valueFontColor}` }}>{value || "N/A"}</span>
     </p>
   );
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <section>
+      <section className="border border-gray-300 pb-4 rounded-md">
         <ContentDevider title="General Information" />
-        {renderField("Service Request Name", generalInformation.serviceRequestName)}
-        {renderField(
-          "Service Request Description",
-          generalInformation.serviceRequestDescription
-        )}
-        {renderField("Turn Around Time", generalInformation.turnAroundTime)}
+        <div className="flex flex-wrap px-4">
+          {renderField("Service Request Name", generalInformation.serviceRequestName)}
+          {renderField("Service Request Description", generalInformation.serviceRequestDescription)}
+          {renderField("Turn Around Time", generalInformation.turnAroundTime)}
+        </div>
 
         {formFields.length > 0 && (
-          <>
-            <ContentDevider title="Generated Form" />
-            <GeneratedForm
-              formFields={formFields}
-              generatedForm={false}
-            />
-          </>
+          <div className="mt-4 border border-gray-400 p-4 w-full">
+              <h5 className="mb-8, fw-b">Generated Form:</h5>
+            <GeneratedForm formFields={formFields} generatedForm={false} />
+          </div>
         )}
       </section>
 
-      {/* Required Items Section */}
-      <section>
+      <section className="border border-gray-300 pb-4 rounded-md">
         <ContentDevider title="Required Items" />
-        <table
-          border="1"
-          cellPadding="10"
-          style={{ marginTop: "1.5em", width: "100%", borderCollapse: "collapse" }}
-        >
-          <thead>
-            <tr>
-              <th>Device Name</th>
-              <th>Manufacturer Name</th>
-              <th>Model Number</th>
-              <th>Serial Number</th>
-              <th>Management IP Address</th>
-              <th>Operating System</th>
-              <th>Routing Protocols</th>
-              <th>Warranty Period</th>
-              <th>Maintenance Schedule</th>
-              <th>Contact Person</th>
-            </tr>
-          </thead>
-          <tbody>
-            {addRequiredItem.requestItems.map((item) => (
-              <tr key={item.id}>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Device Name"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Manufacturer Name"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Model Number"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Serial Number"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Management IP Address"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Operating System"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Routing Protocols"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>
-                  {item["Warranty Start"] && item["Warranty End"]
-                    ? `${new Date(item["Warranty Start"]).toLocaleDateString()} - ${new Date(
-                      item["Warranty End"]
-                    ).toLocaleDateString()}`
-                    : "N/A"}
-                </td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Maintanence Schedule"] || "N/A"}</td>
-                <td style={{ color: `${theme.valueFontColor}` }}>{item["Contact Person"] || "N/A"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div style={{ width: "100%", marginTop: "1.5em" }}>
+          <DataGrid
+            rows={requiredItemsRows}
+            columns={requiredItemsColumns}
+            pageSize={5}
+            sx={{
+              '& .MuiDataGrid-columnHeaders': {
+                '& .MuiDataGrid-row--borderBottom': {
+                 background: `${theme.outerBodyColor}`,
+                 color: "white"
+                }
+              },
+              '& .MuiDataGrid-rowHeader': {
+                background: `${theme.outerBodyColor}`,
+                color: `${theme.fontColor}`
+              },
+              '& .MuiDataGrid-row--borderBottom': {
+                borderBottom: '2px solid #cccccc',
+              },
+            }}
+          />
+        </div>
       </section>
 
-      {/* Catalogue Flow Section */}
-      <section>
+      <section className="border border-gray-300 pb-4 rounded-md">
         <ContentDevider title="Catalogue Flow" />
-        {catalogueFlow.serviceRequestAccess.map((group) => (
-          <div
-            key={group.id}
-            style={{ marginBottom: "20px", border: "1px solid #ccc", padding: "10px" }}
-          >
-            {renderField("Group Name", group.groupName)}
-            {renderField("Description", group.groupDescription)}
-            {renderField("Type", group.groupType)}
-            <h5>Group Members:</h5>
-            <ul>
-              {group.groupMembers.map((member) => (
-                <li key={member.id}>
-                  {renderField("Name", `${member.firstName} ${member.lastName}`)}
-                  {renderField("Email", member.emailAddress)}
-                  {renderField("Role", member.userRole)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {catalogueFlow.serviceRequestAccess.length > 0 ? catalogueFlow.serviceRequestAccess.map((group) => {
+          const groupMembersColumns = [
+            { field: "id", headerName: "ID", width: 70 },
+            { field: "name", headerName: "Name", width: 200 },
+            { field: "email", headerName: "Email", width: 250 },
+            { field: "role", headerName: "Role", width: 150 },
+          ];
+
+          const groupMembersRows = group.groupMembers.map((member, index) => ({
+            id: index + 1,
+            name: `${member.firstName} ${member.lastName}`,
+            email: member.emailAddress,
+            role: member.userRole,
+          }));
+
+          return (
+            <div key={group.id} className="flex flex-wrap mt-4">
+              {renderField("Group Name", group.groupName)}
+              {renderField("Description", group.groupDescription)}
+              {renderField("Type", group.groupType)}
+              <div className="mt-4 border border-gray-400 p-4 w-full">
+              <h5 className="mb-8, fw-b">Group Members:</h5>
+                <DataGrid
+                  rows={groupMembersRows}
+                  columns={groupMembersColumns}
+                  pageSize={5}
+                  sx={{
+                    '& .MuiDataGrid-columnHeaders': {
+                      '& .MuiDataGrid-row--borderBottom': {
+                       background: `${theme.outerBodyColor}`,
+                       color: "white"
+                      }
+                    },
+                    '& .MuiDataGrid-rowHeader': {
+                      background: `${theme.outerBodyColor}`,
+                      color: `${theme.fontColor}`
+                    },
+                    '& .MuiDataGrid-row--borderBottom': {
+                      borderBottom: '2px solid #cccccc',
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          );
+        }) : <span className="text-gray-500 ml-4">No Catalogue Flow Found</span>}
       </section>
     </div>
   );

@@ -21,7 +21,7 @@ export default function UserManagmentTable(props) {
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        {value === index && <Box sx={{ p: 1.5 }}>{children}</Box>}
       </div>
     );
   }
@@ -50,23 +50,33 @@ export default function UserManagmentTable(props) {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           TabIndicatorProps={{
-            style: { backgroundColor: `${theme.valueFontColor}` },
-          }}
-          sx={{
-            "& .MuiTab-root": {
-              color: `${theme.typeTextColor}`,
-            },
-            "& .Mui-selected": {
-              color: `${theme.valueFontColor}`,
-              fontWeight: "bold",
-            },
-          }}
+              style: { backgroundColor: `${theme.outerBodyColor}` },
+            }}
+            sx={{
+              '& .MuiTab-root': {
+                color: 'grey',
+              },
+              '& .Mui-selected': {
+                color: `${theme.valueFontColor}`,
+                fontWeight: 'bold',
+              },
+
+            }}
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Manual Users" {...a11yProps(0)} />
-          <Tab label="Active Directory Users" {...a11yProps(1)} />
+          <Tab 
+            style={{
+                color: `${theme.valueFontColor}`
+              }}
+            label="Manual Users" {...a11yProps(0)} 
+          />
+          <Tab 
+            label="Active Directory Users" {...a11yProps(1)} style={{
+              color: `${theme.valueFontColor}`
+            }}
+          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

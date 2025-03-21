@@ -414,7 +414,7 @@ const CreateIncidentForm = (props) => {
                   }}
                   type="submit"
                 >
-                  {isEdit ? "Update Incident" : "Create New Incident"}
+                  {isEdit ? "Update Incident" : "create new incident"}
                 </Button>
               </HeaderContainer>
               <StyledFormContainer>
@@ -468,14 +468,14 @@ const CreateIncidentForm = (props) => {
                         alt="AI Icon"
                         onClick={onClick}
                         style={{
-                          opacity:  1,
+                          opacity: 1,
                           width: 35,
                           height: 35,
                         }}
                       />
                     )}
                   />
-                  <StyledPatternL style={{ opacity:  1 }} />
+                  <StyledPatternL style={{ opacity: 1 }} />
                 </div>
                 <FormControl style={{ position: "relative" }}>
                   <InputLabel id="callerDepartment-label">
@@ -507,7 +507,7 @@ const CreateIncidentForm = (props) => {
                       </MenuItem>
                     ))}
                   </Field>
-                  <StyledPatternR style={{ opacity:  1 }} />
+                  <StyledPatternR style={{ opacity: 1 }} />
                 </FormControl>
                 <div style={{ position: "relative" }}>
                   <Field
@@ -531,7 +531,7 @@ const CreateIncidentForm = (props) => {
                         alt="AI Icon"
                         onClick={onClick}
                         style={{
-                          opacity:  1,
+                          opacity: 1,
                           width: 35,
                           height: 35,
                         }}
@@ -539,7 +539,7 @@ const CreateIncidentForm = (props) => {
                     )}
                   />
 
-                  <StyledPatternR style={{ opacity:  1 }} />
+                  <StyledPatternR style={{ opacity: 1 }} />
                 </div>
                 <FormControl style={{ position: "relative" }}>
                   <InputLabel id="assignGroup-label">Assign Group</InputLabel>
@@ -571,7 +571,7 @@ const CreateIncidentForm = (props) => {
                       </MenuItem>
                     ))}
                   </Field>
-                  <StyledPatternL style={{ opacity:  1 }} />
+                  <StyledPatternL style={{ opacity: 1 }} />
                 </FormControl>
                 <FormControl style={{ position: "relative" }}>
                   <InputLabel id="urgency-label">Urgency</InputLabel>
@@ -608,7 +608,7 @@ const CreateIncidentForm = (props) => {
                       Low
                     </MenuItem>
                   </Field>
-                  <StyledPatternL style={{ opacity:  1 }} />
+                  <StyledPatternL style={{ opacity: 1 }} />
                 </FormControl>
                 <FormControl style={{ position: "relative" }}>
                   <InputLabel id="priority-label">Impact</InputLabel>
@@ -645,7 +645,7 @@ const CreateIncidentForm = (props) => {
                       Low
                     </MenuItem>
                   </Field>
-                  <StyledPatternR style={{ opacity:  1 }} />
+                  <StyledPatternR style={{ opacity: 1 }} />
                 </FormControl>
                 {incident_id ? (
                   <FormControl style={{ position: "relative" }}>
@@ -684,7 +684,7 @@ const CreateIncidentForm = (props) => {
                         P4 - Low
                       </MenuItem>
                     </Field>
-                    <StyledPatternR style={{ opacity:  1 }} />
+                    <StyledPatternR style={{ opacity: 1 }} />
                   </FormControl>
                 ) : null}
                 {console.log(values, "valuesss")}
@@ -726,7 +726,7 @@ const CreateIncidentForm = (props) => {
                       Non-Tech
                     </MenuItem>
                   </Field>
-                  <StyledPatternL style={{ opacity:  1 }} />
+                  <StyledPatternL style={{ opacity: 1 }} />
                 </FormControl>
                 <FormControl style={{ position: "relative" }}>
                   <InputLabel id="subCategory-label">Sub Category</InputLabel>
@@ -750,7 +750,7 @@ const CreateIncidentForm = (props) => {
                       </MenuItem>
                     ))}
                   </Field>
-                  <StyledPatternL style={{ opacity:  1 }} />
+                  <StyledPatternL style={{ opacity: 1 }} />
                 </FormControl>
 
                 <FormControl style={{ position: "relative" }}>
@@ -789,7 +789,7 @@ const CreateIncidentForm = (props) => {
                       Helpdesk
                     </MenuItem>
                   </Field>
-                  <StyledPatternR style={{ opacity:  1 }} />
+                  <StyledPatternR style={{ opacity: 1 }} />
                 </FormControl>
                 <FormControl style={{ position: "relative" }}>
                   <InputLabel id="serviceCategory-label">
@@ -815,7 +815,7 @@ const CreateIncidentForm = (props) => {
                       Authentication Issue
                     </MenuItem>
                   </Field>
-                  <StyledPatternR style={{ opacity:  1 }} />
+                  <StyledPatternR style={{ opacity: 1 }} />
                 </FormControl>
               </StyledFormContainer>
               <div style={{ position: "relative" }}>

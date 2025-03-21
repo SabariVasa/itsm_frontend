@@ -10,7 +10,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ContentDevider from "../HelperComponents/ContentDevider";
 import { sharedStyles } from "../../commonComponents/StyledComponents";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
-import { tr } from "date-fns/locale";
 
 function CraeteCatelogueGeneratedForm(props) {
   const { formFields, setFormFields, selectCategoryType, setCreateMainClassForm, logo, header } = props;
@@ -57,6 +56,10 @@ function CraeteCatelogueGeneratedForm(props) {
     // console.log(values, fileFormats, 'values');
     const newField = { ...values };
 
+    if(!values.fieldName || !values.fieldType){
+      return;
+    }
+
     if (values.fieldType === 'Select') {
       newField.optionList = selectOptions;
     }
@@ -66,11 +69,8 @@ function CraeteCatelogueGeneratedForm(props) {
     }
 
     setFormFields([...formFields, newField]);
-    // resetForm();
     setSelectOptions([]);
     setFileFormats([]);
-    // setSubmitting(false);
-    // console.log('Form Data to submit:', formFields);
   };
 
   return (
@@ -263,7 +263,7 @@ function CraeteCatelogueGeneratedForm(props) {
             logo={logo}
             className={header}
             generatedForm={false}
-            createBtn={true}
+          // catelogue={true}
           />
         </>)}
 

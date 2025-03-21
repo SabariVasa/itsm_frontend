@@ -20,7 +20,7 @@ import { resturls } from "../../global/utils/apiurls";
 import AddRequestItems from "./AddRequestItems";
 import CatelogueFlowFormDetails from "./CatelogueFlowFormDetails";
 import PreviewSubmitFormDetails from "./PreviewSubmitFormDetails";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom";
 import { sharedStyles } from "../../commonComponents/StyledComponents";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
 
@@ -70,6 +70,8 @@ const styles = {
 
 const CreateNewCatelogue = (props) => {
   // const { setFormFields, formFields } = props;
+  const {catelogueId} = useParams();
+  console.log(catelogueId, 'catelogueId');
   const [formFields, setFormFields] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
@@ -81,7 +83,7 @@ const CreateNewCatelogue = (props) => {
   const [catelogueLists, setCatelogueLists] = useState();
   const [categoryLists, setCategoryLists] = useState();
   const [subCategoryLists, setSubCategoryLists] = useState();
-  const [createdCatelogueItem, setCreatedCatelogueItem] = useState();
+  const [createdCatelogueItem, setCreatedCatelogueItem] = useState(catelogueId);
   const [showSelectedItemList, setShowSelectedItemList] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [catelogueFlowDetails, setCatelogueFlowDetails] = useState();
@@ -113,18 +115,12 @@ const CreateNewCatelogue = (props) => {
   const history = useHistory();
 
   const handleOpen = (modalItemName, selectedItem, categoryId) => {
-    console.log(selectedItem, modalItemName, categoryId, "selectedItem");
     setOpen(true);
     setAddModalItem(modalItemName);
     setSelectedCatelogue(selectedItem);
     setSelectedCatecory(categoryId);
   };
 
-  console.log(
-    selectedCatelogue,
-    selectedCategory,
-    "selectedCategory,selectedCatelogue"
-  );
   const handleClose = () => {
     setOpen(false);
     setNewCatalogue("");
@@ -148,11 +144,9 @@ const CreateNewCatelogue = (props) => {
     let url = "";
     let keyName = "";
 
-    console.log(modalItem, url, "modalItem");
 
     switch (modalItem) {
       case "Select Catalogue":
-        console.log(modalItem, url, "Select Catalogue");
         setCatelogueLists((prev) =>
           prev ? [...prev, newCatalogue] : [newCatalogue]
         );
@@ -169,7 +163,6 @@ const CreateNewCatelogue = (props) => {
         break;
 
       case "Catalogue Sub-Category":
-        console.log(modalItem, url, "Catalogue Sub-Category");
         setSubCategoryLists((prev) =>
           prev ? [...prev, newCatalogue] : [newCatalogue]
         );
@@ -178,7 +171,6 @@ const CreateNewCatelogue = (props) => {
         break;
 
       default:
-        console.error("Invalid modalItem value");
         return;
     }
 
@@ -198,34 +190,56 @@ const CreateNewCatelogue = (props) => {
     handleClose();
   };
 
+  // const obtainCatelogueDetails = () => {
+  //   GlobalService.generalSelect(
+  //     (respdata) => {
+  //       const { estatus, data } = respdata;
+  //       if (estatus && data) {
+  //         setFormValues({
+  //           generalInformation: {
+  //             serviceRequestName: data.generalInformation.serviceRequestName,
+  //             serviceRequestDescription:
+  //               data.generalInformation.serviceRequestDescription,
+  //             selectCatelogue: data.generalInformation.selectCatelogue,
+  //             catelogueCatrgory: data.generalInformation.catelogueCatrgory,
+  //             catalogueSubCategory: data.generalInformation,
+  //             turnAroundTime: data.generalInformation.turnAroundTime,
+  //             // tat: '',
+  //           },
+  //         });
+  //         setFormFields(data.generalInformation.attributes);
+  //         setCatelogueFlowDetails(data);
+  //         setShowSelectedItemList(data.addRequiredItem.requestItems || []);
+  //         if (data.addRequiredItem.requestItems.length > 0) {
+  //           setHeaders(() =>
+  //             getDynamicHeaders(data.addRequiredItem.requestItems)
+  //           );
+  //         }
+  //       }
+  //     },
+  //     `${resturls.fetchCatalogItem}/${createdCatelogueItem}`,
+  //     {},
+  //     "GET"
+  //   );
+  // };
+
   const obtainCatelogueDetails = () => {
     GlobalService.generalSelect(
-      (respdata) => {
-        const { estatus, data } = respdata;
-        if (estatus && data) {
+      (resp) => {
+        if (resp.estatus && resp.data) {
           setFormValues({
-            generalInformation: {
-              serviceRequestName: data.generalInformation.serviceRequestName,
-              serviceRequestDescription:
-                data.generalInformation.serviceRequestDescription,
-              selectCatelogue: data.generalInformation.selectCatelogue,
-              catelogueCatrgory: data.generalInformation.catelogueCatrgory,
-              catalogueSubCategory: data.generalInformation,
-              turnAroundTime: data.generalInformation.turnAroundTime,
-              // tat: '',
-            },
+            serviceRequestName: resp.data.generalInformation.serviceRequestName,
+            serviceRequestDescription:
+              resp.data.generalInformation.serviceRequestDescription,
+            selectCatalogue: resp.data.generalInformation.selectCatalogue,
+            catalogueCategory: resp.data.generalInformation.catalogueCategory,
+            catalogueSubCategory:
+              resp.data.generalInformation.catalogueSubCategory,
+            turnAroundTime: resp.data.generalInformation.turnAroundTime,
           });
-          setFormFields(data.generalInformation.attributes);
-          setCatelogueFlowDetails(data);
-          setShowSelectedItemList(data.addRequiredItem.requestItems || []);
-          if (data.addRequiredItem.requestItems.length > 0) {
-            setHeaders(() =>
-              getDynamicHeaders(data.addRequiredItem.requestItems)
-            );
-          }
         }
       },
-      `${resturls.fetchCatalogItem}/${createdCatelogueItem}`,
+      `${resturls.fetchCatalogItem}/${catelogueId}`,
       {},
       "GET"
     );
@@ -261,15 +275,12 @@ const CreateNewCatelogue = (props) => {
       attributes: formFields,
     };
 
-    console.log(generalInfo, "generalInformation");
-
     if (!createdCatelogueItem) {
       // Create catalog item
       GlobalService.generalSelect(
         (respdata) => {
           const { estatus, data, emessage } = respdata;
           if (estatus && data) {
-            console.log("Data received for create:", data);
             notifySuccess(emessage);
             setCreatedCatelogueItem(data.catalogItemId);
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -279,7 +290,6 @@ const CreateNewCatelogue = (props) => {
         {
           generalInformation: generalInfo,
           author_email: localStorage.getItem("ses_username"),
-          // author_name: localStorage.getItem('ses_username')
         },
         "POST"
       );
@@ -289,7 +299,6 @@ const CreateNewCatelogue = (props) => {
         (respdata) => {
           const { estatus, data } = respdata;
           if (estatus && data) {
-            console.log("Data received for update:", data);
             setCreatedCatelogueItem(data.catalogItemId);
             if (activeStep === 3) {
               history.goBack();
@@ -313,8 +322,6 @@ const CreateNewCatelogue = (props) => {
       );
     }
   };
-
-  console.log(catelogueFlowDetails, "catelogueFlowDetails");
 
   const handleBack = () => {
     obtainCatelogueDetails();
@@ -384,10 +391,10 @@ const CreateNewCatelogue = (props) => {
                 field: key,
                 width: 500,
                 headerName: key
-                  .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-                  .replace(/[_]/g, " ") // Replace underscores with spaces
-                  .toLowerCase() // Convert all to lowercase
-                  .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
+                  .replace(/([a-z])([A-Z])/g, "$1 $2")
+                  .replace(/[_]/g, " ")
+                  .toLowerCase()
+                  .replace(/\b\w/g, (char) => char.toUpperCase()),
                 width: 200,
                 renderCell: (params) => params.value?.name || "N/A",
               };
@@ -395,9 +402,9 @@ const CreateNewCatelogue = (props) => {
               return {
                 field: key,
                 headerName: key
-                  .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-                  .replace(/[_]/g, " ") // Replace underscores with spaces
-                  .toLowerCase() // Convert all to lowercase
+                  .replace(/([a-z])([A-Z])/g, "$1 $2")
+                  .replace(/[_]/g, " ")
+                  .toLowerCase()
                   .replace(/\b\w/g, (char) => char.toUpperCase()),
                 width: 150,
               };
@@ -407,12 +414,9 @@ const CreateNewCatelogue = (props) => {
     }
   };
 
-  console.log(activeStep, "activeStep");
 
   const StepIcon = (props) => {
-    // console.log(props, 'propsStepIcon');
     const { active, completed, icon } = props;
-
     return (
       <div
         style={{
@@ -420,10 +424,10 @@ const CreateNewCatelogue = (props) => {
           height: 24,
           borderRadius: "50%",
           background: active
-            ? `${theme.btnColor}` // Active circle color
+            ? `${theme.btnColor}`
             : completed
-            ? `${theme.btnColor}` // Completed circle color
-            : "grey", // Default circle color
+            ? `${theme.btnColor}`
+            : "grey",
           color: "white",
           display: "flex",
           justifyContent: "center",
@@ -435,12 +439,17 @@ const CreateNewCatelogue = (props) => {
     );
   };
 
-  // console.log(categoryLists, 'categoryLists');
 
   useEffect(() => {
+    if(createdCatelogueItem){
+      obtainCatelogueDetails();
+    } else{
+      obtainAllCatelogueDetails();
+    }
     obtainAllCatelogueDetails();
     if (activeStep === 3) {
       obtainCatelogueDetails();
+      setCreatedCatelogueItem(catelogueId);
     }
   }, []);
 
@@ -449,6 +458,8 @@ const CreateNewCatelogue = (props) => {
       obtainCatelogueDetails();
     }
   }, [activeStep]);
+
+  console.log(createdCatelogueItem, "createdCatelogueItem");
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
@@ -500,7 +511,6 @@ const CreateNewCatelogue = (props) => {
             <Form>
               {activeStep === 0 && (
                 <div style={{ margin: "2em" }}>
-                  {console.log(values, errors, touched, "catelogueForm")}
                   <GeneralRequestInformation
                     selectedCatelogue={selectedCatelogue}
                     setSelectedCatelogue={setSelectedCatelogue}
@@ -602,10 +612,7 @@ const CreateNewCatelogue = (props) => {
                       },
                     }}
                     variant="contained"
-                    onClick={() => {
-                      history.push('/superadmin/request-management/my-requests'); 
-                      notifySuccess("Created Catelogue SuccessFully Submitted");
-                    }}
+                    onClick={() => {history.goBack(); notifySuccess("Request catelogue created successfully")}}
                   >
                     Submit
                   </Button>

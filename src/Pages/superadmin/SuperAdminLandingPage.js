@@ -158,14 +158,10 @@ function SuperAdminLandingPage() {
             className="h-[92vh] rounded-lg w-[22.5%] flex flex-col justify-between"
             style={{ background: theme.outerBodyColor }}
           >
+            <Link href="/">
+              <img alt="logo" src="/indexlogo.png" className="w-[40%] m-auto" />
+            </Link>
             <div className="h-[85%] overflow-auto">
-              <Link href="/">
-                <img
-                  alt="logo"
-                  src="/indexlogo.png"
-                  className="w-[120px] m-auto"
-                />
-              </Link>
               <LeftPanel
                 navbarOptions={navbarOptions}
                 drawer
@@ -180,7 +176,7 @@ function SuperAdminLandingPage() {
             }}
             className="h-[92vh] overflow-auto rounded-lg w-[76%]"
           >
-            <SwitchBanner pathConfig={pathConfig}/>
+            <SwitchBanner pathConfig={pathConfig} />
             <Switch>
               <Route
                 path={`/${pathConfig}/incident-management/update_incident/:incident_id`}
@@ -194,7 +190,7 @@ function SuperAdminLandingPage() {
               />
               <Route
                 path={`/${pathConfig}/incident-management/incident-list`}
-                render={(props) => <IncidentTable />}
+                render={() => <IncidentTable />}
               />
               <Route
                 path={`/${pathConfig}/incident-management/my-incident`}
@@ -253,7 +249,7 @@ function SuperAdminLandingPage() {
                 component={() => <GeneralService />}
               />
               <Route
-                path={`/${pathConfig}/server-request/create-request/:catelogueId/:categotyId`}
+                path={`/${pathConfig}/server-request/create-request/:catelogueId/:categoryId`}
                 component={() => <CreateRequestDetailsForm />}
               />
               <Route
@@ -265,6 +261,10 @@ function SuperAdminLandingPage() {
                 component={() => <CreateNewCatelogue />}
               />
               <Route
+                path={`/${pathConfig}/request-management/update-request/:catelogueId`}
+                component={() => <CreateNewCatelogue />}
+              />
+              <Route
                 path={`/${pathConfig}/request-management/request-service`}
                 component={(props) => <RequestServiceManagement {...props} />}
               />
@@ -272,13 +272,6 @@ function SuperAdminLandingPage() {
                 path={`/${pathConfig}/request-managements/update-request/:request_id`}
                 component={(props) => <UpdatedRequestForm {...props} />}
               />
-              {/* <Route path={`/${pathConfig}/request-management/my-request`} component={(props) =>
-                  <div>
-                  <ContentDevider title={"All Requests"} />
-                  <MyRequestTable selectedRequest={'Hardware requests'} />
-                  </div>}
-                  /> */}
-              {/* <Route path={`/${pathConfig}/request-management/update-request/:request_id`} component={(props) =><UpdatedRequestForm />} /> */}
               <Route
                 path={`/${pathConfig}/request-management/my-requests`}
                 component={(props) => <MyRequestTable {...props} />}

@@ -4,12 +4,14 @@ import GlobalService from "../../../services/GlobalService";
 import { resturls } from "../../../global/utils/apiurls";
 import { useTheme } from "../../../global/commonComponents/ThemeContext";
 import { Box, Modal, Skeleton } from "@mui/material";
+import { useRearrange } from "../../hooks/rearrange-header";
 
 export const UserListModal = (props) => {
-  const { TriggerElement, onSelect } = props;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+
+  const { TriggerElement, onSelect } = props;
   const { theme } = useTheme();
 
   const headers = useMemo(() => {
@@ -50,6 +52,8 @@ export const UserListModal = (props) => {
       }
     });
   }, [users]);
+
+  const {resultHeaders, ReArrangeController} = useRearrange({headers});
 
 
   const getAllUserDetails = () => {
@@ -105,9 +109,11 @@ export const UserListModal = (props) => {
           {loading ? (
             <Skeleton variant="rectangular" height={600} />
           ) : (
+            <>
+            {ReArrangeController}
             <DataGrid
-              rows={users}
-              columns={headers}
+              rows={users}  
+              columns={resultHeaders}
               getRowId={({ emailAddress }) => emailAddress}
               pageSizeOptions={[10]}
               disableRowSelectionOnClick
@@ -131,6 +137,7 @@ export const UserListModal = (props) => {
                 },
               }}
             />
+            </>
           )}
         </Box>
       </Modal>

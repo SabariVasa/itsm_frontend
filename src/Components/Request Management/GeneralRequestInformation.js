@@ -19,12 +19,6 @@ export default function GeneralRequestInformation(props) {
     subCategoryLists,
     turnAroundTimeList,
     setTurnAroundTimeList,
-    selectedCatelogue,
-    setSelectedCatelogue,
-    selectedCategory,
-    setSelectedCatecory,
-    selectedSubCategory,
-    setSelectedSubCatecory,
   } = props;
 
   const { theme } = useTheme()
@@ -125,11 +119,6 @@ export default function GeneralRequestInformation(props) {
                 sx={{ ...sharedStyles, width: "100%" }}
                 onChange={(ele) => {
                 const selectedCategoryDetails = ele.target.value;
-                // setFieldValue(
-                //   "catelogueCatrgory",
-                //   selectedCategoryDetails.categoryId
-                // );
-                console.log(selectedCategoryDetails, 'selectedCategoryDetails');
                 setFieldValue("catelogueCatrgory",
                   {
                     id: selectedCategoryDetails.categoryId, name: selectedCategoryDetails.categoryName
@@ -153,7 +142,6 @@ export default function GeneralRequestInformation(props) {
                 <MenuItem value={ele}>{ele.categoryName}</MenuItem>
               ))}
             </TextField>
-            {/* {console.log(values, 'selectedItem')} */}
             <IconButton disabled={!values.selectCatelogue || values.selectCatelogue === null} onClick={() => handleOpen("Catalogue Category", values.selectCatelogue.id)}>
               <AddCircleIcon sx={{ color: `${theme.valueFontColor}`, fontSize: "2rem" }} />
             </IconButton>
@@ -167,14 +155,12 @@ export default function GeneralRequestInformation(props) {
               name="catalogueSubCategory"
               value={values?.catalogueSubCategory?.subCategoryName}
               sx={sharedStyles}
-              // onChange={handleChange}
               error={
                 touched.catalogueSubCategory &&
                 errors.catalogueSubCategory
               }
               onChange={(ele) => {
                 const selectedSubCategoryDetails = ele.target.value;
-                console.log(selectedSubCategoryDetails, 'selectedSubCategoryDetails');
                 setFieldValue("catalogueSubCategory",
                   {
                     id: selectedSubCategoryDetails.subCategoryId, name: selectedSubCategoryDetails.subCategoryName
@@ -193,7 +179,6 @@ export default function GeneralRequestInformation(props) {
                 <MenuItem value={ele}>{ele.subCategoryName}</MenuItem>
               ))}
             </TextField>
-            {console.log(values.catelogueCatrgory, 'values.catelogueCatrgory')}
             <IconButton disabled={!categoryLists?.length > 0} onClick={() => handleOpen("Catalogue Sub-Category", values.selectCatelogue.id, values.catelogueCatrgory.id)}>
               <AddCircleIcon sx={{ color: `${theme.valueFontColor}`, fontSize: "2rem" }} />
             </IconButton>

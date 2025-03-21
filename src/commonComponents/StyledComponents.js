@@ -181,37 +181,8 @@ export const HeaderContainer = styled(Box)({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  // marginBottom: "20px",
   padding: "20px",
 });
-
-// export const sharedStyles = {
-//   borderRadius: "1em",
-//   "& .MuiOutlinedInput-root": {
-//     borderRadius: "2em !important",
-//   },
-//   "& .MuiOutlinedInput-notchedOutline": {
-//     borderRadius: "1em",
-//     border: "2px solid",
-//     borderImageSlice: 1,
-//     borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
-//   },
-//   "&:hover .MuiOutlinedInput-notchedOutline": {
-//     borderRadius: "1em",
-//     border: "2px solid",
-//     borderImageSlice: 1,
-//     borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
-//   },
-//   "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-//     border: "2px solid",
-//     borderRadius: "1em",
-//     borderImageSlice: 1,
-//     borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
-//   },
-//   "& .MuiInputLabel-root.Mui-focused": {
-//     color: "#E81885",
-//   },
-// };
 
 export const sharedStyles = {
   width: "100%",
@@ -219,20 +190,13 @@ export const sharedStyles = {
     borderRadius: "1em !important",
     "& fieldset": {
       borderRadius: "0.4em",
-      // borderRadius: "1em !important", // Ensures fieldset follows the radius
       border: `2px solid #540c00`,
-      // borderImageSlice: 1,
-      // borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
     },
     "&:hover fieldset": {
       border: "2px solid #540c00",
-      // borderImageSlice: 1,
-      // borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
     },
     "&.Mui-focused fieldset": {
       border: "2px solid #540c00",
-      // borderImageSlice: 1,
-      // borderImageSource: "linear-gradient(45deg, #ff7eb3, #e81885)",
     },
   },
   "& .MuiInputLabel-root.Mui-focused": {
@@ -242,7 +206,6 @@ export const sharedStyles = {
 
 export const CustomSelect = styled(Select)(() => {
   const { theme } = useTheme();
-  // sharedStyles(theme)
   return {
     fontSize: "14px",
     width: "100%",

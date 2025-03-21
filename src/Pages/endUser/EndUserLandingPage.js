@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useState } from "react";
+import React, { createContext, useState } from "react";
 import { LeftPanel } from "../../presentation/components/panel/Leftpanel";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
 import UserOverview from "../../Dashboards/UserOverview";
@@ -12,7 +12,6 @@ import {
 } from '@mui/icons-material';
 import IncidentManagementLandingPage from "../../Components/IncidentHelperComponents/IncidentManagementLandingPage";
 import RequestManagementMainPanel from "../../Components/Request Management/RequestManagementMainPanel";
-import ContentDevider from "../../Components/HelperComponents/ContentDevider";
 import KnowledgeArticleMainPanel from "../../Components/KnowledgeArticle/KnowledgeArticleMainPanel";
 import { Link } from "@mui/material";
 import UserIncidentForm from "../../Components/UserPortal Pages/UserIncidentForm";
@@ -92,17 +91,16 @@ function EndUserLandingPage() {
             className="h-[92vh] rounded-lg w-[22.5%] flex flex-col justify-between"
             style={{ background: theme.outerBodyColor }}
           >
-            <div className="h-[85%] overflow-auto">
               <Link href="/">
                 <img
                   alt="logo"
                   src="/indexlogo.png"
-                  className="w-[120px] m-auto"
+                  className="w-[40%] m-auto"
                 />
               </Link>
+            <div className="h-[85%] overflow-auto">
               <LeftPanel
                 navbarOptions={navbarOptions}
-                drawer
                 pathConfig={pathConfig}
               />
             </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   DataGrid,
   GridRowEditStopReasons,
@@ -14,6 +14,8 @@ import {
   useLocation,
   useRouteMatch,
 } from "react-router-dom/cjs/react-router-dom.min";
+import { useRearrange } from '../../presentation/hooks/rearrange-header';
+// import { useRearrange } from '../../presentation/shared/rearrange-header';
 // import { Link } from 'react-router-dom';
 
 
@@ -50,72 +52,82 @@ const navigate = useHistory();
 
 
 
- useEffect(() => {
-    if (requestedData?.length > 0) {
-      const excludeFields = ["id","notes", "catalogueDetails","categoryDetails","subCategoryDetails","subCategory","priority","serviceCategory","configurationItem","impactReason","urgencyReason","createdBy","requestedFor","updatedBy","requestType","generateFormId","values","dueDate"];
-
-      const dynamicHeaders = Object.keys(requestedData[0])
-      .filter((key) =>!excludeFields.includes(key))
-      .map((key,index) => {
+  const headers = useMemo(() => {
+    if (!requestedData?.length) return [];
+  
+    const excludeFields = [
+      "id",
+      "notes",
+      "catalogueDetails",
+      "categoryDetails",
+      "subCategoryDetails",
+      "subCategory",
+      "priority",
+      "serviceCategory",
+      "configurationItem",
+      "impactReason",
+      "urgencyReason",
+      "createdBy",
+      "requestedFor",
+      "updatedBy",
+      "requestType",
+      "generateFormId",
+      "values",
+      "dueDate",
+    ];
+  
+    const headerMappings = {
+      catalogueDetails: "Status",
+      approvalStatus: "Status",
+      openedBy: "Opened By",
+      assignedTo: "Assigned To",
+    };
+  
+    return Object.keys(requestedData[0])
+      .filter((key) => !excludeFields.includes(key))
+      .map((key, index) => {
+        const headerName =
+          headerMappings[key] ||
+          key
+            .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
+            .replace(/_/g, " ") // Replace underscores with spaces
+            .toLowerCase()
+            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
+  
         if (index === 0) {
-                    return {
-                      field: key,
-                      headerName: key
-                        .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-                        .replace(/[_]/g, " ") // Replace underscores with spaces
-                        .toLowerCase() // Convert all to lowercase
-                        .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
-                      width: 200,
-                      renderCell: (params) => (
-                        <span
-                          onClick={() =>
-                            navigate.push(
-                              `update-request/${params.row.requestNumber}`
-                            )
-                          }
-                          style={{
-                            textDecoration: "underline",
-                            color: "#1976d2",
-                            cursor: "pointer",
-                          }}
-                        >
-                          {params.value || "N/A"}
-                        </span>
-                      ),
-                    };
-                  }
-        switch (key) {
-          case "catalogueDetails":
-          case "approvalStatus":
-            return{field:key,headerName:"Status"}
-          case "openedBy":
-          case "assignedTo":
-              return {
-                field: key,
-                width: 500,
-                headerName: key
-                  .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-                  .replace(/[_]/g, " ") // Replace underscores with spaces
-                  .toLowerCase() // Convert all to lowercase
-                  .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
-                width: 200,
-                renderCell: (params) => params.value?.name || "N/A",
-              };
-          default:
-            return {
-              field: key,
-              headerName: key
-              .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space between camel case
-              .replace(/[_]/g, " ") // Replace underscores with spaces
-              .toLowerCase() // Convert all to lowercase
-              .replace(/\b\w/g, (char) => char.toUpperCase()),
-              width: 150,
-            };
+          return {
+            field: key,
+            headerName,
+            width: 200,
+            renderCell: (params) => (
+              <span
+                onClick={() =>
+                  navigate.push(`update-request/${params.row.requestNumber}`)
+                }
+                className="underline text-blue-600 cursor-pointer"
+              >
+                {params.value || "N/A"}
+              </span>
+            ),
+          };
         }
+  
+        if (key === "openedBy" || key === "assignedTo") {
+          return {
+            field: key,
+            width: 200,
+            headerName,
+            renderCell: (params) => params.value?.name || "N/A",
+          };
+        }
+  
+        return {
+          field: key,
+          headerName,
+          width: 150,
+        };
       });
-      setHeaderData(dynamicHeaders);
-    }
-  }, [requestedData]);
+  }, [requestedData, navigate]);  
 
   const handleCellClick = (params) => {
     // const navigate = useHistory();
@@ -130,29 +142,6 @@ const navigate = useHistory();
     return updatedRow;
   };
 
-
-  // const [HeaderData, setHeaderData] = useState([]);
-  // // const [tempSelectedRequest, setTempSelectedRequest] = useState();
-  // useEffect(() => {
-  //   // const url = selectedRequest === "General requests" ? resturls.allGeneralRequests : resturls.allHardwareRequest
-  //   setLoader(true);
-  //   GlobalService.generalSelect(
-  //     (respdata) => {
-  //       const { data } = respdata;
-  //       if (respdata) {
-  //         setLoader(false);
-  //         setRequestedData(data);
-  //         setHeaderData(getDynamicHeaders(data))
-  //       }
-  //     },
-  //     `${resturls.getRequestOpenedBy}/${localStorage.getItem('userId')}`,
-  //     {},
-  //     'GET'
-  //   );
-  // }, [])
-
-  const [HeaderData, setHeaderData] = useState([]);
-  // const [tempSelectedRequest, setTempSelectedRequest] = useState();
   useEffect(() => {
     // const url = selectedRequest === "General requests" ? resturls.allGeneralRequests : resturls.allHardwareRequest
     setLoader(true);
@@ -178,8 +167,11 @@ const navigate = useHistory();
     }, 2000)
   }
 
+  const {resultHeaders, ReArrangeController} = useRearrange({headers});
+
   return (
     <div className='h-[95%] p-[4vh] over-flow'>
+      {ReArrangeController}
       {loader ? <DefaultLoader /> : (
         <>
           {loading ? <div className='loading-container'>
@@ -189,7 +181,7 @@ const navigate = useHistory();
             rows={requestedData}
             editMode='row'
             getRowId={(row) => row.requestNumber}
-            columns={HeaderData}
+            columns={resultHeaders}
             processRowUpdate={processRowUpdate}
             initialState={{
               pagination: {
