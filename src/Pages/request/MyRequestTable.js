@@ -192,7 +192,14 @@ const navigate = useHistory();
               '& .MuiDataGrid-columnHeaders': {
                 '& .MuiDataGrid-row--borderBottom': {
                   background: `${theme.outerBodyColor}`,
-                  color: 'white'
+                  color: 'white',
+                  '& .MuiDataGrid-sortIcon': {
+                    color: 'white', 
+                  },
+                  '& .MuiDataGrid-menuIconButton': {
+                    color: 'white !important', 
+                  },
+
                 }
               },
               '& .MuiDataGrid-rowHeader': {
@@ -202,6 +209,9 @@ const navigate = useHistory();
               '& .MuiDataGrid-row--borderBottom': {
                 borderBottom: '2px solid #cccccc',
               },
+
+
+
             }}
             pageSizeOptions={[10]}
             onCellClick={handleCellClick}

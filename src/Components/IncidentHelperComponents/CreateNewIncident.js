@@ -411,10 +411,11 @@ const CreateIncidentForm = (props) => {
                     "&:hover": {
                       backgroundColor: `${theme.btnHoverColor}`,
                     },
+                    textTransform: 'none', // This will prevent the text from being uppercased
                   }}
                   type="submit"
                 >
-                  {isEdit ? "Update Incident" : "create new incident"}
+                  {isEdit ? "Update Incident" : "Create New Incident"}
                 </Button>
               </HeaderContainer>
               <StyledFormContainer>

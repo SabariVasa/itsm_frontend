@@ -132,7 +132,19 @@ export default function GroupManagementDetailsTable(props) {
       {(selectedOrgId || lastName !== 'superadmin') && (
         <>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px', marginBottom: '10px' }}>
-            <Button variant="contained" color="primary" onClick={handleCreateGroup} sx={{ background: `${theme.outerBodyColor}`, }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCreateGroup}
+              sx={{
+                background: `${theme.outerBodyColor}`,
+                "&:hover": {
+                  backgroundColor: `${theme.btnHoverColor}`,
+                  transform: "scale(1.05)", // Optional: to add a little zoom effect
+                },
+                textTransform: 'none', // This will prevent the text from being uppercased
+              }}
+            >
               Create New Department
             </Button>
           </Box>

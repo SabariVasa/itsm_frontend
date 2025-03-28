@@ -2,11 +2,11 @@ import { React, useState, useEffect } from "react";
 import { DataGrid } from '@mui/x-data-grid';
 // import { useDemoData } from '@mui/x-data-grid-generator';
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { Button, Box, FormControlLabel } from '@mui/material';
+//import { Button, Box, FormControlLabel } from '@mui/material';
 import DefaultLoader from "../../global/commonComponents/DefaultLoader";
 import GlobalService from "../../services/GlobalService";
 // import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+//import Switch from '@mui/material/Switch';
 import { resturls } from "../../global/utils/apiurls";
 import UserDetailsAndEdit from "./UserDetailsAndEdit";
 import { useTheme } from "../../global/commonComponents/ThemeContext";
@@ -22,7 +22,7 @@ export default function ActiveDirectoryUserList(props) {
   // const [selectedRows, setSelectedRows] = useState([]);
   const [selectedRowIds, setSelectedRowIds] = useState([]); // Store selected IDs
   const [selectedRows, setSelectedRows] = useState([]);
-  const [checkboxSelection, setCheckboxSelection] = useState(true);
+  //const [checkboxSelection, setCheckboxSelection] = useState(true);
   const { theme } = useTheme();
   const headerData = [
     { field: 'fullName', headerName: 'Full Name', width: 150, },
@@ -201,7 +201,7 @@ export default function ActiveDirectoryUserList(props) {
                 pageSizeOptions={[5]}
                 editMode="row"
                 processRowUpdate={processRowUpdate}
-                checkboxSelection={!userData && checkboxSelection}
+               // checkboxSelection={!userData && checkboxSelection}
                 disableRowSelectionOnClick
                 onSelectionModelChange={(newSelection) => handleSelectionModelChange(newSelection)}
                 selectionModel={selectedRowIds}
@@ -212,7 +212,14 @@ export default function ActiveDirectoryUserList(props) {
                   '& .MuiDataGrid-columnHeaders': {
                     '& .MuiDataGrid-row--borderBottom': {
                       background: `${theme.outerBodyColor}`,
-                      color: `white`
+                      color: `white`,
+                      '& .MuiDataGrid-sortIcon': {
+                    color: 'white', 
+                  },
+                  '& .MuiDataGrid-menuIconButton': {
+                    color: 'white !important', 
+                  },
+
                     }
                   },
                   '& .MuiDataGrid-rowHeader': {

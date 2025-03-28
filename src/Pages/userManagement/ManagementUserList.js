@@ -148,7 +148,14 @@ export default function ManagementUserList(props) {
                   '& .MuiDataGrid-columnHeaders': {
                     '& .MuiDataGrid-row--borderBottom': {
                      background: `${theme.outerBodyColor}`,
-                     color: "white"
+                     color: "white",
+                     '& .MuiDataGrid-sortIcon': {
+                    color: 'white', 
+                  },
+                  '& .MuiDataGrid-menuIconButton': {
+                    color: 'white !important', 
+                  },
+
                     }
                   },
                   '& .MuiDataGrid-rowHeader': {

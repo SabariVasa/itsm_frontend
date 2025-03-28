@@ -29,6 +29,7 @@ export default function KnowledgeNavbar() {
           "&:hover": {
             backgroundColor: `${theme.btnHoverColor}`,
           },
+          textTransform: 'none', // This will prevent the text from being uppercased
         }}
         onClick={() => history.push(`${path}/knowledge-creation`)}
       >

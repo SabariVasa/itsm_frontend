@@ -27,7 +27,7 @@ function CreateNewClassFormCreation(props) {
   const [selectOptions, setSelectOptions] = useState([]);
   const [fileFormats, setFileFormats] = useState([]);
 
-  const {theme} = useTheme();
+  const { theme } = useTheme();
 
   const validationSchema = Yup.object({
     fieldName: Yup.string().required('Field Name is required'),
@@ -77,12 +77,12 @@ function CreateNewClassFormCreation(props) {
 
   return (
     <div>
-      <div style={{ marginBottom: "2em" }}>
+      <div style={{ marginTop: "2em" }}>
         <div style={{ display: "flex", marginBottom: "2em", gap: "1em" }}>
-          <ArrowBackIcon
+          {/* <ArrowBackIcon
             sx={{ color: `${theme.valueFontColor}` }}
             onClick={() => setCreateMainClassForm(false)}
-          />
+          /> */}
           <ContentDevider title={t("item_form_creation")} />
         </div>
         <Formik
@@ -104,7 +104,7 @@ function CreateNewClassFormCreation(props) {
             setFieldValue,
           }) => (
             <Form>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} sx={{ padding: 2 }}>
                 <Grid item xs={6}>
                   <TextField
                     sx={sharedStyles}
@@ -244,7 +244,7 @@ function CreateNewClassFormCreation(props) {
                 </div>
               )}
 
-              <div style={{ marginTop: "20px" }}>
+              <div style={{ marginTop: "5px", paddingLeft: "15px" }}>
                 <Button
                   type="submit"
                   variant="contained"

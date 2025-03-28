@@ -130,7 +130,15 @@ export default function IncidentManagementUserList(props) {
             '& .MuiDataGrid-columnHeaders': {
               '& .MuiDataGrid-row--borderBottom': {
                 background: `${theme.outerBodyColor}`,
-                color: `${theme.fontColor}`
+                color: `${theme.fontColor}`,
+               
+                '& .MuiDataGrid-sortIcon': {
+              color: 'white', 
+            },
+            '& .MuiDataGrid-menuIconButton': {
+              color: 'white !important', 
+            },
+
               }
             },
             '& .MuiDataGrid-row--borderBottom': {

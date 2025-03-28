@@ -289,12 +289,13 @@ function GeneratedForm(props) {
         <>
           {createBtn && (
             <div
-              style={{
-                display: "flex",
-                width: "100%",
-                alignItems: "center",
-                gap: "0.5em",
-              }}
+            style={{
+              display: "flex",
+              width: "100%",
+              alignItems: "center",
+              gap: "0.5em",
+              
+            }}
             >
               <ArrowBackIcon
                 sx={{ color: `${theme.valueFontColor}` }}
@@ -306,6 +307,7 @@ function GeneratedForm(props) {
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   width: "20%",
+                
                 }}
               >
                 Add Config Items
@@ -574,7 +576,7 @@ function GeneratedForm(props) {
                     !isEditMode ||
                     !catelogueId ||
                     isUpdate !== null) && (
-                    <Box mt={2}>
+                    <Box mt={2} sx={{paddingLeft:2}}>
                       <Button
                         type="submit"
                         sx={{
@@ -583,6 +585,7 @@ function GeneratedForm(props) {
                           "&:hover": {
                             backgroundColor: theme.btnHoverColor,
                           },
+                          
                         }}
                         variant="contained"
                         disabled={formFields.length === 0}
@@ -595,7 +598,7 @@ function GeneratedForm(props) {
                 </Form>
               )}
             </Formik>
-            <Box mt={2}>
+            <Box mt={2} sx={{paddingLeft:2}}>
               {generatedForm && (
                 <Box mt={2}>
                   <Button

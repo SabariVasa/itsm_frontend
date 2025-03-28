@@ -201,11 +201,43 @@ export default function CreateKnowledge({ placeholder }) {
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
         {/* <Link to="/knowledge-preview-page"> */}
-        <Button variant="contained" color="warning" style={{ width: 200, fontSize: 12, marginTop: 13, marginRight: 5 }} onClick={() => handleCellClick(articleContent)}>show Preview</Button>
+        <Button
+          variant="contained"
+          sx={{
+            width: 200,
+            fontSize: 12,
+            marginTop: 2,
+            marginRight: 5,
+            backgroundColor: '#762626', // Your custom color
+            '&:hover': {
+              backgroundColor: '#A37B31', // Darker shade for hover
+            },
+            textTransform: 'none', // This will prevent the text from being uppercased
+          
+          }}
+          onClick={() => handleCellClick(articleContent)}
+        >
+          Show Preview
+        </Button>
         {/* </Link> */}
-        <Button variant="contained" color="primary" style={{ width: 200, fontSize: 12, marginTop: 13, }} onClick={() => { postArticle() }}>{update ? "Update Article" : "Publish Article"}</Button>
+        <Button
+          variant="contained"
+          sx={{
+            width: 200,
+            fontSize: 12,
+            marginTop: 2,
+            backgroundColor: '#A37B31', // Your desired color
+            '&:hover': {
+              backgroundColor: '#762626', // Darker on hover
+            },
+            textTransform: 'none', // This will prevent the text from being uppercased
+          }}
+          onClick={() => postArticle()}
+        >
+          {update ? "Update Article" : "Publish Article"}
+        </Button>
       </div>
-      <div style={{ marginTop: 30 }}>
+      <div style={{ marginTop: 30, paddingRight: '60px' }}>
         <CmdbGridContainer show={[true, true, false, false]} dropdown={[false, true]} name={["Article Number", "Article Type"]} Name1={articleNumber} SelectedValue2={articleType} setSelectValue2={setArticleType} label={["Requested Date", ""]} MenuItems={[OrgOptions, [{ value: "HTML" }]]} setName1={setArticleNumber} />
 
         <CmdbGridContainer show={[true, true, false, false]} dropdown={[false, true]} name={["Author", "Category"]} Name1={author} SelectedValue2={category} setSelectValue2={setCategory} label={["Requested Date", ""]} MenuItems={[OrgOptions, [{ value: "My articles" }, { value: "IT Support" }, { value: "CMDB Queries" }, { value: "ITSM Articles" }]]} setName1={setAuthor} />

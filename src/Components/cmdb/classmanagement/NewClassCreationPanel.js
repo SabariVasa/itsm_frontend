@@ -45,14 +45,14 @@ function NewClassCreationPanel(props) {
   return (
     <div>
       {!createMainClassForm && (
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '0.5em', marginBottom: '2em', alignItems: 'center' }}>
-          <ArrowBackIcon sx={{ color: `${theme.valueFontColor}` }} onClick={() => history.goBack()} />
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '0.5em', marginBottom: '2em', alignItems: 'center',padding:'20px' }}>
+          {/* <ArrowBackIcon sx={{ color: `${theme.valueFontColor}` }} onClick={() => history.goBack()} /> */}
           <ContentDevider title="Create Class" />
         </div>
       )}
       {!createMainClassForm ? (
         <>
-          <Grid container >
+          <Grid container sx={{ paddingLeft: 4 }}>
             <Grid item xs={6}>
               <FormControl fullWidth>
                 {/* <InputLabel id="demo-simple-select-label">{'Select Category Type'}</InputLabel> */}
@@ -76,7 +76,7 @@ function NewClassCreationPanel(props) {
                 </TextField>
               </FormControl>
             </Grid>
-            <Grid item xs={5} sx={{ marginLeft: '1em' }}>
+            <Grid item xs={5} sx={{ marginLeft: '2em' }}>
               <TextField
                 label="Class Name"
                 sx={sharedStyles}
@@ -87,7 +87,7 @@ function NewClassCreationPanel(props) {
             </Grid>
           </Grid>
 
-          <Grid container mt={2}>
+          <Grid container mt={2} sx={{ paddingLeft:4 }}>
             <Grid item xs={12}>
               <Button
                 variant="contained"
@@ -105,7 +105,7 @@ function NewClassCreationPanel(props) {
             </Grid>
           </Grid>
 
-          <Box mt={2}>
+          <Box mt={2} sx={{paddingLeft:4}}>
             <Button
               onClick={() => setCreateMainClassForm(true)}
               variant="outlined"
