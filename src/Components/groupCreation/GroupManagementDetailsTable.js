@@ -140,9 +140,9 @@ export default function GroupManagementDetailsTable(props) {
                 background: `${theme.outerBodyColor}`,
                 "&:hover": {
                   backgroundColor: `${theme.btnHoverColor}`,
-                  transform: "scale(1.05)", // Optional: to add a little zoom effect
+                  transform: "scale(1.05)", 
                 },
-                textTransform: 'none', // This will prevent the text from being uppercased
+                textTransform: 'none', 
               }}
             >
               Create New Department

@@ -539,14 +539,19 @@ export default function CmdbShowDetails(props) {
             onRowClick={(e) => handleRowClick(e.row.id, e.row.values)}
             getRowId={(row) => row.id}
             disableSelectionOnClick
-            disableColumnMenu
-            disableColumnSort
             disableColumnResize
             hideFooterPagination
             sx={{
               '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: 'black',
+                backgroundColor: '#540C00',
                 color: 'white',
+                 '& .MuiDataGrid-sortIcon': {
+                    color: 'white', 
+                  },
+                  '& .MuiDataGrid-menuIconButton': {
+                    color: 'white !important', 
+                  },
+
                 
               },
               '& .MuiDataGrid-cell': {
@@ -554,8 +559,8 @@ export default function CmdbShowDetails(props) {
               },
               // Ensure header cells take full width
               '& .MuiDataGrid-columnHeader': {
-                padding: '15px', // Remove default padding
-                background: 'black',
+                
+                background: '#540C00',
                 marginBottom:'10px',
                 
               },

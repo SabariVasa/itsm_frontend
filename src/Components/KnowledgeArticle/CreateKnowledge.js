@@ -199,20 +199,20 @@ export default function CreateKnowledge({ placeholder }) {
   });
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" , paddingL:"30px" }}>
         {/* <Link to="/knowledge-preview-page"> */}
         <Button
           variant="contained"
           sx={{
-            width: 200,
+            width: 170,
             fontSize: 12,
             marginTop: 2,
             marginRight: 5,
-            backgroundColor: '#762626', // Your custom color
+            backgroundColor: '#540C00', 
             '&:hover': {
-              backgroundColor: '#A37B31', // Darker shade for hover
+              backgroundColor: '#A37B31',
             },
-            textTransform: 'none', // This will prevent the text from being uppercased
+            textTransform: 'none', 
           
           }}
           onClick={() => handleCellClick(articleContent)}
@@ -223,14 +223,14 @@ export default function CreateKnowledge({ placeholder }) {
         <Button
           variant="contained"
           sx={{
-            width: 200,
+            width: 170,
             fontSize: 12,
             marginTop: 2,
-            backgroundColor: '#A37B31', // Your desired color
+            backgroundColor: '#A37B31', 
             '&:hover': {
-              backgroundColor: '#762626', // Darker on hover
+              backgroundColor: '#540C00', 
             },
-            textTransform: 'none', // This will prevent the text from being uppercased
+            textTransform: 'none', 
           }}
           onClick={() => postArticle()}
         >
